@@ -39,7 +39,8 @@ export default function Navbar({ data }: { data: any }) {
 
   // 🚀 Track URL Hash for `#gallery`, `#services`, `#reviews`, etc.
   const [activeHash, setActiveHash] = useState("");
-useEffect(() => {
+
+  useEffect(() => {
     // Scroll-Spy Logic
     const handleScroll = () => {
       const sections = document.querySelectorAll("section[id]");
@@ -55,13 +56,19 @@ useEffect(() => {
         }
       });
 
-      // Also support clicking directly via hash
-      if (window.scrollY === 0) currentSectionId = "/";
+      // 🔥 CRITICAL FIX: If we are at the very top, force the highlight to the first section (e.g., #home)
+      if (window.scrollY < 100) {
+        const firstSection = sections[0];
+        currentSectionId = firstSection ? `#${firstSection.id}` : "/";
+      }
       
       if (currentSectionId && currentSectionId !== activeHash) {
         setActiveHash(currentSectionId);
       }
     };
+
+    // Run once on mount to set the initial highlight immediately
+    handleScroll();
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -71,6 +78,11 @@ useEffect(() => {
 
   const logo = data.logo || { src: "", alt: "Logo" };
   const links = data.links || [];
+
+  // Graceful fallbacks for the nested schema
+  const navBg = data.section?.bg || data.bg || "transparent";
+  const linkColor = data.styling?.linkColor || data.linkColor || "#625b5b";
+  const hoverColor = data.styling?.linkHoverColor || data.linkHoverColor || "#1e0c05";
 
   const getIcon = (iconName?: string, fallbackIndex: number = 0) => {
     if (!iconName) {
@@ -87,18 +99,18 @@ useEffect(() => {
 
       {/* DESKTOP TOP NAVIGATION */}
       <nav 
-        className="hidden md:block fixed top-0 left-0 w-full z-50 transition-all duration-300"
+        className={cn("hidden md:block fixed top-0 left-0 w-full z-50 transition-all duration-300", data.section?.className)}
         style={{ 
-          backgroundColor: isScrolled ? `${data.bg}E6` : 'transparent',
+          backgroundColor: isScrolled ? '#ffffff' : 'transparent',
           backdropFilter: isScrolled ? 'blur(16px)' : 'none',
-          '--nav-link': data.linkColor || '#625b5b',
-          '--nav-hover': data.linkHoverColor || '#1e0c05'
+          '--nav-link': linkColor,
+          '--nav-hover': hoverColor
         } as React.CSSProperties}
       >
         <div className="px-6 md:px-12 lg:px-24 xl:px-40 py-3 flex items-center justify-between relative">
           
           {/* LOGO */}
-          <a href={data.cta?.href || "/"} className="relative flex items-center justify-start w-40 h-12">
+          <a href={data.cta?.href || "/"} className={cn("relative flex items-center justify-start w-40 h-12", logo.className)}>
             {logo.src ? (
               <img
                 src={logo.src}
@@ -112,8 +124,8 @@ useEffect(() => {
 
           {/* DYNAMIC NAVIGATION LINKS */}
           <div 
-            className="flex items-center rounded-full px-1 py-1 gap-2 shadow-sm border"
-            style={{ backgroundColor: data.bg, borderColor: data.linkHoverColor + '20' }}
+            className="flex items-center rounded-full px-1 py-1 gap-2 shadow-sm border bg-white"
+            style={{ backgroundColor: navBg, borderColor: hoverColor + '20' }}
           >
             {links.length > 0 ? (
               links.map((link: any, index: number) => {
@@ -128,15 +140,16 @@ useEffect(() => {
                     href={cleanHref}
                     onClick={() => setActiveHash(cleanHref)}
                     className={cn(
-                      "px-4 py-1.5 rounded-full text-sm transition-all duration-200"
+                      "px-4 py-1.5 rounded-full text-sm transition-all duration-200",
+                      link.className
                     )}
                     style={{
-                      backgroundColor: isActive ? `${data.linkHoverColor}10` : 'transparent',
-                      color: isActive ? data.linkHoverColor : 'var(--nav-link)',
+                      backgroundColor: isActive ? `${hoverColor}10` : 'transparent',
+                      color: isActive ? hoverColor : linkColor,
                       fontWeight: isActive ? 500 : 400
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = data.linkHoverColor}
-                    onMouseLeave={(e) => e.currentTarget.style.color = isActive ? data.linkHoverColor : data.linkColor}
+                    onMouseEnter={(e) => e.currentTarget.style.color = hoverColor}
+                    onMouseLeave={(e) => e.currentTarget.style.color = isActive ? hoverColor : linkColor}
                   >
                     {link.label}
                   </a>
@@ -150,7 +163,7 @@ useEffect(() => {
           {/* CTA BUTTON */}
           <a 
             href={data.cta?.href || "#"} 
-            className="flex items-center gap-2.5 text-sm font-medium pl-5 pr-2 py-2 rounded-full cursor-pointer transition-transform hover:scale-105"
+            className={cn("flex items-center gap-2.5 text-sm font-medium pl-5 pr-2 py-2 rounded-full cursor-pointer transition-transform hover:scale-105", data.cta?.className)}
             style={{ backgroundColor: data.cta?.bg, color: data.cta?.text }}
           >
             {data.cta?.label || "Schedule"}
@@ -165,13 +178,13 @@ useEffect(() => {
 
       {/* MOBILE TOP HEADER */}
       <div 
-        className={cn("fixed top-0 left-0 w-full z-40 p-4 transition-all duration-300 md:hidden")}
+        className={cn("fixed top-0 left-0 w-full z-40 p-4 transition-all duration-300 md:hidden", data.section?.className)}
         style={{ 
-          backgroundColor: isScrolled ? `${data.bg}E6` : 'transparent',
+          backgroundColor: isScrolled ? `${navBg}E6` : 'transparent',
           backdropFilter: isScrolled ? 'blur(16px)' : 'none'
         }}
       >
-        <a href="/" className="relative flex items-center w-32 h-10">
+        <a href="/" className={cn("relative flex items-center w-32 h-10", logo.className)}>
           {logo.src ? (
             <img src={logo.src} alt={logo.alt || "Business Logo"} className="h-full w-auto max-w-full object-contain object-left transition-all" />
           ) : (
@@ -182,14 +195,13 @@ useEffect(() => {
 
       {/* MOBILE BOTTOM NAVIGATION */}
       <nav 
-        className="md:hidden fixed inset-x-0 bottom-4 mx-auto z-50 w-fit max-w-[95vw] border rounded-full flex items-center p-1.5 shadow-xl space-x-1"
-        style={{ backgroundColor: data.bg, borderColor: data.linkHoverColor + '20' }}
+        className="md:hidden fixed inset-x-0 bg-white bottom-4 mx-auto z-50 w-fit max-w-[95vw] border rounded-full flex items-center p-1.5 shadow-xl space-x-1"
+        style={{ backgroundColor: navBg, borderColor: hoverColor + '20' }}
       >
         {links.slice(0, 5).map((link: any, index: number) => {
           const cleanHref = (link.href || "").trim();
           const Icon = getIcon(link.icon, index);
 
-          // Checks active status against Hash or Pathname
           const isActive = cleanHref === "/" || cleanHref === ""
             ? (pathname === "/" && (!activeHash || activeHash === "#" || activeHash === "/"))
             : activeHash === cleanHref;
@@ -201,11 +213,12 @@ useEffect(() => {
               onClick={() => setActiveHash(cleanHref)}
               className={cn(
                 "flex items-center gap-0 px-3 py-2 rounded-full transition-all duration-300 relative h-10 min-w-[44px]", 
-                isActive ? "gap-2 px-3.5" : ""
+                isActive ? "gap-2 px-3.5" : "",
+                link.className
               )}
               style={{
-                backgroundColor: isActive ? `${data.linkHoverColor}10` : 'transparent',
-                color: isActive ? data.linkHoverColor : data.linkColor
+                backgroundColor: isActive ? `${hoverColor}10` : 'transparent',
+                color: isActive ? hoverColor : linkColor
               }}
             >
               <Icon size={20} strokeWidth={2} className="flex-shrink-0" />
