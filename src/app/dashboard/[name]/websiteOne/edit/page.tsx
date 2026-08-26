@@ -1,0 +1,444 @@
+"use client";
+
+import { useEffect, useState, use, useRef } from "react";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { useEditorStore } from "@/store/useEditorStore";
+import { Loader2, ArrowLeft, ChevronDown, CheckCircle2, Plus, Trash2 } from "lucide-react";
+import Link from "next/link";
+import WebsiteOne from "@/components/templates/WebsiteOne";
+import { uploadImageAction } from "@/actions/upload";
+
+// Reusing your existing helper components
+import { ColorText, ButtonConfig, ImageUploader } from "./components"; // Make sure Input is imported here too!
+
+const Section = ({ title, children }: { title: string, children: React.ReactNode }) => (
+  <details className="group border-b border-gray-100 last:border-0 [&_summary::-webkit-details-marker]:hidden">
+    <summary className="flex items-center justify-between cursor-pointer py-4 select-none outline-none">
+      <span className="text-xs font-bold text-gray-500 uppercase tracking-widest group-hover:text-black">{title}</span>
+      <ChevronDown size={16} className="text-gray-400 transition-transform group-open:rotate-180" />
+    </summary>
+    <div className="pb-6 space-y-4 animate-in fade-in slide-in-from-top-2">{children}</div>
+  </details>
+);
+
+export default function LandingPageOneVisualEditor({ params }: { params: Promise<{ name: string }> }) {
+  const { name } = use(params);
+  const { config, currentSlug, setConfig, updateField, addArrayItem, removeArrayItem } = useEditorStore();
+
+  const [loading, setLoading] = useState(true);
+  const [uploadingImage, setUploadingImage] = useState<string | null>(null);
+  
+  // Auto-save states
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
+  const isFirstLoad = useRef(true);
+
+  // 1. Initialize Data
+  useEffect(() => {
+    const initializeData = async () => {
+      try {
+        if (currentSlug === name && config) return;
+
+        const docSnap = await getDoc(doc(db, "websites", name));
+        if (docSnap.exists() && docSnap.data().websiteOneData) {
+          setConfig(docSnap.data().websiteOneData, name);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    initializeData();
+  }, [name, currentSlug, config, setConfig]);
+
+  // 2. Auto-Save Logic
+  useEffect(() => {
+    if (isFirstLoad.current) {
+      if (config) isFirstLoad.current = false;
+      return;
+    }
+    if (!config) return;
+
+    const timeoutId = setTimeout(async () => {
+      setSaveStatus("saving");
+      try {
+        await setDoc(doc(db, "websites", name), {
+          lastUpdated: new Date().toISOString(),
+          websiteOneData: config
+        }, { merge: true });
+        
+        setSaveStatus("saved");
+        setTimeout(() => setSaveStatus("idle"), 2000);
+      } catch (err) {
+        console.error("Auto-save failed:", err);
+        setSaveStatus("idle");
+      }
+    }, 800);
+
+    return () => clearTimeout(timeoutId);
+  }, [config, name]);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, path: string) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingImage(path);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const optimizedUrl = await uploadImageAction(formData);
+      updateField(path, optimizedUrl);
+    } catch (error: any) {
+      alert(`Upload failed: ${error.message}`);
+    } finally {
+      setUploadingImage(null);
+    }
+  };
+
+  if (loading || !config) return <div className="flex h-screen items-center justify-center bg-white"><Loader2 className="animate-spin text-black w-8 h-8" /></div>;
+
+  return (
+    <div className="flex w-full h-screen overflow-hidden bg-white text-black font-sans">
+
+      {/* LEFT SIDEBAR: Visual Controls Only */}
+      <div className="w-[420px] h-full flex flex-col shrink-0 bg-white shadow-2xl z-20">
+
+        <div className="flex flex-col gap-5 px-6 pt-10 pb-5 border-b border-gray-100">
+          <Link href={`/dashboard/${name}`} className="text-gray-400 hover:text-black flex items-center gap-1.5 text-sm font-medium w-fit transition-colors">
+            <ArrowLeft size={16} /> Back to Dashboard
+          </Link>
+          <div className="flex items-center justify-between">
+            <h2 className="font-bold text-sm text-gray-800">Template 1: Visual Editor</h2>
+            
+            {/* Auto-Save Status Indicator */}
+            <div className="flex items-center gap-2 text-xs font-medium">
+              {saveStatus === "saving" && <><Loader2 size={14} className="animate-spin text-blue-500" /> <span className="text-blue-500">Saving...</span></>}
+              {saveStatus === "saved" && <><CheckCircle2 size={14} className="text-green-500" /> <span className="text-green-500">Saved</span></>}
+              {saveStatus === "idle" && <span className="text-gray-400">Up to date</span>}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-6 pb-20 scrollbar-hide space-y-2">
+
+          {/* THEME COLORS */}
+          <Section title="Global Theme">
+            <ColorText label="Primary Brand Color" colorValue={config.theme?.primaryColor} onColorChange={(v: string) => updateField('theme.primaryColor', v)} />
+          </Section>
+
+          {/* NAVBAR SECTION */}
+          <Section title="Navigation Bar">
+            <ColorText label="Background Color" colorValue={config.navbar?.section?.bg} onColorChange={(v: string) => updateField('navbar.section.bg', v)} />
+            <ColorText label="Nav Link Color" colorValue={config.navbar?.styling?.linkColor} onColorChange={(v: string) => updateField('navbar.styling.linkColor', v)} />
+            <ColorText label="Nav Hover Color" colorValue={config.navbar?.styling?.linkHoverColor} onColorChange={(v: string) => updateField('navbar.styling.linkHoverColor', v)} />
+
+            <ImageUploader label="Logo Image" src={config.navbar?.logo?.src} isUploading={uploadingImage === 'navbar.logo.src'} onUpload={(e: any) => handleImageUpload(e, 'navbar.logo.src')} />
+            
+            <ButtonConfig label="CTA Button" textVal={config.navbar?.cta?.label} hrefVal={config.navbar?.cta?.href} bgCol={config.navbar?.cta?.bg} textCol={config.navbar?.cta?.text} onText={(v: string) => updateField('navbar.cta.label', v)} onHref={(v: string) => updateField('navbar.cta.href', v)} onBg={(v: string) => updateField('navbar.cta.bg', v)} onCol={(v: string) => updateField('navbar.cta.text', v)} />
+          </Section>
+
+          {/* HERO SECTION */}
+          <Section title="Hero Section">
+            <ColorText label="Background Color" colorValue={config.hero?.section?.bg} onColorChange={(v: string) => updateField('hero.section.bg', v)} />
+            <ColorText label="Heading" textValue={config.hero?.heading?.text} colorValue={config.hero?.heading?.color} onTextChange={(v: string) => updateField('hero.heading.text', v)} onColorChange={(v: string) => updateField('hero.heading.color', v)} />
+            <ColorText label="Description" textValue={config.hero?.description?.text} colorValue={config.hero?.description?.color} onTextChange={(v: string) => updateField('hero.description.text', v)} onColorChange={(v: string) => updateField('hero.description.color', v)} isTextArea />
+            
+            <ImageUploader label="Background Image" src={config.hero?.image?.src} isUploading={uploadingImage === 'hero.image.src'} onUpload={(e: any) => handleImageUpload(e, 'hero.image.src')} />
+            
+            <ButtonConfig label="CTA Button" textVal={config.hero?.cta?.label} hrefVal={config.hero?.cta?.href} bgCol={config.hero?.cta?.bg} textCol={config.hero?.cta?.text} onText={(v: string) => updateField('hero.cta.label', v)} onHref={(v: string) => updateField('hero.cta.href', v)} onBg={(v: string) => updateField('hero.cta.bg', v)} onCol={(v: string) => updateField('hero.cta.text', v)} />
+
+            <div className="border border-gray-200 p-3 rounded-lg bg-gray-50 mt-4 space-y-3">
+              <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Social Proof</label>
+              <ColorText label="Star Count (1-5)" textValue={config.hero?.socialProof?.stars} colorValue={config.hero?.socialProof?.starColor} onTextChange={(v: string) => updateField('hero.socialProof.stars', v)} onColorChange={(v: string) => updateField('hero.socialProof.starColor', v)} />
+              <ColorText label="Social Proof Text" textValue={config.hero?.socialProof?.text} colorValue={config.hero?.socialProof?.textColor} onTextChange={(v: string) => updateField('hero.socialProof.text', v)} onColorChange={(v: string) => updateField('hero.socialProof.textColor', v)} />
+            </div>
+          </Section>
+
+          {/* STATS BANNER */}
+          <Section title="Stats Banner">
+            <ColorText label="Background Color" colorValue={config.statsBanner?.section?.bg} onColorChange={(v: string) => updateField('statsBanner.section.bg', v)} />
+            <ColorText label="Heading" textValue={config.statsBanner?.heading?.text} colorValue={config.statsBanner?.heading?.color} onTextChange={(v: string) => updateField('statsBanner.heading.text', v)} onColorChange={(v: string) => updateField('statsBanner.heading.color', v)} />
+
+            <div className="border border-gray-200 p-3 rounded-lg bg-gray-50 mt-4 space-y-3">
+              <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Ratings</label>
+              <ColorText label="Score (e.g. 4.96)" textValue={config.statsBanner?.rating?.score} colorValue={config.statsBanner?.rating?.scoreColor} onTextChange={(v: string) => updateField('statsBanner.rating.score', v)} onColorChange={(v: string) => updateField('statsBanner.rating.scoreColor', v)} />
+              <ColorText label="Scale (e.g. /5)" textValue={config.statsBanner?.rating?.max} onTextChange={(v: string) => updateField('statsBanner.rating.max', v)} />
+              <ColorText label="Review Label" textValue={config.statsBanner?.rating?.label} colorValue={config.statsBanner?.rating?.labelColor} onTextChange={(v: string) => updateField('statsBanner.rating.label', v)} onColorChange={(v: string) => updateField('statsBanner.rating.labelColor', v)} />
+            </div>
+
+            <div className="border border-gray-200 p-3 rounded-lg bg-gray-50 mt-4 space-y-3">
+              <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Experience</label>
+              <ColorText label="Title" textValue={config.statsBanner?.experience?.title} colorValue={config.statsBanner?.experience?.titleColor} onTextChange={(v: string) => updateField('statsBanner.experience.title', v)} onColorChange={(v: string) => updateField('statsBanner.experience.titleColor', v)} />
+              <ColorText label="Subtitle" textValue={config.statsBanner?.experience?.subtitle} colorValue={config.statsBanner?.experience?.subColor} onTextChange={(v: string) => updateField('statsBanner.experience.subtitle', v)} onColorChange={(v: string) => updateField('statsBanner.experience.subColor', v)} />
+              <ColorText label="Icon Color" colorValue={config.statsBanner?.experience?.iconColor} onColorChange={(v: string) => updateField('statsBanner.experience.iconColor', v)} />
+            </div>
+          </Section>
+
+          {/* ABOUT US */}
+          <Section title="About Us">
+            <ColorText label="Background Color" colorValue={config.about?.section?.bg} onColorChange={(v: string) => updateField('about.section.bg', v)} />
+            <ColorText label="Heading" textValue={config.about?.heading?.text} colorValue={config.about?.heading?.color} onTextChange={(v: string) => updateField('about.heading.text', v)} onColorChange={(v: string) => updateField('about.heading.color', v)} />
+            <ColorText label="Description" textValue={config.about?.description?.text} colorValue={config.about?.description?.color} onTextChange={(v: string) => updateField('about.description.text', v)} onColorChange={(v: string) => updateField('about.description.color', v)} isTextArea />
+
+            <ImageUploader label="About Image" src={config.about?.image?.src} isUploading={uploadingImage === 'about.image.src'} onUpload={(e: any) => handleImageUpload(e, 'about.image.src')} />
+
+            <div className="border border-gray-200 p-3 rounded-lg bg-gray-50 mt-4 space-y-3">
+              <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Features List</label>
+              <ColorText label="Icon Color" colorValue={config.about?.featuresList?.featureIconColor} onColorChange={(v: string) => updateField('about.featuresList.featureIconColor', v)} />
+              <ColorText label="Text Color" colorValue={config.about?.featuresList?.featureColor} onColorChange={(v: string) => updateField('about.featuresList.featureColor', v)} />
+              
+              {config.about?.featuresList?.features?.map((feat: string, i: number) => (
+                <div key={i} className="flex gap-2 relative group">
+                  <input type="text" value={feat} onChange={(e) => updateField(`about.featuresList.features[${i}]`, e.target.value)} className="w-full bg-white border border-gray-200 p-2 rounded text-sm outline-none focus:border-black" />
+                  <button onClick={() => removeArrayItem('about.featuresList.features', i)} className="absolute right-2 top-2 text-red-400 opacity-0 group-hover:opacity-100"><Trash2 size={14} /></button>
+                </div>
+              ))}
+              <button onClick={() => addArrayItem('about.featuresList.features', "New Feature")} className="text-xs text-blue-600 hover:text-blue-700 flex items-center gap-1 font-medium"><Plus size={14} /> Add Feature</button>
+            </div>
+
+            <div className="mt-4">
+               <ButtonConfig label="CTA Button" textVal={config.about?.cta?.label} hrefVal={config.about?.cta?.href} bgCol={config.about?.cta?.bg} textCol={config.about?.cta?.text} onText={(v: string) => updateField('about.cta.label', v)} onHref={(v: string) => updateField('about.cta.href', v)} onBg={(v: string) => updateField('about.cta.bg', v)} onCol={(v: string) => updateField('about.cta.text', v)} />
+            </div>
+          </Section>
+
+          {/* GALLERY */}
+          {config.gallery?.items && (
+            <Section title="Gallery">
+              <ColorText label="Background Color" colorValue={config.gallery?.section?.bg} onColorChange={(v: string) => updateField('gallery.section.bg', v)} />
+              <ColorText label="Heading" textValue={config.gallery?.heading?.text} colorValue={config.gallery?.heading?.color} onTextChange={(v: string) => updateField('gallery.heading.text', v)} onColorChange={(v: string) => updateField('gallery.heading.color', v)} />
+              <ColorText label="Description" textValue={config.gallery?.description?.text} colorValue={config.gallery?.description?.color} onTextChange={(v: string) => updateField('gallery.description.text', v)} onColorChange={(v: string) => updateField('gallery.description.color', v)} isTextArea />
+
+              <ColorText label="Arrow Icon Color" colorValue={config.gallery?.styling?.arrowColor} onColorChange={(v: string) => updateField('gallery.styling.arrowColor', v)} />
+              <ColorText label="Before/After Badge Bg" colorValue={config.gallery?.styling?.badgeBg} onColorChange={(v: string) => updateField('gallery.styling.badgeBg', v)} />
+              <ColorText label="Before/After Badge Text" colorValue={config.gallery?.styling?.badgeText} onColorChange={(v: string) => updateField('gallery.styling.badgeText', v)} />
+
+              <div className="mt-4 space-y-3">
+                <label className="text-xs font-bold text-gray-500 flex justify-between items-center">
+                  Gallery Images
+                  <button onClick={() => addArrayItem('gallery.items', { before: "", after: "", alt: "New Image", className: "" })} className="text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                    <Plus size={14} /> Add Image
+                  </button>
+                </label>
+                {config.gallery.items.map((item: any, i: number) => (
+                  <div key={item.id || i} className="border border-gray-200 p-4 rounded-lg bg-gray-50 space-y-3 relative group">
+                    <button onClick={() => removeArrayItem('gallery.items', i)} className="p-2 text-red-400 hover:text-red-600 absolute -right-3 -top-3 bg-white border border-gray-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"><Trash2 size={12} /></button>
+                    <ImageUploader label="Before Image" src={item.before} isUploading={uploadingImage === `gallery.items[${i}].before`} onUpload={(e: any) => handleImageUpload(e, `gallery.items[${i}].before`)} />
+                    <ImageUploader label="After Image" src={item.after} isUploading={uploadingImage === `gallery.items[${i}].after`} onUpload={(e: any) => handleImageUpload(e, `gallery.items[${i}].after`)} />
+                    <ColorText label="Alt Text" textValue={item.alt} onTextChange={(v: string) => updateField(`gallery.items[${i}].alt`, v)} />
+                  </div>
+                ))}
+              </div>
+            </Section>
+          )}
+
+          {/* SERVICES */}
+          {config.services?.items && (
+            <Section title="Services">
+              <ColorText label="Background Color" colorValue={config.services?.section?.bg} onColorChange={(v: string) => updateField('services.section.bg', v)} />
+              <ColorText label="Heading" textValue={config.services?.heading?.text} colorValue={config.services?.heading?.color} onTextChange={(v: string) => updateField('services.heading.text', v)} onColorChange={(v: string) => updateField('services.heading.color', v)} />
+              <ColorText label="Description" textValue={config.services?.description?.text} colorValue={config.services?.description?.color} onTextChange={(v: string) => updateField('services.description.text', v)} onColorChange={(v: string) => updateField('services.description.color', v)} isTextArea />
+
+              <div className="grid grid-cols-2 gap-2 my-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <ColorText label="Card Bg" colorValue={config.services?.styling?.cardBg} onColorChange={(v: string) => updateField('services.styling.cardBg', v)} />
+                <ColorText label="Card Border" colorValue={config.services?.styling?.cardBorder} onColorChange={(v: string) => updateField('services.styling.cardBorder', v)} />
+                <ColorText label="Icon Color" colorValue={config.services?.styling?.iconColor} onColorChange={(v: string) => updateField('services.styling.iconColor', v)} />
+                <ColorText label="Title Color" colorValue={config.services?.styling?.titleColor} onColorChange={(v: string) => updateField('services.styling.titleColor', v)} />
+                <ColorText label="Price Color" colorValue={config.services?.styling?.priceColor} onColorChange={(v: string) => updateField('services.styling.priceColor', v)} />
+              </div>
+
+              <div className="mt-4 space-y-3">
+                <label className="text-xs font-bold text-gray-500 flex justify-between items-center">
+                  Service Items
+                  <button onClick={() => addArrayItem('services.items', { title: "New Service", description: "", priceLabel: "", iconKey: "pet", className: "" })} className="text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                    <Plus size={14} /> Add Service
+                  </button>
+                </label>
+                {config.services.items.map((item: any, i: number) => (
+                  <div key={i} className="border border-gray-200 p-4 rounded-lg bg-gray-50 space-y-3 relative group">
+                    <button onClick={() => removeArrayItem('services.items', i)} className="p-2 text-red-400 hover:text-red-600 absolute -right-3 -top-3 bg-white border border-gray-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"><Trash2 size={12} /></button>
+                    <ColorText label="Service Title" textValue={item.title} onTextChange={(v: string) => updateField(`services.items[${i}].title`, v)} />
+                    <ColorText label="Description" textValue={item.description} onTextChange={(v: string) => updateField(`services.items[${i}].description`, v)} isTextArea />
+                    <ColorText label="Price Label" textValue={item.priceLabel} onTextChange={(v: string) => updateField(`services.items[${i}].priceLabel`, v)} />
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-4">
+                <ButtonConfig label="CTA Button" textVal={config.services?.cta?.label} hrefVal={config.services?.cta?.href} bgCol={config.services?.cta?.bg} textCol={config.services?.cta?.text} onText={(v: string) => updateField('services.cta.label', v)} onHref={(v: string) => updateField('services.cta.href', v)} onBg={(v: string) => updateField('services.cta.bg', v)} onCol={(v: string) => updateField('services.cta.text', v)} />
+              </div>
+            </Section>
+          )}
+
+          {/* PROCESS STEPS */}
+          {config.process?.steps && (
+            <Section title="Process Steps">
+              <ColorText label="Background Color" colorValue={config.process?.section?.bg} onColorChange={(v: string) => updateField('process.section.bg', v)} />
+              <ColorText label="Vertical Line Color" colorValue={config.process?.styling?.lineColor} onColorChange={(v: string) => updateField('process.styling.lineColor', v)} />
+              <ColorText label="Heading" textValue={config.process?.heading?.text} colorValue={config.process?.heading?.color} onTextChange={(v: string) => updateField('process.heading.text', v)} onColorChange={(v: string) => updateField('process.heading.color', v)} />
+              <ColorText label="Description" textValue={config.process?.description?.text} colorValue={config.process?.description?.color} onTextChange={(v: string) => updateField('process.description.text', v)} onColorChange={(v: string) => updateField('process.description.color', v)} isTextArea />
+
+              <div className="mt-4 space-y-3">
+                <label className="text-xs font-bold text-gray-500 flex justify-between items-center">
+                  Steps
+                  <button onClick={() => addArrayItem('process.steps', { title: "New Step", description: "", image: "", className: "" })} className="text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                    <Plus size={14} /> Add Step
+                  </button>
+                </label>
+                {config.process.steps.map((item: any, i: number) => (
+                  <div key={i} className="border border-gray-200 p-4 rounded-lg bg-gray-50 space-y-3 relative group">
+                    <button onClick={() => removeArrayItem('process.steps', i)} className="p-2 text-red-400 hover:text-red-600 absolute -right-3 -top-3 bg-white border border-gray-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"><Trash2 size={12} /></button>
+                    <ColorText label="Step Title" textValue={item.title} colorValue={item.titleColor} onTextChange={(v: string) => updateField(`process.steps[${i}].title`, v)} onColorChange={(v: string) => updateField(`process.steps[${i}].titleColor`, v)} />
+                    <ColorText label="Description" textValue={item.description} colorValue={item.descColor} onTextChange={(v: string) => updateField(`process.steps[${i}].description`, v)} onColorChange={(v: string) => updateField(`process.steps[${i}].descColor`, v)} isTextArea />
+                    <ImageUploader label="Step Image" src={item.image} isUploading={uploadingImage === `process.steps[${i}].image`} onUpload={(e: any) => handleImageUpload(e, `process.steps[${i}].image`)} />
+                  </div>
+                ))}
+              </div>
+            </Section>
+          )}
+
+          {/* COMPARISON BOARD */}
+          {config.comparison && (
+            <Section title="Comparison Board">
+              <ColorText label="Background Color" colorValue={config.comparison?.section?.bg} onColorChange={(v: string) => updateField('comparison.section.bg', v)} />
+              <ColorText label="Heading" textValue={config.comparison?.heading?.text} colorValue={config.comparison?.heading?.color} onTextChange={(v: string) => updateField('comparison.heading.text', v)} onColorChange={(v: string) => updateField('comparison.heading.color', v)} />
+              <ColorText label="Description" textValue={config.comparison?.description?.text} colorValue={config.comparison?.description?.color} onTextChange={(v: string) => updateField('comparison.description.text', v)} onColorChange={(v: string) => updateField('comparison.description.color', v)} isTextArea />
+
+              <div className="grid grid-cols-2 gap-4 mt-4 p-3 bg-gray-50 rounded border border-gray-200">
+                <ColorText label="VS Badge Bg" colorValue={config.comparison?.vsBadge?.bg} onColorChange={(v: string) => updateField('comparison.vsBadge.bg', v)} />
+                <ColorText label="VS Badge Text" colorValue={config.comparison?.vsBadge?.text} onColorChange={(v: string) => updateField('comparison.vsBadge.text', v)} />
+              </div>
+
+              {/* Negative Offers */}
+              <div className="space-y-3 mt-4 border border-red-200 p-3 rounded-lg bg-red-50/50">
+                <div className="flex justify-between items-center">
+                  <label className="text-xs font-bold text-red-600 uppercase">Other Offers (Negative)</label>
+                  <button onClick={() => addArrayItem('comparison.leftColumn.offers', "New Negative Point")} className="text-red-500 hover:text-red-700 flex items-center gap-1"><Plus size={14} /> Add</button>
+                </div>
+                <div className="flex gap-2">
+                  <ColorText label="Card Bg" colorValue={config.comparison?.leftColumn?.bg} onColorChange={(v: string) => updateField('comparison.leftColumn.bg', v)} />
+                  <ColorText label="Text Color" colorValue={config.comparison?.leftColumn?.textColor} onColorChange={(v: string) => updateField('comparison.leftColumn.textColor', v)} />
+                  <ColorText label="Icon Color" colorValue={config.comparison?.leftColumn?.iconColor} onColorChange={(v: string) => updateField('comparison.leftColumn.iconColor', v)} />
+                </div>
+                {config.comparison.leftColumn?.offers?.map((feat: string, i: number) => (
+                  <div key={i} className="flex gap-2 relative group">
+                    <input type="text" value={feat} onChange={(e) => updateField(`comparison.leftColumn.offers[${i}]`, e.target.value)} className="w-full bg-white border border-red-100 p-2.5 rounded text-sm outline-none focus:border-red-400" />
+                    <button onClick={() => removeArrayItem('comparison.leftColumn.offers', i)} className="absolute right-2 top-2.5 text-red-400 opacity-0 group-hover:opacity-100"><Trash2 size={14} /></button>
+                  </div>
+                ))}
+              </div>
+
+              {/* Positive Offers */}
+              <div className="space-y-3 mt-4 border border-green-200 p-3 rounded-lg bg-green-50/50">
+                <div className="flex justify-between items-center">
+                  <label className="text-xs font-bold text-green-600 uppercase">Your Offers (Positive)</label>
+                  <button onClick={() => addArrayItem('comparison.rightColumn.offers', "New Positive Point")} className="text-green-600 hover:text-green-700 flex items-center gap-1"><Plus size={14} /> Add</button>
+                </div>
+                <div className="flex gap-2">
+                  <ColorText label="Card Bg" colorValue={config.comparison?.rightColumn?.bg} onColorChange={(v: string) => updateField('comparison.rightColumn.bg', v)} />
+                  <ColorText label="Text Color" colorValue={config.comparison?.rightColumn?.textColor} onColorChange={(v: string) => updateField('comparison.rightColumn.textColor', v)} />
+                  <ColorText label="Icon Color" colorValue={config.comparison?.rightColumn?.iconColor} onColorChange={(v: string) => updateField('comparison.rightColumn.iconColor', v)} />
+                </div>
+                {config.comparison.rightColumn?.offers?.map((feat: string, i: number) => (
+                  <div key={i} className="flex gap-2 relative group">
+                    <input type="text" value={feat} onChange={(e) => updateField(`comparison.rightColumn.offers[${i}]`, e.target.value)} className="w-full bg-white border border-green-100 p-2.5 rounded text-sm outline-none focus:border-green-500" />
+                    <button onClick={() => removeArrayItem('comparison.rightColumn.offers', i)} className="absolute right-2 top-2.5 text-red-400 opacity-0 group-hover:opacity-100"><Trash2 size={14} /></button>
+                  </div>
+                ))}
+              </div>
+            </Section>
+          )}
+
+          {/* INSIGHTS */}
+          {config.insights?.items && (
+            <Section title="Insights / Blog">
+              <ColorText label="Background Color" colorValue={config.insights?.section?.bg} onColorChange={(v: string) => updateField('insights.section.bg', v)} />
+              <ColorText label="Heading" textValue={config.insights?.heading?.text} colorValue={config.insights?.heading?.color} onTextChange={(v: string) => updateField('insights.heading.text', v)} onColorChange={(v: string) => updateField('insights.heading.color', v)} />
+              <ColorText label="Description" textValue={config.insights?.description?.text} colorValue={config.insights?.description?.color} onTextChange={(v: string) => updateField('insights.description.text', v)} onColorChange={(v: string) => updateField('insights.description.color', v)} isTextArea />
+
+              <div className="grid grid-cols-2 gap-2 mt-4">
+                <ColorText label="Card Bg" colorValue={config.insights?.styling?.cardBg} onColorChange={(v: string) => updateField('insights.styling.cardBg', v)} />
+                <ColorText label="Card Title Text" colorValue={config.insights?.styling?.cardTitle} onColorChange={(v: string) => updateField('insights.styling.cardTitle', v)} />
+                <ColorText label="Date Badge Bg" colorValue={config.insights?.styling?.cardDateBg} onColorChange={(v: string) => updateField('insights.styling.cardDateBg', v)} />
+                <ColorText label="Date Text" colorValue={config.insights?.styling?.cardDateText} onColorChange={(v: string) => updateField('insights.styling.cardDateText', v)} />
+              </div>
+
+              <div className="mt-4 space-y-3">
+                <label className="text-xs font-bold text-gray-500 flex justify-between items-center">
+                  Articles
+                  <button onClick={() => addArrayItem('insights.items', { title: "New Article", date: "Jan 1, 2026", image: "", className: "" })} className="text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                    <Plus size={14} /> Add Article
+                  </button>
+                </label>
+                {config.insights.items.map((item: any, i: number) => (
+                  <div key={i} className="border border-gray-200 p-4 rounded-lg bg-gray-50 space-y-3 relative group">
+                    <button onClick={() => removeArrayItem('insights.items', i)} className="p-2 text-red-400 hover:text-red-600 absolute -right-3 -top-3 bg-white border border-gray-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"><Trash2 size={12} /></button>
+                    <ColorText label="Title" textValue={item.title} onTextChange={(v: string) => updateField(`insights.items[${i}].title`, v)} />
+                    <ColorText label="Date" textValue={item.date} onTextChange={(v: string) => updateField(`insights.items[${i}].date`, v)} />
+                    <ImageUploader label="Article Image" src={item.image} isUploading={uploadingImage === `insights.items[${i}].image`} onUpload={(e: any) => handleImageUpload(e, `insights.items[${i}].image`)} />
+                  </div>
+                ))}
+              </div>
+            </Section>
+          )}
+
+          {/* BOTTOM CTA */}
+          <Section title="Bottom CTA">
+            <ColorText label="Background Color" colorValue={config.ctaSection?.section?.bg} onColorChange={(v: string) => updateField('ctaSection.section.bg', v)} />
+            <ColorText label="Heading" textValue={config.ctaSection?.heading?.text} colorValue={config.ctaSection?.heading?.color} onTextChange={(v: string) => updateField('ctaSection.heading.text', v)} onColorChange={(v: string) => updateField('ctaSection.heading.color', v)} />
+            <ColorText label="Description" textValue={config.ctaSection?.description?.text} colorValue={config.ctaSection?.description?.color} onTextChange={(v: string) => updateField('ctaSection.description.text', v)} onColorChange={(v: string) => updateField('ctaSection.description.color', v)} isTextArea />
+
+            <ImageUploader label="Background Image" src={config.ctaSection?.image?.src} isUploading={uploadingImage === 'ctaSection.image.src'} onUpload={(e: any) => handleImageUpload(e, 'ctaSection.image.src')} />
+            <ButtonConfig label="CTA Button" textVal={config.ctaSection?.cta?.label} hrefVal={config.ctaSection?.cta?.href} bgCol={config.ctaSection?.cta?.bg} textCol={config.ctaSection?.cta?.text} onText={(v: string) => updateField('ctaSection.cta.label', v)} onHref={(v: string) => updateField('ctaSection.cta.href', v)} onBg={(v: string) => updateField('ctaSection.cta.bg', v)} onCol={(v: string) => updateField('ctaSection.cta.text', v)} />
+          </Section>
+
+          {/* FOOTER */}
+          <Section title="Footer">
+            <ColorText label="Background Color" colorValue={config.footer?.section?.bg} onColorChange={(v: string) => updateField('footer.section.bg', v)} />
+            <div className="grid grid-cols-2 gap-2 mt-2">
+              <ColorText label="Main Text Color" colorValue={config.footer?.styling?.textColor} onColorChange={(v: string) => updateField('footer.styling.textColor', v)} />
+              <ColorText label="Muted Text Color" colorValue={config.footer?.styling?.mutedColor} onColorChange={(v: string) => updateField('footer.styling.mutedColor', v)} />
+              <ColorText label="Icon Bg Color" colorValue={config.footer?.styling?.iconBg} onColorChange={(v: string) => updateField('footer.styling.iconBg', v)} />
+              <ColorText label="Icon Text Color" colorValue={config.footer?.styling?.iconText} onColorChange={(v: string) => updateField('footer.styling.iconText', v)} />
+            </div>
+
+            <ImageUploader label="Footer Logo" src={config.footer?.logo?.src} isUploading={uploadingImage === 'footer.logo.src'} onUpload={(e: any) => handleImageUpload(e, 'footer.logo.src')} />
+
+            <ColorText label="Address" textValue={config.footer?.info?.address} onTextChange={(v: string) => updateField('footer.info.address', v)} isTextArea />
+            <div className="grid grid-cols-2 gap-2 mt-2">
+              <ColorText label="Phone Label" textValue={config.footer?.info?.phone?.label} onTextChange={(v: string) => updateField('footer.info.phone.label', v)} />
+              <ColorText label="Phone Link (tel:)" textValue={config.footer?.info?.phone?.href} onTextChange={(v: string) => updateField('footer.info.phone.href', v)} />
+              <ColorText label="Email Label" textValue={config.footer?.info?.email?.label} onTextChange={(v: string) => updateField('footer.info.email.label', v)} />
+              <ColorText label="Email Link (mailto:)" textValue={config.footer?.info?.email?.href} onTextChange={(v: string) => updateField('footer.info.email.href', v)} />
+            </div>
+
+            <div className="mt-4 space-y-1.5">
+              <label className="text-[11px] font-semibold text-gray-700">Google Maps Embed URL</label>
+              <input 
+                type="text" 
+                value={config.footer?.info?.mapEmbedUrl || ""} 
+                onChange={(e) => updateField('footer.info.mapEmbedUrl', e.target.value)} 
+                placeholder="https://www.google.com/maps/embed?pb=..." 
+                className="w-full p-2 text-sm border border-gray-200 rounded outline-none focus:border-black bg-white" 
+              />
+              <p className="text-[10px] text-gray-400 mt-1">Go to Google Maps → Share → Embed a map → Copy link inside src="..."</p>
+            </div>
+
+            <ColorText label="Copyright Text" textValue={config.footer?.copyright} onTextChange={(v: string) => updateField('footer.copyright', v)} />
+            <div className="grid grid-cols-2 gap-2 mt-2">
+              <ColorText label="Facebook URL" textValue={config.footer?.socials?.facebook} onTextChange={(v: string) => updateField('footer.socials.facebook', v)} />
+              <ColorText label="Instagram URL" textValue={config.footer?.socials?.instagram} onTextChange={(v: string) => updateField('footer.socials.instagram', v)} />
+            </div>
+          </Section>
+
+        </div>
+      </div>
+      
+      {/* RIGHT SIDE: Live Preview */}
+      <div className="flex-1 h-full bg-[#f3f3f3] overflow-y-auto relative pointer-events-auto">
+        <div id="live-preview-box" className="w-full min-h-screen bg-white">
+          <script src="https://cdn.tailwindcss.com"></script>
+          <WebsiteOne data={config} />
+        </div>
+      </div>
+
+    </div>
+  );
+}
