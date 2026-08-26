@@ -10,14 +10,12 @@ import ComparisonSection from "@/components/landingpageone/ComparisonSection";
 import ReviewsSection from "@/components/landingpageone/ReviewsSection";
 import InsightsSection from "@/components/landingpageone/InsightsSection";
 import CTASection from "@/components/landingpageone/CTASection";
-import ContactSection from "@/components/landingpageone/ContactSection"; // 🔥 NEW
+import ContactSection from "@/components/landingpageone/ContactSection"; 
 import Footer from "@/components/landingpageone/footer";
 
-export default function WebsiteOne({ data }: { data: any }) {
+// 🔥 Added slug to the props so the Contact form knows who to email!
+export default function WebsiteOne({ data, slug }: { data: any, slug?: string }) {
   if (!data) return null;
-
-  // Grab the business email to pass securely to the contact form action
-  const businessEmail = data.footer?.info?.email?.label || data.footer?.info?.email?.href || "hello@nexpetcare.online";
 
   return (
     <div 
@@ -35,8 +33,8 @@ export default function WebsiteOne({ data }: { data: any }) {
       {data.reviews && <ReviewsSection data={data.reviews} />}
       {data.insights && <InsightsSection data={data.insights} />}
       
-      {/* Contact Section goes right above the CTA / Footer */}
-      {data.contactSection && <ContactSection data={data.contactSection} globalEmail={businessEmail} />}
+      {/* Pass the slug directly into the contact section */}
+      {data.contactSection && <ContactSection data={data.contactSection} slug={slug} />}
       
       {data.ctaSection && <CTASection data={data.ctaSection} />}
       {data.footer && <Footer data={data.footer} />}
