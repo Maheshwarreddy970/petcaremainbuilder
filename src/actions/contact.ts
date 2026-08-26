@@ -8,14 +8,17 @@ export async function submitContactFormAction(formData: FormData) {
   const email = formData.get("email") as string;
   const phone = formData.get("phone") as string;
   const message = formData.get("message") as string;
-  const slug = formData.get("slug") as string; // We get the site ID, not the email
+  const slug = formData.get("slug") as string;
 
-  if (!name || !email || !phone || !message || !slug) {
-    return { success: false, error: "Missing required fields." };
+  // Debugging log
+  console.log("Contact form submission received:", { name, email, phone, message, slug });
+
+  if (!name || !email || !phone || !message || !slug || slug === "undefined") {
+    return { success: false, error: "Missing required fields. Please refresh and try again." };
   }
 
   try {
-    // 1. Securely fetch the target email from the database
+    // 1. Securely fetch the target email & paid status from the database
     const docRef = doc(db, "websites", slug);
     const docSnap = await getDoc(docRef);
 
@@ -24,30 +27,38 @@ export async function submitContactFormAction(formData: FormData) {
     }
 
     const dbData = docSnap.data();
+
+    // 🔥 2. SUBSCRIPTION CHECK: Block form if account is unpaid
+    if (dbData.paid !== true) {
+      return { 
+        success: false, 
+        error: "Form submissions are temporarily disabled for this website. Please contact the business directly." 
+      };
+    }
     
-    // Fallback logic: Try root ownerEmail first, then footer email
+    // 3. Get Target Email
     let targetEmail = dbData.ownerEmail;
     if (!targetEmail && dbData.websiteOneData?.footer?.info?.email?.href) {
         targetEmail = dbData.websiteOneData.footer.info.email.href.replace("mailto:", "");
     }
 
     if (!targetEmail) {
-        return { success: false, error: "This website has not configured an email address yet." };
+        return { success: false, error: "This website has not configured a receiving email address yet." };
     }
 
     const cleanTargetEmail = targetEmail.replace("mailto:", "").trim();
 
-    // 2. Send the email via Resend
+    // 4. Send the email via Resend
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
-        "Authorization":  `Bearer ${process.env.RESEND_API_KEY}`,
+        "Authorization": `Bearer ${process.env.RESEND_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         from: "NexPet Care <noreply@nexpetcare.online>", 
         to: cleanTargetEmail,
-        reply_to: email, // Directly reply to the customer
+        reply_to: email, 
         subject: `New Website Lead: ${name}`,
         html: `
           <div style="font-family: sans-serif; color: #333; max-width: 600px; line-height: 1.6;">
@@ -68,12 +79,12 @@ export async function submitContactFormAction(formData: FormData) {
 
     if (!res.ok) {
       const errorData = await res.json();
-      throw new Error(errorData.message || "Failed to send email.");
+      throw new Error(errorData.message || "Failed to send email API.");
     }
 
     return { success: true };
   } catch (error: any) {
-    console.error("Resend Error:", error);
+    console.error("Server Error:", error);
     return { success: false, error: error.message };
   }
 }
