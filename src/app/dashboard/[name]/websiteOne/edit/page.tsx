@@ -8,8 +8,6 @@ import { Loader2, ArrowLeft, ChevronDown, CheckCircle2, Plus, Trash2 } from "luc
 import Link from "next/link";
 import WebsiteOne from "@/components/templates/WebsiteOne";
 import { uploadImageAction } from "@/actions/upload";
-
-// Make sure Input is imported from your components file!
 import { ColorText, ButtonConfig, ImageUploader, Input } from "./components";
 
 const Section = ({ title, children }: { title: string, children: React.ReactNode }) => (
@@ -30,17 +28,22 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
   const [loading, setLoading] = useState(true);
   const [uploadingImage, setUploadingImage] = useState<string | null>(null);
   
-  // Auto-save states
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const isFirstLoad = useRef(true);
 
-  // Unwrap params and initialize data
+  // 1. Fetch Fresh Data (Always)
   useEffect(() => {
     params.then((p) => {
       setName(p.name);
       const initializeData = async () => {
         try {
-          if (currentSlug === p.name && config) return;
+          // If Zustand already has THIS EXACT CLIENT'S data, skip fetch.
+          if (currentSlug === p.name && config) {
+            setLoading(false);
+            return;
+          }
+
+          // Otherwise, fetch fresh from Firebase
           const docSnap = await getDoc(doc(db, "websites", p.name));
           if (docSnap.exists() && docSnap.data().websiteOneData) {
             setConfig(docSnap.data().websiteOneData, p.name);
@@ -53,8 +56,11 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
     });
   }, [params, currentSlug, config, setConfig]);
 
-  // Auto-Save Logic (Replaces the manual save button)
+  // 2. Safe Auto-Save Logic
   useEffect(() => {
+    // 🔥 SAFETY LOCK: Do absolutely nothing if the loaded data doesn't belong to this URL
+    if (currentSlug !== name) return;
+
     if (isFirstLoad.current) {
       if (config) isFirstLoad.current = false;
       return;
@@ -75,10 +81,10 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
         console.error("Auto-save failed:", err);
         setSaveStatus("idle");
       }
-    }, 800); // Saves 800ms after you stop making changes
+    }, 800); 
 
     return () => clearTimeout(timeoutId);
-  }, [config, name]);
+  }, [config, name, currentSlug]);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, path: string) => {
     const file = e.target.files?.[0];
@@ -96,8 +102,11 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
     }
   };
 
-  if (loading || !config) return <div className="flex h-screen items-center justify-center bg-white"><Loader2 className="animate-spin text-black w-8 h-8" /></div>;
-
+  // 🔥 SAFETY LOCK: Do not render the editor until currentSlug matches the URL name
+  if (loading || !config || currentSlug !== name) {
+    return <div className="flex h-screen items-center justify-center bg-white"><Loader2 className="animate-spin text-black w-8 h-8" /></div>;
+  }
+  
   return (
     <div className="flex w-full h-screen overflow-hidden bg-white text-black font-sans">
 
