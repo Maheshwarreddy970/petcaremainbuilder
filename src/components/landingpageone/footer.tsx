@@ -109,69 +109,44 @@ export default function Footer({ data }: { data: any }) {
                     </div>
 
                 </div>
-{/* 🗺️ Google Map & Storefront Side-by-Side */}
-{(hasMap || info.storefrontImage?.src) && (
-    <div className="w-full flex flex-col mt-4">
-        <h4 className="text-sm font-semibold mb-4 tracking-wider uppercase" style={{ color: styling.mutedColor }}>
-            Location & Storefront
-        </h4>
-        
-        {/* If both map and image exist, split them. Otherwise full width. */}
-        <div className={cn("grid gap-4", hasMap && info.storefrontImage?.src ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1")}>
-            
-            {hasMap && (
-                <div className="relative w-full h-[300px] bg-slate-100 rounded-2xl overflow-hidden border border-black/5 shadow-sm hover:shadow-md transition-shadow">
-                    <div className="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">Loading map...</div>
-                    <iframe
-                        src={info.mapEmbedUrl}
-                        title="Location Map"
-                        width="100%"
-                        height="100%"
-                        style={{ border: 0 }}
-                        allowFullScreen
-                        loading="lazy"
-                        referrerPolicy="strict-origin-when-cross-origin"
-                        className="absolute inset-0 w-full h-full z-10 transition-all"
-                    />
-                </div>
-            )}
-
-            {info.storefrontImage?.src && (
-                <div className="relative w-full h-[300px] rounded-2xl overflow-hidden border border-black/5 shadow-sm hover:shadow-md transition-shadow">
-                    <img 
-                        src={info.storefrontImage.src} 
-                        alt="Our Storefront" 
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                    />
-                </div>
-            )}
-        </div>
-    </div>
-)}
-                {/* 🗺️ Google Map (Only renders if mapEmbedUrl is provided) */}
-                {hasMap && (
+                {/* 🗺️ Google Map & Storefront Side-by-Side */}
+                {(hasMap || info.storefrontImage?.src) && (
                     <div className="w-full flex flex-col mt-4">
-                        <h4
-                            className="text-sm font-semibold mb-4 tracking-wider uppercase"
-                            style={{ color: styling.mutedColor }}
-                        >
-                            Location
+                        <h4 className="text-sm font-semibold mb-4 tracking-wider uppercase" style={{ color: styling.mutedColor }}>
+                            Location & Storefront
                         </h4>
-                        <div className="relative w-full h-[300px] bg-slate-100 rounded-2xl overflow-hidden border border-black/5 shadow-sm hover:shadow-md transition-shadow duration-300 group">
-                            <div className="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">
-                                Loading map...
-                            </div>
-                            <iframe
-                                src={info.mapEmbedUrl}
-                                title="Business Location Map"
-                                width="100%"
-                                height="100%"
-                                style={{ border: 0 }}
-                                allowFullScreen
-                                loading="lazy"
-                                referrerPolicy="strict-origin-when-cross-origin"
-                                className="absolute inset-0 w-full h-full z-10 transition-all duration-700 ease-in-out"
-                            />
+
+                        {/* If both map and image exist, split them. Otherwise full width. */}
+                        <div className={cn("grid gap-4", hasMap && info.storefrontImage?.src ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1")}>
+
+                            {info.storefrontImage?.src && (
+                                <div className="relative w-full h-[300px] rounded-2xl overflow-hidden border border-black/5 shadow-sm hover:shadow-md transition-shadow">
+                                    <img
+                                        src={info.storefrontImage.src}
+                                        alt="Our Storefront"
+                                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                                    />
+                                </div>
+                            )}
+
+                            {hasMap && (
+                                <div className="relative w-full h-[300px] bg-slate-100 rounded-2xl overflow-hidden border border-black/5 shadow-sm hover:shadow-md transition-shadow">
+                                    <div className="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">Loading map...</div>
+                                    <iframe
+                                        src={info.mapEmbedUrl}
+                                        title="Location Map"
+                                        width="100%"
+                                        height="100%"
+                                        style={{ border: 0 }}
+                                        allowFullScreen
+                                        loading="lazy"
+                                        referrerPolicy="strict-origin-when-cross-origin"
+                                        className="absolute inset-0 w-full h-full z-10 transition-all"
+                                    />
+                                </div>
+                            )}
+
+
                         </div>
                     </div>
                 )}
