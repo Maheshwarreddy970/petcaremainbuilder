@@ -110,7 +110,7 @@ export default function Navbar({ data }: { data: any }) {
         <div className="px-6 md:px-12 lg:px-24 xl:px-40 py-3 flex items-center justify-between relative">
           
           {/* LOGO */}
-          <a href={data.cta?.href || "/"} className={cn("relative flex items-center justify-start w-40 h-12", logo.className)}>
+          <a href={"/"} className={cn("relative flex items-center justify-start w-40 h-12", logo.className)}>
             {logo.src ? (
               <img
                 src={logo.src}
