@@ -205,4 +205,16 @@ const ImageUploader = ({ label, src, isUploading, onUpload }: { label: string, s
   );
 };
 
-export { ImageUploader , ColorText, ButtonConfig };
+
+const Input = ({ label, value, onChange, isTextArea = false, placeholder = "" }: { label: string, value: string, onChange: (val: string) => void, isTextArea?: boolean, placeholder?: string }) => (
+  <div className="space-y-1.5 w-full">
+    <label className="text-xs font-medium text-gray-500">{label}</label>
+    {isTextArea ? (
+      <textarea value={value || ""} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} className="w-full bg-gray-50 border border-gray-200 p-2.5 rounded text-sm min-h-[80px] outline-none focus:border-black resize-y" />
+    ) : (
+      <input type="text" value={value || ""} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} className="w-full bg-gray-50 border border-gray-200 p-2.5 rounded text-sm outline-none focus:border-black" />
+    )}
+  </div>
+);
+
+export { ImageUploader , ColorText, ButtonConfig, Input };

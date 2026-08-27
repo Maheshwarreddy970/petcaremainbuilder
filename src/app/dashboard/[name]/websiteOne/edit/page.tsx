@@ -9,8 +9,8 @@ import Link from "next/link";
 import WebsiteOne from "@/components/templates/WebsiteOne";
 import { uploadImageAction } from "@/actions/upload";
 
-// Reusing your existing helper components
-import { ColorText, ButtonConfig, ImageUploader } from "./components"; // Make sure Input is imported here too!
+// Make sure Input is imported from your components file!
+import { ColorText, ButtonConfig, ImageUploader, Input } from "./components";
 
 const Section = ({ title, children }: { title: string, children: React.ReactNode }) => (
   <details className="group border-b border-gray-100 last:border-0 [&_summary::-webkit-details-marker]:hidden">
@@ -23,7 +23,8 @@ const Section = ({ title, children }: { title: string, children: React.ReactNode
 );
 
 export default function LandingPageOneVisualEditor({ params }: { params: Promise<{ name: string }> }) {
-  const { name } = use(params);
+  const [name, setName] = useState<string>("");
+  
   const { config, currentSlug, setConfig, updateField, addArrayItem, removeArrayItem } = useEditorStore();
 
   const [loading, setLoading] = useState(true);
@@ -33,30 +34,32 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const isFirstLoad = useRef(true);
 
-  // 1. Initialize Data
+  // Unwrap params and initialize data
   useEffect(() => {
-    const initializeData = async () => {
-      try {
-        if (currentSlug === name && config) return;
-
-        const docSnap = await getDoc(doc(db, "websites", name));
-        if (docSnap.exists() && docSnap.data().websiteOneData) {
-          setConfig(docSnap.data().websiteOneData, name);
+    params.then((p) => {
+      setName(p.name);
+      const initializeData = async () => {
+        try {
+          if (currentSlug === p.name && config) return;
+          const docSnap = await getDoc(doc(db, "websites", p.name));
+          if (docSnap.exists() && docSnap.data().websiteOneData) {
+            setConfig(docSnap.data().websiteOneData, p.name);
+          }
+        } finally {
+          setLoading(false);
         }
-      } finally {
-        setLoading(false);
-      }
-    };
-    initializeData();
-  }, [name, currentSlug, config, setConfig]);
+      };
+      initializeData();
+    });
+  }, [params, currentSlug, config, setConfig]);
 
-  // 2. Auto-Save Logic
+  // Auto-Save Logic (Replaces the manual save button)
   useEffect(() => {
     if (isFirstLoad.current) {
       if (config) isFirstLoad.current = false;
       return;
     }
-    if (!config) return;
+    if (!config || !name) return;
 
     const timeoutId = setTimeout(async () => {
       setSaveStatus("saving");
@@ -72,7 +75,7 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
         console.error("Auto-save failed:", err);
         setSaveStatus("idle");
       }
-    }, 800);
+    }, 800); // Saves 800ms after you stop making changes
 
     return () => clearTimeout(timeoutId);
   }, [config, name]);
@@ -109,10 +112,10 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
             <h2 className="font-bold text-sm text-gray-800">Template 1: Visual Editor</h2>
             
             {/* Auto-Save Status Indicator */}
-            <div className="flex items-center gap-2 text-xs font-medium">
+            <div className="flex items-center gap-2 text-xs font-medium bg-gray-50 px-3 py-1.5 rounded-full border border-gray-200">
               {saveStatus === "saving" && <><Loader2 size={14} className="animate-spin text-blue-500" /> <span className="text-blue-500">Saving...</span></>}
               {saveStatus === "saved" && <><CheckCircle2 size={14} className="text-green-500" /> <span className="text-green-500">Saved</span></>}
-              {saveStatus === "idle" && <span className="text-gray-400">Up to date</span>}
+              {saveStatus === "idle" && <span className="text-gray-500">Up to date</span>}
             </div>
           </div>
         </div>
@@ -129,9 +132,7 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
             <ColorText label="Background Color" colorValue={config.navbar?.section?.bg} onColorChange={(v: string) => updateField('navbar.section.bg', v)} />
             <ColorText label="Nav Link Color" colorValue={config.navbar?.styling?.linkColor} onColorChange={(v: string) => updateField('navbar.styling.linkColor', v)} />
             <ColorText label="Nav Hover Color" colorValue={config.navbar?.styling?.linkHoverColor} onColorChange={(v: string) => updateField('navbar.styling.linkHoverColor', v)} />
-
             <ImageUploader label="Logo Image" src={config.navbar?.logo?.src} isUploading={uploadingImage === 'navbar.logo.src'} onUpload={(e: any) => handleImageUpload(e, 'navbar.logo.src')} />
-            
             <ButtonConfig label="CTA Button" textVal={config.navbar?.cta?.label} hrefVal={config.navbar?.cta?.href} bgCol={config.navbar?.cta?.bg} textCol={config.navbar?.cta?.text} onText={(v: string) => updateField('navbar.cta.label', v)} onHref={(v: string) => updateField('navbar.cta.href', v)} onBg={(v: string) => updateField('navbar.cta.bg', v)} onCol={(v: string) => updateField('navbar.cta.text', v)} />
           </Section>
 
@@ -140,9 +141,7 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
             <ColorText label="Background Color" colorValue={config.hero?.section?.bg} onColorChange={(v: string) => updateField('hero.section.bg', v)} />
             <ColorText label="Heading" textValue={config.hero?.heading?.text} colorValue={config.hero?.heading?.color} onTextChange={(v: string) => updateField('hero.heading.text', v)} onColorChange={(v: string) => updateField('hero.heading.color', v)} />
             <ColorText label="Description" textValue={config.hero?.description?.text} colorValue={config.hero?.description?.color} onTextChange={(v: string) => updateField('hero.description.text', v)} onColorChange={(v: string) => updateField('hero.description.color', v)} isTextArea />
-            
             <ImageUploader label="Background Image" src={config.hero?.image?.src} isUploading={uploadingImage === 'hero.image.src'} onUpload={(e: any) => handleImageUpload(e, 'hero.image.src')} />
-            
             <ButtonConfig label="CTA Button" textVal={config.hero?.cta?.label} hrefVal={config.hero?.cta?.href} bgCol={config.hero?.cta?.bg} textCol={config.hero?.cta?.text} onText={(v: string) => updateField('hero.cta.label', v)} onHref={(v: string) => updateField('hero.cta.href', v)} onBg={(v: string) => updateField('hero.cta.bg', v)} onCol={(v: string) => updateField('hero.cta.text', v)} />
 
             <div className="border border-gray-200 p-3 rounded-lg bg-gray-50 mt-4 space-y-3">
@@ -346,6 +345,170 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
             </Section>
           )}
 
+          {/* 🔥 REVIEWS SECTION INSTALLED HERE */}
+          {config.reviews?.columns && (
+            <Section title="Reviews">
+              <ColorText
+                label="Section Background"
+                colorValue={config.reviews?.section?.bg}
+                onColorChange={(v: string) => updateField('reviews.section.bg', v)}
+              />
+              <ColorText
+                label="Heading"
+                textValue={config.reviews?.heading?.text}
+                colorValue={config.reviews?.heading?.color}
+                onTextChange={(v: string) => updateField('reviews.heading.text', v)}
+                onColorChange={(v: string) => updateField('reviews.heading.color', v)}
+              />
+              <ColorText
+                label="Description"
+                textValue={config.reviews?.description?.text}
+                colorValue={config.reviews?.description?.color}
+                onTextChange={(v: string) => updateField('reviews.description.text', v)}
+                onColorChange={(v: string) => updateField('reviews.description.color', v)}
+                isTextArea
+              />
+
+              {['col1', 'col2', 'col3'].map((col) => (
+                <div key={col} className="mt-6 space-y-3">
+                  <label className="text-xs font-bold text-gray-500 uppercase flex justify-between items-center border-b border-gray-100 pb-2">
+                    {col.toUpperCase()} Cards
+                    <button
+                      onClick={() => addArrayItem(`reviews.columns.${col}`, { type: 'review', name: 'New Client', role: 'Pet Parent', text: 'Great grooming experience!', avatar: '', bg: '#faf3ec', textColor: '#625b5b', titleColor: '#1e0c05', starColor: '#8c863a' })}
+                      className="text-blue-600 hover:text-blue-700 flex items-center gap-1 font-semibold"
+                    >
+                      <Plus size={14} /> Add Card
+                    </button>
+                  </label>
+
+                  {config.reviews.columns[col]?.map((item: any, i: number) => (
+                    <div key={i} className="border border-gray-200 p-4 rounded-lg bg-gray-50 space-y-3 relative group">
+                      <button
+                        onClick={() => removeArrayItem(`reviews.columns.${col}`, i)}
+                        className="p-1.5 text-red-400 hover:text-red-600 absolute right-2 top-2 bg-white border border-gray-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                        title="Delete Card"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+
+                      <div className="flex justify-between items-center bg-white p-2 rounded border border-gray-200">
+                        <label className="text-xs font-medium text-gray-500">Card Type</label>
+                        <select
+                          value={item.type || 'review'}
+                          onChange={(e) => updateField(`reviews.columns.${col}[${i}].type`, e.target.value)}
+                          className="bg-transparent text-xs font-semibold outline-none cursor-pointer"
+                        >
+                          <option value="review">Review Card</option>
+                          <option value="stat-numeric">Numeric Stat</option>
+                          <option value="stat-image">Image Stat</option>
+                        </select>
+                      </div>
+
+                      <ColorText
+                        label="Card Background"
+                        colorValue={item.bg}
+                        onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].bg`, v)}
+                      />
+
+                      {item.type === 'review' && (
+                        <>
+                          <ColorText
+                            label="Client Name & Color"
+                            textValue={item.name}
+                            colorValue={item.titleColor}
+                            onTextChange={(v: string) => updateField(`reviews.columns.${col}[${i}].name`, v)}
+                            onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].titleColor`, v)}
+                          />
+                          <Input
+                            label="Role / Subtitle"
+                            value={item.role}
+                            onChange={(v) => updateField(`reviews.columns.${col}[${i}].role`, v)}
+                          />
+                          <ColorText
+                            label="Review Text & Color"
+                            textValue={item.text}
+                            colorValue={item.textColor}
+                            onTextChange={(v: string) => updateField(`reviews.columns.${col}[${i}].text`, v)}
+                            onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].textColor`, v)}
+                            isTextArea
+                          />
+                          <ColorText
+                            label="Star Rating Color"
+                            colorValue={item.starColor}
+                            onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].starColor`, v)}
+                          />
+                          <ImageUploader
+                            label="Avatar Image"
+                            src={item.avatar}
+                            isUploading={uploadingImage === `reviews.columns.${col}[${i}].avatar`}
+                            onUpload={(e: any) => handleImageUpload(e, `reviews.columns.${col}[${i}].avatar`)}
+                          />
+                        </>
+                      )}
+
+                      {item.type === 'stat-numeric' && (
+                        <>
+                          <ColorText
+                            label="Score Value (e.g. 4.96)"
+                            textValue={item.score}
+                            colorValue={item.scoreColor}
+                            onTextChange={(v: string) => updateField(`reviews.columns.${col}[${i}].score`, v)}
+                            onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].scoreColor`, v)}
+                          />
+                          <Input
+                            label="Scale (e.g. /5)"
+                            value={item.scale}
+                            onChange={(v) => updateField(`reviews.columns.${col}[${i}].scale`, v)}
+                          />
+                          <ColorText
+                            label="Subtext & Color"
+                            textValue={item.subtext}
+                            colorValue={item.textColor}
+                            onTextChange={(v: string) => updateField(`reviews.columns.${col}[${i}].subtext`, v)}
+                            onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].textColor`, v)}
+                          />
+                          <ColorText
+                            label="Star Rating Color"
+                            colorValue={item.starColor}
+                            onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].starColor`, v)}
+                          />
+                        </>
+                      )}
+
+                      {item.type === 'stat-image' && (
+                        <>
+                          <ColorText
+                            label="Heading & Color"
+                            textValue={item.heading}
+                            colorValue={item.textColor}
+                            onTextChange={(v: string) => updateField(`reviews.columns.${col}[${i}].heading`, v)}
+                            onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].textColor`, v)}
+                          />
+                          <Input
+                            label="Subtext"
+                            value={item.subtext}
+                            onChange={(v) => updateField(`reviews.columns.${col}[${i}].subtext`, v)}
+                          />
+                          <ColorText
+                            label="Smile Icon Color"
+                            colorValue={item.iconColor}
+                            onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].iconColor`, v)}
+                          />
+                          <ImageUploader
+                            label="Background Image"
+                            src={item.image}
+                            isUploading={uploadingImage === `reviews.columns.${col}[${i}].image`}
+                            onUpload={(e: any) => handleImageUpload(e, `reviews.columns.${col}[${i}].image`)}
+                          />
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </Section>
+          )}
+
           {/* INSIGHTS */}
           {config.insights?.items && (
             <Section title="Insights / Blog">
@@ -368,13 +531,29 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
                   </button>
                 </label>
                 {config.insights.items.map((item: any, i: number) => (
-                  <div key={i} className="border border-gray-200 p-4 rounded-lg bg-gray-50 space-y-3 relative group">
+                  <div key={item.id || i} className="border border-gray-200 p-4 rounded-lg bg-gray-50 space-y-3 relative group">
                     <button onClick={() => removeArrayItem('insights.items', i)} className="p-2 text-red-400 hover:text-red-600 absolute -right-3 -top-3 bg-white border border-gray-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"><Trash2 size={12} /></button>
                     <ColorText label="Title" textValue={item.title} onTextChange={(v: string) => updateField(`insights.items[${i}].title`, v)} />
                     <ColorText label="Date" textValue={item.date} onTextChange={(v: string) => updateField(`insights.items[${i}].date`, v)} />
                     <ImageUploader label="Article Image" src={item.image} isUploading={uploadingImage === `insights.items[${i}].image`} onUpload={(e: any) => handleImageUpload(e, `insights.items[${i}].image`)} />
                   </div>
                 ))}
+              </div>
+            </Section>
+          )}
+          
+          {/* CONTACT SECTION */}
+          {config.contactSection && (
+            <Section title="Contact Section">
+              <ColorText label="Background Color" colorValue={config.contactSection?.section?.bg} onColorChange={(v: string) => updateField('contactSection.section.bg', v)} />
+              <ColorText label="Heading" textValue={config.contactSection?.heading?.text} colorValue={config.contactSection?.heading?.color} onTextChange={(v: string) => updateField('contactSection.heading.text', v)} onColorChange={(v: string) => updateField('contactSection.heading.color', v)} />
+              <ColorText label="Description" textValue={config.contactSection?.description?.text} colorValue={config.contactSection?.description?.color} onTextChange={(v: string) => updateField('contactSection.description.text', v)} onColorChange={(v: string) => updateField('contactSection.description.color', v)} isTextArea />
+              
+              <div className="border border-gray-200 p-3 rounded-lg bg-gray-50 mt-4 space-y-3">
+                <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Submit Button</label>
+                <ColorText label="Button Label" textValue={config.contactSection?.button?.label} onTextChange={(v: string) => updateField('contactSection.button.label', v)} />
+                <ColorText label="Button Background" colorValue={config.contactSection?.button?.bg} onColorChange={(v: string) => updateField('contactSection.button.bg', v)} />
+                <ColorText label="Button Text Color" colorValue={config.contactSection?.button?.text} onColorChange={(v: string) => updateField('contactSection.button.text', v)} />
               </div>
             </Section>
           )}
@@ -409,16 +588,26 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
               <ColorText label="Email Link (mailto:)" textValue={config.footer?.info?.email?.href} onTextChange={(v: string) => updateField('footer.info.email.href', v)} />
             </div>
 
-            <div className="mt-4 space-y-1.5">
-              <label className="text-[11px] font-semibold text-gray-700">Google Maps Embed URL</label>
-              <input 
-                type="text" 
-                value={config.footer?.info?.mapEmbedUrl || ""} 
-                onChange={(e) => updateField('footer.info.mapEmbedUrl', e.target.value)} 
-                placeholder="https://www.google.com/maps/embed?pb=..." 
-                className="w-full p-2 text-sm border border-gray-200 rounded outline-none focus:border-black bg-white" 
+            {/* Maps & Storefront Details */}
+            <div className="mt-4 space-y-4 border-t border-gray-100 pt-4">
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-semibold text-gray-700">Google Maps Embed URL</label>
+                <input 
+                  type="text" 
+                  value={config.footer?.info?.mapEmbedUrl || ""} 
+                  onChange={(e) => updateField('footer.info.mapEmbedUrl', e.target.value)} 
+                  placeholder="https://www.google.com/maps/embed?pb=..." 
+                  className="w-full p-2 text-sm border border-gray-200 rounded outline-none focus:border-black bg-white" 
+                />
+                <p className="text-[10px] text-gray-400 mt-1">Go to Google Maps → Share → Embed a map → Copy link inside src="..."</p>
+              </div>
+
+              <ImageUploader 
+                label="Storefront Image (Next to Map)" 
+                src={config.footer?.info?.storefrontImage?.src} 
+                isUploading={uploadingImage === 'footer.info.storefrontImage.src'} 
+                onUpload={(e: any) => handleImageUpload(e, 'footer.info.storefrontImage.src')} 
               />
-              <p className="text-[10px] text-gray-400 mt-1">Go to Google Maps → Share → Embed a map → Copy link inside src="..."</p>
             </div>
 
             <ColorText label="Copyright Text" textValue={config.footer?.copyright} onTextChange={(v: string) => updateField('footer.copyright', v)} />
