@@ -645,13 +645,12 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
         </div>
       </div>
       
-      {/* RIGHT SIDE: Live Preview */}
-     {/* RIGHT SIDE: Live Preview */}
+   {/* RIGHT SIDE: Live Preview */}
       <div className="flex-1 h-full bg-[#f3f3f3] overflow-y-auto relative pointer-events-auto">
         <div id="live-preview-box" className="w-full min-h-screen bg-white">
           <script src="https://cdn.tailwindcss.com"></script>
           
-          {/* 🔥 Tell the Tailwind CDN how to animate the slider! */}
+          {/* 🔥 THIS TELLS THE EDITOR HOW TO ANIMATE THE SLIDER */}
           <script dangerouslySetInnerHTML={{
             __html: `
               tailwind.config = {

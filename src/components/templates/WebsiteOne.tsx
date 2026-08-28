@@ -18,7 +18,6 @@ import Footer from "@/components/landingpageone/footer";
 // 🔥 Added slug to the props so the Contact form knows who to email!
 export default function WebsiteOne({ data, slug }: { data: any, slug?: string }) {
   if (!data) return null;
-console.log("WebsiteOne data:", data);
   return (
     <div 
       id="live-preview-box"

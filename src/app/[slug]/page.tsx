@@ -32,6 +32,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function LiveTenantPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   console.log("Rendering live tenant page for slug:", slug);
+  
   if (!slug) return notFound();
 
   const data = await getWebsiteData(slug);
@@ -50,7 +51,9 @@ export default async function LiveTenantPage({ params }: { params: Promise<{ slu
 
   return (
     <main className="w-full min-h-screen">
-      <WebsiteOne data={data.websiteOneData} slug={slug} />
+      {/* 🔥 FIX: Now this dynamically renders whatever template they are assigned to */}
+      <TemplateComponent data={templateData} slug={slug} />
+      
       {data.settings?.googleAnalyticsId && (
         <script async src={`https://www.googletagmanager.com/gtag/js?id=${data.settings.googleAnalyticsId}`}></script>
       )}
