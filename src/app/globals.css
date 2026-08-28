@@ -128,3 +128,20 @@
     @apply font-sans;
   }
 }
+
+
+@import "tailwindcss";
+
+@theme {
+  --animate-infinite-scroll: infinite-scroll 30s linear infinite;
+
+  @keyframes infinite-scroll {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(calc(-50% - 0.5rem));
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+// 🔥 REMOVED persist middleware import entirely!
 import set from 'lodash/set';
 import get from 'lodash/get';
 
@@ -12,7 +13,6 @@ type EditorStore = {
   removeArrayItem: (path: string, index: number) => void;
 };
 
-// 🔥 REMOVED persist middleware. It causes data bleeding between clients.
 export const useEditorStore = create<EditorStore>()((setStore) => ({
   config: null,
   currentSlug: null,

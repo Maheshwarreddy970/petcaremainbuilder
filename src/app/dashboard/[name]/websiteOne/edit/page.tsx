@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, use, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useEditorStore } from "@/store/useEditorStore";
@@ -8,6 +8,8 @@ import { Loader2, ArrowLeft, ChevronDown, CheckCircle2, Plus, Trash2 } from "luc
 import Link from "next/link";
 import WebsiteOne from "@/components/templates/WebsiteOne";
 import { uploadImageAction } from "@/actions/upload";
+
+// Make sure Input is imported from your components file!
 import { ColorText, ButtonConfig, ImageUploader, Input } from "./components";
 
 const Section = ({ title, children }: { title: string, children: React.ReactNode }) => (
@@ -28,22 +30,20 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
   const [loading, setLoading] = useState(true);
   const [uploadingImage, setUploadingImage] = useState<string | null>(null);
   
+  // Auto-save states
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const isFirstLoad = useRef(true);
 
-  // 1. Fetch Fresh Data (Always)
+  // Unwrap params and initialize data
   useEffect(() => {
     params.then((p) => {
       setName(p.name);
       const initializeData = async () => {
         try {
-          // If Zustand already has THIS EXACT CLIENT'S data, skip fetch.
           if (currentSlug === p.name && config) {
             setLoading(false);
             return;
           }
-
-          // Otherwise, fetch fresh from Firebase
           const docSnap = await getDoc(doc(db, "websites", p.name));
           if (docSnap.exists() && docSnap.data().websiteOneData) {
             setConfig(docSnap.data().websiteOneData, p.name);
@@ -56,9 +56,8 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
     });
   }, [params, currentSlug, config, setConfig]);
 
-  // 2. Safe Auto-Save Logic
+  // Auto-Save Logic
   useEffect(() => {
-    // 🔥 SAFETY LOCK: Do absolutely nothing if the loaded data doesn't belong to this URL
     if (currentSlug !== name) return;
 
     if (isFirstLoad.current) {
@@ -81,7 +80,7 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
         console.error("Auto-save failed:", err);
         setSaveStatus("idle");
       }
-    }, 800); 
+    }, 800);
 
     return () => clearTimeout(timeoutId);
   }, [config, name, currentSlug]);
@@ -102,11 +101,10 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
     }
   };
 
-  // 🔥 SAFETY LOCK: Do not render the editor until currentSlug matches the URL name
   if (loading || !config || currentSlug !== name) {
     return <div className="flex h-screen items-center justify-center bg-white"><Loader2 className="animate-spin text-black w-8 h-8" /></div>;
   }
-  
+
   return (
     <div className="flex w-full h-screen overflow-hidden bg-white text-black font-sans">
 
@@ -180,6 +178,31 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
             </div>
           </Section>
 
+          {/* 🔥 IMAGE SLIDER INSTALLED HERE */}
+          {config.imageSlider && (
+            <Section title="Infinite Image Slider">
+              <ColorText label="Background Color" colorValue={config.imageSlider?.section?.bg} onColorChange={(v: string) => updateField('imageSlider.section.bg', v)} />
+              <ColorText label="Heading" textValue={config.imageSlider?.heading?.text} colorValue={config.imageSlider?.heading?.color} onTextChange={(v: string) => updateField('imageSlider.heading.text', v)} onColorChange={(v: string) => updateField('imageSlider.heading.color', v)} />
+              <ColorText label="Description" textValue={config.imageSlider?.description?.text} colorValue={config.imageSlider?.description?.color} onTextChange={(v: string) => updateField('imageSlider.description.text', v)} onColorChange={(v: string) => updateField('imageSlider.description.color', v)} isTextArea />
+
+              <div className="mt-4 space-y-3">
+                <label className="text-xs font-bold text-gray-500 flex justify-between items-center">
+                  Slider Images
+                  <button onClick={() => addArrayItem('imageSlider.items', { image: "", alt: "New Image", className: "" })} className="text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                    <Plus size={14} /> Add Image
+                  </button>
+                </label>
+                {config.imageSlider.items?.map((item: any, i: number) => (
+                  <div key={i} className="border border-gray-200 p-4 rounded-lg bg-gray-50 space-y-3 relative group">
+                    <button onClick={() => removeArrayItem('imageSlider.items', i)} className="p-2 text-red-400 hover:text-red-600 absolute -right-3 -top-3 bg-white border border-gray-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"><Trash2 size={12} /></button>
+                    <ImageUploader label="Slide Image" src={item.image} isUploading={uploadingImage === `imageSlider.items[${i}].image`} onUpload={(e: any) => handleImageUpload(e, `imageSlider.items[${i}].image`)} />
+                    <ColorText label="Alt Text" textValue={item.alt} onTextChange={(v: string) => updateField(`imageSlider.items[${i}].alt`, v)} />
+                  </div>
+                ))}
+              </div>
+            </Section>
+          )}
+
           {/* ABOUT US */}
           <Section title="About Us">
             <ColorText label="Background Color" colorValue={config.about?.section?.bg} onColorChange={(v: string) => updateField('about.section.bg', v)} />
@@ -209,7 +232,7 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
 
           {/* GALLERY */}
           {config.gallery?.items && (
-            <Section title="Gallery">
+            <Section title="Before & After Gallery">
               <ColorText label="Background Color" colorValue={config.gallery?.section?.bg} onColorChange={(v: string) => updateField('gallery.section.bg', v)} />
               <ColorText label="Heading" textValue={config.gallery?.heading?.text} colorValue={config.gallery?.heading?.color} onTextChange={(v: string) => updateField('gallery.heading.text', v)} onColorChange={(v: string) => updateField('gallery.heading.color', v)} />
               <ColorText label="Description" textValue={config.gallery?.description?.text} colorValue={config.gallery?.description?.color} onTextChange={(v: string) => updateField('gallery.description.text', v)} onColorChange={(v: string) => updateField('gallery.description.color', v)} isTextArea />
@@ -255,7 +278,7 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
               <div className="mt-4 space-y-3">
                 <label className="text-xs font-bold text-gray-500 flex justify-between items-center">
                   Service Items
-                  <button onClick={() => addArrayItem('services.items', { title: "New Service", description: "", priceLabel: "", iconKey: "pet", className: "" })} className="text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                  <button onClick={() => addArrayItem('services.items', { title: "New Service", description: "", priceLabel: "", iconKey: "pet", href: "", ctaLabel: "Book Now", className: "" })} className="text-blue-600 hover:text-blue-700 flex items-center gap-1">
                     <Plus size={14} /> Add Service
                   </button>
                 </label>
@@ -265,12 +288,18 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
                     <ColorText label="Service Title" textValue={item.title} onTextChange={(v: string) => updateField(`services.items[${i}].title`, v)} />
                     <ColorText label="Description" textValue={item.description} onTextChange={(v: string) => updateField(`services.items[${i}].description`, v)} isTextArea />
                     <ColorText label="Price Label" textValue={item.priceLabel} onTextChange={(v: string) => updateField(`services.items[${i}].priceLabel`, v)} />
+                    
+                    {/* Nested Button settings inside the service card */}
+                    <div className="pt-2 border-t border-gray-200">
+                      <ColorText label="Button Label (Optional)" textValue={item.ctaLabel} onTextChange={(v: string) => updateField(`services.items[${i}].ctaLabel`, v)} />
+                      <ColorText label="Button Link" textValue={item.href} onTextChange={(v: string) => updateField(`services.items[${i}].href`, v)} />
+                    </div>
                   </div>
                 ))}
               </div>
 
               <div className="mt-4">
-                <ButtonConfig label="CTA Button" textVal={config.services?.cta?.label} hrefVal={config.services?.cta?.href} bgCol={config.services?.cta?.bg} textCol={config.services?.cta?.text} onText={(v: string) => updateField('services.cta.label', v)} onHref={(v: string) => updateField('services.cta.href', v)} onBg={(v: string) => updateField('services.cta.bg', v)} onCol={(v: string) => updateField('services.cta.text', v)} />
+                <ButtonConfig label="Bottom CTA Button" textVal={config.services?.cta?.label} hrefVal={config.services?.cta?.href} bgCol={config.services?.cta?.bg} textCol={config.services?.cta?.text} onText={(v: string) => updateField('services.cta.label', v)} onHref={(v: string) => updateField('services.cta.href', v)} onBg={(v: string) => updateField('services.cta.bg', v)} onCol={(v: string) => updateField('services.cta.text', v)} />
               </div>
             </Section>
           )}
@@ -354,161 +383,62 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
             </Section>
           )}
 
-          {/* 🔥 REVIEWS SECTION INSTALLED HERE */}
+          {/* REVIEWS SECTION */}
           {config.reviews?.columns && (
             <Section title="Reviews">
-              <ColorText
-                label="Section Background"
-                colorValue={config.reviews?.section?.bg}
-                onColorChange={(v: string) => updateField('reviews.section.bg', v)}
-              />
-              <ColorText
-                label="Heading"
-                textValue={config.reviews?.heading?.text}
-                colorValue={config.reviews?.heading?.color}
-                onTextChange={(v: string) => updateField('reviews.heading.text', v)}
-                onColorChange={(v: string) => updateField('reviews.heading.color', v)}
-              />
-              <ColorText
-                label="Description"
-                textValue={config.reviews?.description?.text}
-                colorValue={config.reviews?.description?.color}
-                onTextChange={(v: string) => updateField('reviews.description.text', v)}
-                onColorChange={(v: string) => updateField('reviews.description.color', v)}
-                isTextArea
-              />
+              <ColorText label="Section Background" colorValue={config.reviews?.section?.bg} onColorChange={(v: string) => updateField('reviews.section.bg', v)} />
+              <ColorText label="Heading" textValue={config.reviews?.heading?.text} colorValue={config.reviews?.heading?.color} onTextChange={(v: string) => updateField('reviews.heading.text', v)} onColorChange={(v: string) => updateField('reviews.heading.color', v)} />
+              <ColorText label="Description" textValue={config.reviews?.description?.text} colorValue={config.reviews?.description?.color} onTextChange={(v: string) => updateField('reviews.description.text', v)} onColorChange={(v: string) => updateField('reviews.description.color', v)} isTextArea />
 
               {['col1', 'col2', 'col3'].map((col) => (
                 <div key={col} className="mt-6 space-y-3">
                   <label className="text-xs font-bold text-gray-500 uppercase flex justify-between items-center border-b border-gray-100 pb-2">
                     {col.toUpperCase()} Cards
-                    <button
-                      onClick={() => addArrayItem(`reviews.columns.${col}`, { type: 'review', name: 'New Client', role: 'Pet Parent', text: 'Great grooming experience!', avatar: '', bg: '#faf3ec', textColor: '#625b5b', titleColor: '#1e0c05', starColor: '#8c863a' })}
-                      className="text-blue-600 hover:text-blue-700 flex items-center gap-1 font-semibold"
-                    >
+                    <button onClick={() => addArrayItem(`reviews.columns.${col}`, { type: 'review', name: 'New Client', role: 'Pet Parent', text: 'Great grooming experience!', avatar: '', bg: '#faf3ec', textColor: '#625b5b', titleColor: '#1e0c05', starColor: '#8c863a' })} className="text-blue-600 hover:text-blue-700 flex items-center gap-1 font-semibold">
                       <Plus size={14} /> Add Card
                     </button>
                   </label>
 
                   {config.reviews.columns[col]?.map((item: any, i: number) => (
                     <div key={i} className="border border-gray-200 p-4 rounded-lg bg-gray-50 space-y-3 relative group">
-                      <button
-                        onClick={() => removeArrayItem(`reviews.columns.${col}`, i)}
-                        className="p-1.5 text-red-400 hover:text-red-600 absolute right-2 top-2 bg-white border border-gray-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"
-                        title="Delete Card"
-                      >
-                        <Trash2 size={13} />
-                      </button>
+                      <button onClick={() => removeArrayItem(`reviews.columns.${col}`, i)} className="p-1.5 text-red-400 hover:text-red-600 absolute right-2 top-2 bg-white border border-gray-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10" title="Delete Card"><Trash2 size={13} /></button>
 
                       <div className="flex justify-between items-center bg-white p-2 rounded border border-gray-200">
                         <label className="text-xs font-medium text-gray-500">Card Type</label>
-                        <select
-                          value={item.type || 'review'}
-                          onChange={(e) => updateField(`reviews.columns.${col}[${i}].type`, e.target.value)}
-                          className="bg-transparent text-xs font-semibold outline-none cursor-pointer"
-                        >
+                        <select value={item.type || 'review'} onChange={(e) => updateField(`reviews.columns.${col}[${i}].type`, e.target.value)} className="bg-transparent text-xs font-semibold outline-none cursor-pointer">
                           <option value="review">Review Card</option>
                           <option value="stat-numeric">Numeric Stat</option>
                           <option value="stat-image">Image Stat</option>
                         </select>
                       </div>
 
-                      <ColorText
-                        label="Card Background"
-                        colorValue={item.bg}
-                        onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].bg`, v)}
-                      />
+                      <ColorText label="Card Background" colorValue={item.bg} onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].bg`, v)} />
 
                       {item.type === 'review' && (
                         <>
-                          <ColorText
-                            label="Client Name & Color"
-                            textValue={item.name}
-                            colorValue={item.titleColor}
-                            onTextChange={(v: string) => updateField(`reviews.columns.${col}[${i}].name`, v)}
-                            onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].titleColor`, v)}
-                          />
-                          <Input
-                            label="Role / Subtitle"
-                            value={item.role}
-                            onChange={(v) => updateField(`reviews.columns.${col}[${i}].role`, v)}
-                          />
-                          <ColorText
-                            label="Review Text & Color"
-                            textValue={item.text}
-                            colorValue={item.textColor}
-                            onTextChange={(v: string) => updateField(`reviews.columns.${col}[${i}].text`, v)}
-                            onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].textColor`, v)}
-                            isTextArea
-                          />
-                          <ColorText
-                            label="Star Rating Color"
-                            colorValue={item.starColor}
-                            onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].starColor`, v)}
-                          />
-                          <ImageUploader
-                            label="Avatar Image"
-                            src={item.avatar}
-                            isUploading={uploadingImage === `reviews.columns.${col}[${i}].avatar`}
-                            onUpload={(e: any) => handleImageUpload(e, `reviews.columns.${col}[${i}].avatar`)}
-                          />
+                          <ColorText label="Client Name & Color" textValue={item.name} colorValue={item.titleColor} onTextChange={(v: string) => updateField(`reviews.columns.${col}[${i}].name`, v)} onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].titleColor`, v)} />
+                          <Input label="Role / Subtitle" value={item.role} onChange={(v) => updateField(`reviews.columns.${col}[${i}].role`, v)} />
+                          <ColorText label="Review Text & Color" textValue={item.text} colorValue={item.textColor} onTextChange={(v: string) => updateField(`reviews.columns.${col}[${i}].text`, v)} onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].textColor`, v)} isTextArea />
+                          <ColorText label="Star Rating Color" colorValue={item.starColor} onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].starColor`, v)} />
+                          <ImageUploader label="Avatar Image" src={item.avatar} isUploading={uploadingImage === `reviews.columns.${col}[${i}].avatar`} onUpload={(e: any) => handleImageUpload(e, `reviews.columns.${col}[${i}].avatar`)} />
                         </>
                       )}
 
                       {item.type === 'stat-numeric' && (
                         <>
-                          <ColorText
-                            label="Score Value (e.g. 4.96)"
-                            textValue={item.score}
-                            colorValue={item.scoreColor}
-                            onTextChange={(v: string) => updateField(`reviews.columns.${col}[${i}].score`, v)}
-                            onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].scoreColor`, v)}
-                          />
-                          <Input
-                            label="Scale (e.g. /5)"
-                            value={item.scale}
-                            onChange={(v) => updateField(`reviews.columns.${col}[${i}].scale`, v)}
-                          />
-                          <ColorText
-                            label="Subtext & Color"
-                            textValue={item.subtext}
-                            colorValue={item.textColor}
-                            onTextChange={(v: string) => updateField(`reviews.columns.${col}[${i}].subtext`, v)}
-                            onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].textColor`, v)}
-                          />
-                          <ColorText
-                            label="Star Rating Color"
-                            colorValue={item.starColor}
-                            onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].starColor`, v)}
-                          />
+                          <ColorText label="Score Value (e.g. 4.96)" textValue={item.score} colorValue={item.scoreColor} onTextChange={(v: string) => updateField(`reviews.columns.${col}[${i}].score`, v)} onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].scoreColor`, v)} />
+                          <Input label="Scale (e.g. /5)" value={item.scale} onChange={(v) => updateField(`reviews.columns.${col}[${i}].scale`, v)} />
+                          <ColorText label="Subtext & Color" textValue={item.subtext} colorValue={item.textColor} onTextChange={(v: string) => updateField(`reviews.columns.${col}[${i}].subtext`, v)} onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].textColor`, v)} />
+                          <ColorText label="Star Rating Color" colorValue={item.starColor} onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].starColor`, v)} />
                         </>
                       )}
 
                       {item.type === 'stat-image' && (
                         <>
-                          <ColorText
-                            label="Heading & Color"
-                            textValue={item.heading}
-                            colorValue={item.textColor}
-                            onTextChange={(v: string) => updateField(`reviews.columns.${col}[${i}].heading`, v)}
-                            onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].textColor`, v)}
-                          />
-                          <Input
-                            label="Subtext"
-                            value={item.subtext}
-                            onChange={(v) => updateField(`reviews.columns.${col}[${i}].subtext`, v)}
-                          />
-                          <ColorText
-                            label="Smile Icon Color"
-                            colorValue={item.iconColor}
-                            onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].iconColor`, v)}
-                          />
-                          <ImageUploader
-                            label="Background Image"
-                            src={item.image}
-                            isUploading={uploadingImage === `reviews.columns.${col}[${i}].image`}
-                            onUpload={(e: any) => handleImageUpload(e, `reviews.columns.${col}[${i}].image`)}
-                          />
+                          <ColorText label="Heading & Color" textValue={item.heading} colorValue={item.textColor} onTextChange={(v: string) => updateField(`reviews.columns.${col}[${i}].heading`, v)} onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].textColor`, v)} />
+                          <Input label="Subtext" value={item.subtext} onChange={(v) => updateField(`reviews.columns.${col}[${i}].subtext`, v)} />
+                          <ColorText label="Smile Icon Color" colorValue={item.iconColor} onColorChange={(v: string) => updateField(`reviews.columns.${col}[${i}].iconColor`, v)} />
+                          <ImageUploader label="Background Image" src={item.image} isUploading={uploadingImage === `reviews.columns.${col}[${i}].image`} onUpload={(e: any) => handleImageUpload(e, `reviews.columns.${col}[${i}].image`)} />
                         </>
                       )}
                     </div>
@@ -550,10 +480,42 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
               </div>
             </Section>
           )}
+
+          {/* 🔥 FAQ SECTION INSTALLED HERE */}
+          {config.faq?.items && (
+            <Section title="FAQ Section">
+              <ColorText label="Background Color" colorValue={config.faq?.section?.bg} onColorChange={(v: string) => updateField('faq.section.bg', v)} />
+              <ColorText label="Heading" textValue={config.faq?.heading?.text} colorValue={config.faq?.heading?.color} onTextChange={(v: string) => updateField('faq.heading.text', v)} onColorChange={(v: string) => updateField('faq.heading.color', v)} />
+              <ColorText label="Description" textValue={config.faq?.description?.text} colorValue={config.faq?.description?.color} onTextChange={(v: string) => updateField('faq.description.text', v)} onColorChange={(v: string) => updateField('faq.description.color', v)} isTextArea />
+
+              <div className="grid grid-cols-2 gap-2 my-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <ColorText label="Question Color" colorValue={config.faq?.styling?.questionColor} onColorChange={(v: string) => updateField('faq.styling.questionColor', v)} />
+                <ColorText label="Answer Color" colorValue={config.faq?.styling?.answerColor} onColorChange={(v: string) => updateField('faq.styling.answerColor', v)} />
+                <ColorText label="Icon Color" colorValue={config.faq?.styling?.iconColor} onColorChange={(v: string) => updateField('faq.styling.iconColor', v)} />
+                <ColorText label="Divider Color" colorValue={config.faq?.styling?.dividerColor} onColorChange={(v: string) => updateField('faq.styling.dividerColor', v)} />
+              </div>
+
+              <div className="mt-4 space-y-3">
+                <label className="text-xs font-bold text-gray-500 flex justify-between items-center">
+                  Questions
+                  <button onClick={() => addArrayItem('faq.items', { question: "New Question?", answer: "New Answer.", className: "" })} className="text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                    <Plus size={14} /> Add FAQ
+                  </button>
+                </label>
+                {config.faq.items.map((item: any, i: number) => (
+                  <div key={i} className="border border-gray-200 p-4 rounded-lg bg-gray-50 space-y-3 relative group">
+                    <button onClick={() => removeArrayItem('faq.items', i)} className="p-2 text-red-400 hover:text-red-600 absolute -right-3 -top-3 bg-white border border-gray-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"><Trash2 size={12} /></button>
+                    <ColorText label="Question" textValue={item.question} onTextChange={(v: string) => updateField(`faq.items[${i}].question`, v)} />
+                    <ColorText label="Answer" textValue={item.answer} onTextChange={(v: string) => updateField(`faq.items[${i}].answer`, v)} isTextArea />
+                  </div>
+                ))}
+              </div>
+            </Section>
+          )}
           
           {/* CONTACT SECTION */}
           {config.contactSection && (
-            <Section title="Contact Section">
+            <Section title="Contact Form">
               <ColorText label="Background Color" colorValue={config.contactSection?.section?.bg} onColorChange={(v: string) => updateField('contactSection.section.bg', v)} />
               <ColorText label="Heading" textValue={config.contactSection?.heading?.text} colorValue={config.contactSection?.heading?.color} onTextChange={(v: string) => updateField('contactSection.heading.text', v)} onColorChange={(v: string) => updateField('contactSection.heading.color', v)} />
               <ColorText label="Description" textValue={config.contactSection?.description?.text} colorValue={config.contactSection?.description?.color} onTextChange={(v: string) => updateField('contactSection.description.text', v)} onColorChange={(v: string) => updateField('contactSection.description.color', v)} isTextArea />
@@ -566,7 +528,61 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
               </div>
             </Section>
           )}
+{/* 🔥 IMAGE SLIDER SECTION */}
+          {config.imageSlider?.items && (
+            <Section title="Image Slider">
+              <ColorText label="Background Color" colorValue={config.imageSlider?.section?.bg} onColorChange={(v: string) => updateField('imageSlider.section.bg', v)} />
+              <ColorText label="Heading" textValue={config.imageSlider?.heading?.text} colorValue={config.imageSlider?.heading?.color} onTextChange={(v: string) => updateField('imageSlider.heading.text', v)} onColorChange={(v: string) => updateField('imageSlider.heading.color', v)} />
+              <ColorText label="Description" textValue={config.imageSlider?.description?.text} colorValue={config.imageSlider?.description?.color} onTextChange={(v: string) => updateField('imageSlider.description.text', v)} onColorChange={(v: string) => updateField('imageSlider.description.color', v)} isTextArea />
 
+              <div className="mt-4 space-y-3">
+                <label className="text-xs font-bold text-gray-500 flex justify-between items-center">
+                  Slider Images
+                  <button onClick={() => addArrayItem('imageSlider.items', { image: "", alt: "New Image", className: "" })} className="text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                    <Plus size={14} /> Add Image
+                  </button>
+                </label>
+                {config.imageSlider.items.map((item: any, i: number) => (
+                  <div key={i} className="border border-gray-200 p-4 rounded-lg bg-gray-50 space-y-3 relative group">
+                    <button onClick={() => removeArrayItem('imageSlider.items', i)} className="p-2 text-red-400 hover:text-red-600 absolute -right-3 -top-3 bg-white border border-gray-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"><Trash2 size={12} /></button>
+                    <ImageUploader label="Image" src={item.image} isUploading={uploadingImage === `imageSlider.items[${i}].image`} onUpload={(e: any) => handleImageUpload(e, `imageSlider.items[${i}].image`)} />
+                  </div>
+                ))}
+              </div>
+            </Section>
+          )}
+
+          {/* 🔥 FAQ SECTION */}
+          {config.faq?.items && (
+            <Section title="FAQ Section">
+              <ColorText label="Background Color" colorValue={config.faq?.section?.bg} onColorChange={(v: string) => updateField('faq.section.bg', v)} />
+              <ColorText label="Heading" textValue={config.faq?.heading?.text} colorValue={config.faq?.heading?.color} onTextChange={(v: string) => updateField('faq.heading.text', v)} onColorChange={(v: string) => updateField('faq.heading.color', v)} />
+              <ColorText label="Description" textValue={config.faq?.description?.text} colorValue={config.faq?.description?.color} onTextChange={(v: string) => updateField('faq.description.text', v)} onColorChange={(v: string) => updateField('faq.description.color', v)} isTextArea />
+
+              <div className="grid grid-cols-2 gap-2 mt-4 p-3 bg-gray-50 rounded border border-gray-200">
+                <ColorText label="Question Text Color" colorValue={config.faq?.styling?.questionColor} onColorChange={(v: string) => updateField('faq.styling.questionColor', v)} />
+                <ColorText label="Answer Text Color" colorValue={config.faq?.styling?.answerColor} onColorChange={(v: string) => updateField('faq.styling.answerColor', v)} />
+                <ColorText label="Icon Color" colorValue={config.faq?.styling?.iconColor} onColorChange={(v: string) => updateField('faq.styling.iconColor', v)} />
+                <ColorText label="Divider Color" colorValue={config.faq?.styling?.dividerColor} onColorChange={(v: string) => updateField('faq.styling.dividerColor', v)} />
+              </div>
+
+              <div className="mt-4 space-y-3">
+                <label className="text-xs font-bold text-gray-500 flex justify-between items-center">
+                  Questions & Answers
+                  <button onClick={() => addArrayItem('faq.items', { question: "New Question?", answer: "Answer goes here.", className: "" })} className="text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                    <Plus size={14} /> Add FAQ
+                  </button>
+                </label>
+                {config.faq.items.map((item: any, i: number) => (
+                  <div key={i} className="border border-gray-200 p-4 rounded-lg bg-gray-50 space-y-3 relative group">
+                    <button onClick={() => removeArrayItem('faq.items', i)} className="p-2 text-red-400 hover:text-red-600 absolute -right-3 -top-3 bg-white border border-gray-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"><Trash2 size={12} /></button>
+                    <ColorText label="Question" textValue={item.question} onTextChange={(v: string) => updateField(`faq.items[${i}].question`, v)} />
+                    <ColorText label="Answer" textValue={item.answer} onTextChange={(v: string) => updateField(`faq.items[${i}].answer`, v)} isTextArea />
+                  </div>
+                ))}
+              </div>
+            </Section>
+          )}
           {/* BOTTOM CTA */}
           <Section title="Bottom CTA">
             <ColorText label="Background Color" colorValue={config.ctaSection?.section?.bg} onColorChange={(v: string) => updateField('ctaSection.section.bg', v)} />
@@ -630,9 +646,32 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
       </div>
       
       {/* RIGHT SIDE: Live Preview */}
+     {/* RIGHT SIDE: Live Preview */}
       <div className="flex-1 h-full bg-[#f3f3f3] overflow-y-auto relative pointer-events-auto">
         <div id="live-preview-box" className="w-full min-h-screen bg-white">
           <script src="https://cdn.tailwindcss.com"></script>
+          
+          {/* 🔥 Tell the Tailwind CDN how to animate the slider! */}
+          <script dangerouslySetInnerHTML={{
+            __html: `
+              tailwind.config = {
+                theme: {
+                  extend: {
+                    keyframes: {
+                      'infinite-scroll': {
+                        from: { transform: 'translateX(0)' },
+                        to: { transform: 'translateX(calc(-100% - 1rem))' },
+                      }
+                    },
+                    animation: {
+                      'infinite-scroll': 'infinite-scroll 30s linear infinite',
+                    }
+                  }
+                }
+              }
+            `
+          }} />
+          
           <WebsiteOne data={config} />
         </div>
       </div>
