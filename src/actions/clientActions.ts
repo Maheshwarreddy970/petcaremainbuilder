@@ -11,13 +11,14 @@ const defaultWebsiteOneData = {
     section: { bg: "#ffffff", className: "" },
     logo: { src: `${CLOUD_URL}/logomain_zyihkn.avif`, alt: "Petocare Logo", className: "" },
     styling: { linkColor: "#625b5b", linkHoverColor: "#1e0c05" },
-    cta: { label: "Schedule a visit", href: "#", bg: "#a35c38", text: "#ffffff", className: "" },
+    cta: { label: "Schedule a visit", href: "#contact", bg: "#a35c38", text: "#ffffff", className: "" },
     links: [
       { label: "Home", href: "#home", icon: "Home", className: "" },
       { label: "Gallery", href: "#gallery", icon: "Calendar", className: "" },
       { label: "Services", href: "#services", icon: "Briefcase", className: "" },
-      { label: "Process", "href": "#process", icon: "Dog", className: "" },
-      { label: "Reviews", href: "#reviews", icon: "Reviews", className: "" }
+      { label: "Process", href: "#process", icon: "Dog", className: "" },
+      { label: "Reviews", href: "#reviews", icon: "Reviews", className: "" },
+      { label: "FAQ", href: "#faq", icon: "MessageSquare", className: "" }
     ]
   },
   hero: {
@@ -25,7 +26,7 @@ const defaultWebsiteOneData = {
     heading: { text: "We care for your pet like our baby", color: "#1e0c05", className: "" },
     description: { text: "Assure clients they're completely safe with a trusted, results-driven experience.", color: "#1e0c05", className: "" },
     image: { src: `${CLOUD_URL}/homeimage_qhup2j.avif`, className: "" },
-    cta: { label: "Book A Schedule", href: "#", bg: "#a35c38", text: "#ffffff", className: "" },
+    cta: { label: "Book A Schedule", href: "#contact", bg: "#a35c38", text: "#ffffff", className: "" },
     socialProof: { stars: 5, starColor: "#8c863a", text: "Over 400 Happy Pets Are Enjoyed", textColor: "#1e0c05", className: "" }
   },
   statsBanner: {
@@ -33,6 +34,18 @@ const defaultWebsiteOneData = {
     heading: { text: "Trusted by pet owners across the city for grooming & personal care.", color: "#fdfdfd", className: "" },
     rating: { score: "4.96", max: "/5", scoreColor: "#fdfdfd", stars: 5, starColor: "#8c863a", label: "5-Star Reviews: 500+", labelColor: "#fffaf8", className: "" },
     experience: { title: "8+ Years of Experience", titleColor: "#fdfdfd", subtitle: "Started In 2018", subColor: "#fffaf8", iconColor: "#8c863a", className: "" }
+  },
+  imageSlider: {
+    section: { bg: "#ffffff", className: "" },
+    heading: { text: "Happy Pet Smiles", color: "#1e0c05", className: "" },
+    description: { text: "Check out a few of the brave pups and kitties who visited our clinic.", color: "#625b5b", className: "" },
+    items: [
+      { image: `${CLOUD_URL}/1.avif`, alt: "Happy Pet 1", className: "" },
+      { image: `${CLOUD_URL}/2.avif`, alt: "Happy Pet 2", className: "" },
+      { image: `${CLOUD_URL}/3.avif`, alt: "Happy Pet 3", className: "" },
+      { image: `${CLOUD_URL}/4.avif`, alt: "Happy Pet 4", className: "" },
+      { image: `${CLOUD_URL}/5.avif`, alt: "Happy Pet 5", className: "" }
+    ]
   },
   gallery: {
     section: { bg: "#fffaf8", className: "" },
@@ -53,13 +66,12 @@ const defaultWebsiteOneData = {
     featuresList: { features: ["8+ years of professional pet care experience", "1,200+ happy pets served", "Trusted by families across the city"], featureColor: "#1e0c05", featureIconColor: "#8c863a", className: "" },
     cta: { label: "About Petocare", href: "#", bg: "#a35c38", text: "#ffffff", className: "" }
   },
-services: {
+  services: {
     section: { bg: "#faf3ec", className: "" },
     heading: { text: "Services we provide", color: "#1e0c05", className: "" },
     description: { text: "Our awesome team treats your pets like family, whether it's a quick bath or a full-on grooming and style session.", color: "#625b5b", className: "" },
     styling: { cardBg: "#ffffff", cardBorder: "#ece5de", iconColor: "#a35c38", titleColor: "#1e0c05", priceColor: "#8a4e2f", className: "" },
     items: [
-      // Notice the added href and ctaLabel for the buttons inside the cards!
       { title: "Full body grooming", description: "Complete pampering from head to tail—bath, dry, trim, and style all taken care of.", priceLabel: "From $79", iconKey: "grooming", href: "#contact", ctaLabel: "Book Now", className: "" },
       { title: "Bath & blow dry", description: "Deep cleansing bath premium a professional blow dry finish included.", priceLabel: "From $45", iconKey: "bath", href: "#contact", ctaLabel: "Book Now", className: "" },
       { title: "Haircut & styling", description: "Custom cuts and fun styles that totally match your pet's unique vibe perfectly.", priceLabel: "From $65", iconKey: "scissor", href: "#contact", ctaLabel: "Book Now", className: "" },
@@ -115,20 +127,30 @@ services: {
       { id: 3, title: "Keeping your pet calm during grooming", date: "May 3, 2026", image: `${CLOUD_URL}/b3_hs9zzk.avif`, className: "" }
     ]
   },
-  ctaSection: {
+  faq: {
     section: { bg: "#faf3ec", className: "" },
-    heading: { text: "Book a session & feel the difference today", color: "#1e0c05", className: "" },
-    description: { text: "Nothing beats seeing your happy, freshly groomed pet run to you.", color: "#625b5b", className: "" },
-    image: { src: `${CLOUD_URL}/cta_zurnmb.avif`, className: "" },
-    cta: { label: "Book A Schedule", href: "#", bg: "#a35c38", text: "#ffffff", className: "" }
+    heading: { text: "Frequently Asked Questions", color: "#1e0c05", className: "" },
+    description: { text: "Everything you need to know about our natural grooming process.", color: "#625b5b", className: "" },
+    styling: { questionColor: "#1e0c05", answerColor: "#625b5b", iconColor: "#a35c38", dividerColor: "#ece5de", className: "" },
+    items: [
+      { question: "Do you use sedation or anesthesia?", answer: "No! We use a completely natural, gentle approach using calming techniques to keep your pet relaxed and comfortable.", className: "" },
+      { question: "How long does the appointment take?", answer: "A standard appointment takes about 45 to 60 minutes, but we never rush. If your pet needs more time to relax, we give it to them.", className: "" },
+      { question: "Is this safe for senior pets?", answer: "Absolutely. Because we don't use anesthesia, our service is highly recommended for senior pets or pets with health conditions.", className: "" }
+    ]
   },
- contactSection: {
+  contactSection: {
     section: { bg: "#ffffff", className: "" },
     heading: { text: "Get in Touch", color: "#1e0c05", className: "" },
     description: { text: "Have questions? Send us a message and we'll reply directly to your email.", color: "#625b5b", className: "" },
     button: { label: "Send Message", bg: "#a35c38", text: "#ffffff", className: "" }
   },
-
+  ctaSection: {
+    section: { bg: "#faf3ec", className: "" },
+    heading: { text: "Book a session & feel the difference today", color: "#1e0c05", className: "" },
+    description: { text: "Nothing beats seeing your happy, freshly groomed pet run to you.", color: "#625b5b", className: "" },
+    image: { src: `${CLOUD_URL}/cta_zurnmb.avif`, className: "" },
+    cta: { label: "Book A Schedule", href: "#contact", bg: "#a35c38", text: "#ffffff", className: "" }
+  },
   footer: {
     section: { bg: "#fdfdfd", className: "" },
     logo: { src: `${CLOUD_URL}/logomain_zyihkn.avif`, alt: "Petocare Logo", className: "" },
@@ -137,7 +159,6 @@ services: {
       address: "2458 Oceanview Drive, Sunnyvale, CA 94085.", 
       phone: { label: "+1-587-302-7481", href: "tel:+15873027481" }, 
       email: { label: "hello@Petocare.com", href: "mailto:hello@Petocare.com" },
-      // Added fields for Map and Storefront Image
       mapEmbedUrl: "",
       storefrontImage: { src: "", className: "" }
     },
@@ -169,3 +190,4 @@ export async function createNewClient(name: string, slug: string, ownerEmail: st
     return { success: false, error: error.message };
   }
 }
+

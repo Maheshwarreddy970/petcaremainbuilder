@@ -40,7 +40,7 @@ export default function ComparisonSection({ data }: { data: any }) {
                     </div>
 
                     {/* RIGHT COLUMN */}
-                    <div className={cn("w-full md:w-1/2 p-8 md:p-10 lg:p-12 rounded-b-[22px] md:rounded-bl-[0px] md:rounded-r-[22px]", data.rightColumn?.className)} style={{ backgroundColor: data.rightColumn?.bg || data.rightBg }}>
+                    <div className={cn("w-full md:w-1/2 p-8 md:p-10 lg:p-12 border-gray-300 border-r border-y rounded-b-[22px] md:rounded-bl-[0px] md:rounded-r-[22px]", data.rightColumn?.className)} style={{ backgroundColor: data.rightColumn?.bg || data.rightBg }}>
                         <h3 className="font-medium text-[24px] leading-[1.3] tracking-[-0.7px] mb-6" style={{ color: data.rightColumn?.textColor || data.rightText }}>Other offers</h3>
                         <ul className="flex flex-col">
                             {data.rightColumn?.offers?.map((item: string, index: number) => (

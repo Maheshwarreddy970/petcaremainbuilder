@@ -14,7 +14,7 @@ export default function HeroSection({ data }: { data: any }) {
             id='home'
             // 🔥 The section itself gets a custom class
             className={cn(
-                "relative w-full lg:min-h-[115vh] h-screen flex md:items-center items-end overflow-hidden", 
+                "relative w-full lg:min-h-[115vh] h-screen flex md:items-center items-end overflow-hidden",
                 data.section?.className
             )}
             style={{ backgroundColor: data.section?.bg }}
@@ -31,16 +31,33 @@ export default function HeroSection({ data }: { data: any }) {
             )}
 
             <div className="absolute inset-0 z-[5] bg-gradient-to-t from-white/90 via-white/60 to-transparent md:hidden pointer-events-none" />
-            
+
             <div className="relative z-10 w-full mx-auto px-6 md:px-12 lg:px-0 lg:ml-[10%]">
                 <div className="flex flex-col max-w-[620px] mb-14 md:mb-0 py-20">
 
                     <div className="flex flex-col gap-6 md:gap-8">
+                        
+                        {/* 🔥 NEW ANNOUNCEMENT BADGE */}
+                        {data.announcement && (
+                            <div 
+                                className={cn(
+                                    "inline-flex w-fit items-center px-4 py-1.5 rounded-full text-xs md:text-sm font-bold tracking-wider uppercase shadow-sm", 
+                                    data.announcement?.className
+                                )}
+                                style={{ 
+                                    backgroundColor: data.announcement?.bg || '#F28222', 
+                                    color: data.announcement?.textColor || '#ffffff' 
+                                }}
+                            >
+                                {data.announcement?.text}
+                            </div>
+                        )}
+
                         <h1
                             // 🔥 Heading classes injected here
                             className={cn(
                                 "text-4xl font-semibold md:font-medium md:text-6xl leading-[1.1] tracking-[-2px] lg:tracking-[-5px]",
-                                data.heading?.className 
+                                data.heading?.className
                             )}
                             style={{ color: data.heading?.color }}
                             dangerouslySetInnerHTML={{ __html: data.heading?.text || "" }}
@@ -81,7 +98,7 @@ export default function HeroSection({ data }: { data: any }) {
                             {[...Array(starCount)].map((_, index) => (
                                 <Star
                                     key={index}
-                                    className="w-[18px] h-[18px]" 
+                                    className="w-[18px] h-[18px]"
                                     style={{
                                         color: data.socialProof?.starColor || '#8c863a',
                                         fill: data.socialProof?.starColor || '#8c863a'
@@ -90,7 +107,7 @@ export default function HeroSection({ data }: { data: any }) {
                             ))}
                         </div>
                         <p
-                            className="font-semibold text-[16px] opacity-100" 
+                            className="font-semibold text-[16px] opacity-100"
                             style={{ color: data.socialProof?.textColor }}
                         >
                             {data.socialProof?.text}

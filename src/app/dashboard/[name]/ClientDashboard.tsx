@@ -496,6 +496,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
           </div>
         </div>
       </div>
+      
     </div>
   );
 }
