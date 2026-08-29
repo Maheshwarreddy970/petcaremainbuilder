@@ -34,6 +34,36 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const isFirstLoad = useRef(true);
 
+  // 🔥 Inject Tailwind securely without upsetting React
+  useEffect(() => {
+    if (!document.getElementById("tailwind-cdn")) {
+      const script = document.createElement("script");
+      script.id = "tailwind-cdn";
+      script.src = "https://cdn.tailwindcss.com";
+      document.head.appendChild(script);
+
+      const configScript = document.createElement("script");
+      configScript.innerHTML = `
+        tailwind.config = {
+          theme: {
+            extend: {
+              keyframes: {
+                'infinite-scroll': {
+                  from: { transform: 'translateX(0)' },
+                  to: { transform: 'translateX(calc(-100% - 1rem))' },
+                }
+              },
+              animation: {
+                'infinite-scroll': 'infinite-scroll 30s linear infinite',
+              }
+            }
+          }
+        }
+      `;
+      document.head.appendChild(configScript);
+    }
+  }, []);
+
   // Unwrap params and initialize data
   useEffect(() => {
     params.then((p) => {
@@ -654,32 +684,10 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
         </div>
       </div>
 
-      {/* RIGHT SIDE: Live Preview */}
+     {/* RIGHT SIDE: Live Preview */}
       <div className="flex-1 h-full bg-[#f3f3f3] overflow-y-auto relative pointer-events-auto">
         <div id="live-preview-box" className="w-full min-h-screen bg-white">
-          <script src="https://cdn.tailwindcss.com"></script>
-
-          {/* 🔥 THIS TELLS THE EDITOR HOW TO ANIMATE THE SLIDER */}
-          <script dangerouslySetInnerHTML={{
-            __html: `
-              tailwind.config = {
-                theme: {
-                  extend: {
-                    keyframes: {
-                      'infinite-scroll': {
-                        from: { transform: 'translateX(0)' },
-                        to: { transform: 'translateX(calc(-100% - 1rem))' },
-                      }
-                    },
-                    animation: {
-                      'infinite-scroll': 'infinite-scroll 30s linear infinite',
-                    }
-                  }
-                }
-              }
-            `
-          }} />
-
+          {/* Scripts were removed from here and are now injected securely via useEffect! */}
           <WebsiteOne data={config} />
         </div>
       </div>

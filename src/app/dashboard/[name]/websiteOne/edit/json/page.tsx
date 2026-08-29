@@ -53,7 +53,35 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
     };
     initializeData();
   }, [name]);
+// 🔥 Inject Tailwind securely without upsetting React
+  useEffect(() => {
+    if (!document.getElementById("tailwind-cdn")) {
+      const script = document.createElement("script");
+      script.id = "tailwind-cdn";
+      script.src = "https://cdn.tailwindcss.com";
+      document.head.appendChild(script);
 
+      const configScript = document.createElement("script");
+      configScript.innerHTML = `
+        tailwind.config = {
+          theme: {
+            extend: {
+              keyframes: {
+                'infinite-scroll': {
+                  from: { transform: 'translateX(0)' },
+                  to: { transform: 'translateX(calc(-100% - 1rem))' },
+                }
+              },
+              animation: {
+                'infinite-scroll': 'infinite-scroll 30s linear infinite',
+              }
+            }
+          }
+        }
+      `;
+      document.head.appendChild(configScript);
+    }
+  }, []);
   // 2. AUTO-SAVE LOGIC
   useEffect(() => {
     if (isFirstLoad.current) {
@@ -257,11 +285,10 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
           </div>
         </div>
       </div>
-
-      {/* RIGHT SIDE: Live Preview */}
+{/* RIGHT SIDE: Live Preview */}
       <div className="flex-1 h-full bg-[#f3f3f3] overflow-y-auto relative pointer-events-auto">
         <div id="live-preview-box" className="w-full min-h-screen bg-white">
-          <script src="https://cdn.tailwindcss.com"></script>
+          {/* Scripts were removed from here and are now injected securely via useEffect! */}
           <WebsiteOne data={config} />
         </div>
       </div>

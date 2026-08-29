@@ -152,14 +152,11 @@ export async function saveWebsiteContentAction(slug: string, websiteOneData: any
       lastUpdated: new Date().toISOString()
     });
 
-    // @ts-ignore
-    revalidateTag(`website-${slug}`);
-    // @ts-ignore
-    revalidateTag("website");
+    // 🔥 FIX: Add the "max" argument required by Next.js 16
+    revalidateTag(`website-${slug}`, "max");
+    revalidateTag("website", "max");
 
-    // 🚀 Command Vercel to destroy the cached Subdomain HTML page
     revalidatePath(`/${slug}`, 'page');
-    // 🚀 Command Vercel to destroy the cached Custom Domain HTML page
     revalidatePath(`/live/domain/[domain]`, 'page');
 
     return { success: true };

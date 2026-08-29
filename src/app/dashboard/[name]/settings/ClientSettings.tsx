@@ -8,7 +8,7 @@ import { saveWebsiteSettingsAction } from "@/actions/tenant";
 import { useEditorStore } from "@/store/useEditorStore";
 // 🔥 Using your exact requested import for the Image Uploader
 import { ImageUploader } from "../websiteOne/edit/components";
-
+import { uploadImageAction } from "@/actions/upload";
 // --- Custom iOS Style Toggle Component ---
 const Toggle = ({ label, description, checked, onChange }: { label: string, description: string, checked: boolean, onChange: (val: boolean) => void }) => (
   <div className="flex items-center justify-between py-4 border-b border-gray-100 last:border-0">
@@ -16,7 +16,7 @@ const Toggle = ({ label, description, checked, onChange }: { label: string, desc
       <h4 className="text-sm font-semibold text-gray-900">{label}</h4>
       <p className="text-[13px] text-gray-500 mt-0.5">{description}</p>
     </div>
-    <button 
+    <button
       onClick={() => onChange(!checked)}
       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${checked ? 'bg-blue-600' : 'bg-gray-200'}`}
     >
@@ -29,25 +29,25 @@ export default function ClientSettings({ slug, initialData }: { slug: string, in
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
   const [activeTab, setActiveTab] = useState("general");
-
+  const [uploadingImage, setUploadingImage] = useState<string | null>(null);
   const [settings, setSettings] = useState({
     seoTitle: initialData?.settings?.seoTitle || "",
     seoDescription: initialData?.settings?.seoDescription || "",
     language: initialData?.settings?.language || "en-US",
     keywords: initialData?.settings?.keywords || "",
-    
+
     // Toggles
     accessibilityReducedMotion: initialData?.settings?.accessibilityReducedMotion || false,
     preserveUrlParams: initialData?.settings?.preserveUrlParams || true,
     rtlLayout: initialData?.settings?.rtlLayout || false,
     autoLocale: initialData?.settings?.autoLocale || false,
-    
+
     // Images
     faviconLight: initialData?.settings?.faviconLight || "",
     faviconDark: initialData?.settings?.faviconDark || "",
     ogImage: initialData?.settings?.ogImage || "",
     appleTouchIcon: initialData?.settings?.appleTouchIcon || "",
-    
+
     // Integrations
     googleAnalyticsId: initialData?.settings?.googleAnalyticsId || "",
     googleReviewsId: initialData?.settings?.googleReviewsId || "",
@@ -70,7 +70,29 @@ export default function ClientSettings({ slug, initialData }: { slug: string, in
       alert("Failed to save settings: " + res.error);
     }
   };
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement> | any, field: string) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
+    setUploadingImage(field);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await uploadImageAction(formData);
+
+      if (res.success) {
+        // Update the specific setting field (e.g., "ogImage") with the real Cloudinary URL
+        handleChange(field, res.url);
+      } else {
+        alert(`Upload failed: ${res.error}`);
+      }
+    } catch (error: any) {
+      alert(`Upload failed: ${error.message}`);
+    } finally {
+      setUploadingImage(null);
+    }
+  };
   return (
     <div className="min-h-screen bg-[#fafafa] pb-32 font-sans text-gray-900">
 
@@ -91,7 +113,7 @@ export default function ClientSettings({ slug, initialData }: { slug: string, in
       </div>
 
       <div className="max-w-5xl mx-auto p-6 mt-6 flex flex-col lg:flex-row gap-8">
-        
+
         {/* Sidebar Navigation */}
         <div className="w-full lg:w-64 shrink-0 space-y-1">
           <button onClick={() => setActiveTab("general")} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors ${activeTab === "general" ? "bg-white shadow-sm border border-gray-200 text-blue-600" : "text-gray-600 hover:bg-gray-100"}`}><Globe size={18} /> General & SEO</button>
@@ -149,29 +171,29 @@ export default function ClientSettings({ slug, initialData }: { slug: string, in
 
               {/* Toggles based on Framer Screenshot */}
               <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-                <Toggle 
-                  label="Accessibility" 
-                  description="Disable movement animations and custom cursors if the user prefers reduced motion." 
-                  checked={settings.accessibilityReducedMotion} 
-                  onChange={(val) => handleChange("accessibilityReducedMotion", val)} 
+                <Toggle
+                  label="Accessibility"
+                  description="Disable movement animations and custom cursors if the user prefers reduced motion."
+                  checked={settings.accessibilityReducedMotion}
+                  onChange={(val) => handleChange("accessibilityReducedMotion", val)}
                 />
-                <Toggle 
-                  label="Navigation" 
-                  description="Preserve URL parameters when navigating between pages." 
-                  checked={settings.preserveUrlParams} 
-                  onChange={(val) => handleChange("preserveUrlParams", val)} 
+                <Toggle
+                  label="Navigation"
+                  description="Preserve URL parameters when navigating between pages."
+                  checked={settings.preserveUrlParams}
+                  onChange={(val) => handleChange("preserveUrlParams", val)}
                 />
-                <Toggle 
-                  label="Layout Direction" 
-                  description="Reverse layout direction for right-to-left languages (e.g. Arabic, Hebrew)." 
-                  checked={settings.rtlLayout} 
-                  onChange={(val) => handleChange("rtlLayout", val)} 
+                <Toggle
+                  label="Layout Direction"
+                  description="Reverse layout direction for right-to-left languages (e.g. Arabic, Hebrew)."
+                  checked={settings.rtlLayout}
+                  onChange={(val) => handleChange("rtlLayout", val)}
                 />
-                <Toggle 
-                  label="Automatic Locale" 
-                  description="Auto-redirect site visitors to their preferred locale based on browser settings." 
-                  checked={settings.autoLocale} 
-                  onChange={(val) => handleChange("autoLocale", val)} 
+                <Toggle
+                  label="Automatic Locale"
+                  description="Auto-redirect site visitors to their preferred locale based on browser settings."
+                  checked={settings.autoLocale}
+                  onChange={(val) => handleChange("autoLocale", val)}
                 />
               </div>
             </>
@@ -180,7 +202,7 @@ export default function ClientSettings({ slug, initialData }: { slug: string, in
           {/* ================= TAB 2: SITE IMAGES ================= */}
           {activeTab === "images" && (
             <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-10">
-              
+
               {/* Favicon Settings */}
               <div>
                 <h3 className="text-lg font-bold mb-1">Favicon</h3>
@@ -193,7 +215,12 @@ export default function ClientSettings({ slug, initialData }: { slug: string, in
                       <span className="text-[11px] font-medium text-gray-600 truncate">{settings.seoTitle || "Home"}</span>
                     </div>
                     <div className="w-full mt-4">
-                      <ImageUploader label="Light Theme Icon" src={settings.faviconLight} isUploading={false} onUpload={(e: any) => handleChange("faviconLight", "MOCK_URL_IMPLEMENT_UPLOAD")} />
+                      <ImageUploader
+                        label="Light Theme Icon"
+                        src={settings.faviconLight}
+                        isUploading={uploadingImage === "faviconLight"}
+                        onUpload={(e: any) => handleImageUpload(e, "faviconLight")}
+                      />
                     </div>
                   </div>
 
@@ -204,7 +231,12 @@ export default function ClientSettings({ slug, initialData }: { slug: string, in
                       <span className="text-[11px] font-medium text-gray-200 truncate">{settings.seoTitle || "Home"}</span>
                     </div>
                     <div className="w-full mt-4 [&_label]:text-gray-300">
-                      <ImageUploader label="Dark Theme Icon" src={settings.faviconDark} isUploading={false} onUpload={(e: any) => handleChange("faviconDark", "MOCK_URL_IMPLEMENT_UPLOAD")} />
+                      <ImageUploader
+                        label="Dark Theme Icon"
+                        src={settings.faviconDark}
+                        isUploading={uploadingImage === "faviconDark"}
+                        onUpload={(e: any) => handleImageUpload(e, "faviconDark")}
+                      />
                     </div>
                   </div>
                 </div>
@@ -217,10 +249,15 @@ export default function ClientSettings({ slug, initialData }: { slug: string, in
                 <div>
                   <h3 className="text-lg font-bold mb-1">Social Preview</h3>
                   <p className="text-sm text-gray-500 mb-6">1200 × 630 pixels. Appears when shared on Facebook, iMessage, Slack, etc.</p>
-                  <ImageUploader label="Upload Open Graph Image" src={settings.ogImage} isUploading={false} onUpload={(e: any) => handleChange("ogImage", "MOCK_URL_IMPLEMENT_UPLOAD")} />
+                  <ImageUploader
+                    label="Upload Open Graph Image"
+                    src={settings.ogImage}
+                    isUploading={uploadingImage === "ogImage"}
+                    onUpload={(e: any) => handleImageUpload(e, "ogImage")}
+                  />
                 </div>
                 <div className="w-full aspect-[1200/630] bg-gray-100 rounded-xl border border-gray-200 shadow-sm overflow-hidden flex items-center justify-center relative">
-                   {settings.ogImage ? <img src={settings.ogImage} className="w-full h-full object-cover" /> : <ImageIcon size={40} className="text-gray-300" />}
+                  {settings.ogImage ? <img src={settings.ogImage} className="w-full h-full object-cover" /> : <ImageIcon size={40} className="text-gray-300" />}
                 </div>
               </div>
 
@@ -231,7 +268,12 @@ export default function ClientSettings({ slug, initialData }: { slug: string, in
                 <div>
                   <h3 className="text-lg font-bold mb-1">Apple Touch Icon</h3>
                   <p className="text-sm text-gray-500 mb-6">180 × 180 pixels. Appears when users save your site to their iOS Home Screen.</p>
-                  <ImageUploader label="Upload iOS Icon" src={settings.appleTouchIcon} isUploading={false} onUpload={(e: any) => handleChange("appleTouchIcon", "MOCK_URL_IMPLEMENT_UPLOAD")} />
+                  <ImageUploader
+                    label="Upload iOS Icon"
+                    src={settings.appleTouchIcon}
+                    isUploading={uploadingImage === "appleTouchIcon"}
+                    onUpload={(e: any) => handleImageUpload(e, "appleTouchIcon")}
+                  />
                 </div>
                 {/* iPhone Mockup */}
                 <div className="w-full bg-black rounded-3xl p-6 border-4 border-gray-800 shadow-xl flex items-center justify-center h-48 relative overflow-hidden">
@@ -270,17 +312,17 @@ export default function ClientSettings({ slug, initialData }: { slug: string, in
               <section className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-lg font-bold">301 Redirects</h3>
-                  <button onClick={() => setSettings(prev => ({...prev, redirects: [...prev.redirects, { oldPath: "", newPath: "" }]}))} className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 font-semibold"><Plus size={16}/> Add Redirect</button>
+                  <button onClick={() => setSettings(prev => ({ ...prev, redirects: [...prev.redirects, { oldPath: "", newPath: "" }] }))} className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 font-semibold"><Plus size={16} /> Add Redirect</button>
                 </div>
                 <p className="text-sm text-gray-500 mb-6">Map old URLs to new URLs to preserve your Google Search rankings.</p>
-                
+
                 <div className="space-y-3">
                   {settings.redirects.map((redirect: any, index: number) => (
                     <div key={index} className="flex flex-col md:flex-row items-center gap-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
                       <input type="text" value={redirect.oldPath} onChange={e => { const r = [...settings.redirects]; r[index].oldPath = e.target.value; handleChange("redirects", r); }} placeholder="e.g. /old-services" className="w-full bg-white border border-gray-300 rounded px-3 py-2 outline-none focus:border-blue-500 text-sm" />
                       <ArrowRightLeft size={16} className="text-gray-400 shrink-0 hidden md:block" />
                       <input type="text" value={redirect.newPath} onChange={e => { const r = [...settings.redirects]; r[index].newPath = e.target.value; handleChange("redirects", r); }} placeholder="e.g. /#services" className="w-full bg-white border border-gray-300 rounded px-3 py-2 outline-none focus:border-blue-500 text-sm" />
-                      <button onClick={() => { const r = settings.redirects.filter((_:any, i:number) => i !== index); handleChange("redirects", r); }} className="p-2 text-gray-400 hover:text-red-500 transition-colors"><Trash2 size={16}/></button>
+                      <button onClick={() => { const r = settings.redirects.filter((_: any, i: number) => i !== index); handleChange("redirects", r); }} className="p-2 text-gray-400 hover:text-red-500 transition-colors"><Trash2 size={16} /></button>
                     </div>
                   ))}
                   {settings.redirects.length === 0 && (
