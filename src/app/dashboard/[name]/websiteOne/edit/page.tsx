@@ -24,12 +24,12 @@ const Section = ({ title, children }: { title: string, children: React.ReactNode
 
 export default function LandingPageOneVisualEditor({ params }: { params: Promise<{ name: string }> }) {
   const [name, setName] = useState<string>("");
-  
+
   const { config, currentSlug, setConfig, updateField, addArrayItem, removeArrayItem } = useEditorStore();
 
   const [loading, setLoading] = useState(true);
   const [uploadingImage, setUploadingImage] = useState<string | null>(null);
-  
+
   // Auto-save states
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const isFirstLoad = useRef(true);
@@ -73,7 +73,7 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
           lastUpdated: new Date().toISOString(),
           websiteOneData: config
         }, { merge: true });
-        
+
         setSaveStatus("saved");
         setTimeout(() => setSaveStatus("idle"), 2000);
       } catch (err) {
@@ -84,16 +84,25 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
 
     return () => clearTimeout(timeoutId);
   }, [config, name, currentSlug]);
-
+  
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, path: string) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
     setUploadingImage(path);
+
     try {
       const formData = new FormData();
-      formData.append("file", file);
-      const optimizedUrl = await uploadImageAction(formData);
-      updateField(path, optimizedUrl);
+      formData.append("file", file); // Appends the raw file
+
+      // Calls the new Server Action
+      const res = await uploadImageAction(formData);
+
+      if (res.success) {
+        updateField(path, res.url); // Updates Zustand with the new AVIF url
+      } else {
+        alert(`Upload failed: ${res.error}`);
+      }
     } catch (error: any) {
       alert(`Upload failed: ${error.message}`);
     } finally {
@@ -117,7 +126,7 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
           </Link>
           <div className="flex items-center justify-between">
             <h2 className="font-bold text-sm text-gray-800">Template 1: Visual Editor</h2>
-            
+
             {/* Auto-Save Status Indicator */}
             <div className="flex items-center gap-2 text-xs font-medium bg-gray-50 px-3 py-1.5 rounded-full border border-gray-200">
               {saveStatus === "saving" && <><Loader2 size={14} className="animate-spin text-blue-500" /> <span className="text-blue-500">Saving...</span></>}
@@ -215,7 +224,7 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
               <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Features List</label>
               <ColorText label="Icon Color" colorValue={config.about?.featuresList?.featureIconColor} onColorChange={(v: string) => updateField('about.featuresList.featureIconColor', v)} />
               <ColorText label="Text Color" colorValue={config.about?.featuresList?.featureColor} onColorChange={(v: string) => updateField('about.featuresList.featureColor', v)} />
-              
+
               {config.about?.featuresList?.features?.map((feat: string, i: number) => (
                 <div key={i} className="flex gap-2 relative group">
                   <input type="text" value={feat} onChange={(e) => updateField(`about.featuresList.features[${i}]`, e.target.value)} className="w-full bg-white border border-gray-200 p-2 rounded text-sm outline-none focus:border-black" />
@@ -226,7 +235,7 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
             </div>
 
             <div className="mt-4">
-               <ButtonConfig label="CTA Button" textVal={config.about?.cta?.label} hrefVal={config.about?.cta?.href} bgCol={config.about?.cta?.bg} textCol={config.about?.cta?.text} onText={(v: string) => updateField('about.cta.label', v)} onHref={(v: string) => updateField('about.cta.href', v)} onBg={(v: string) => updateField('about.cta.bg', v)} onCol={(v: string) => updateField('about.cta.text', v)} />
+              <ButtonConfig label="CTA Button" textVal={config.about?.cta?.label} hrefVal={config.about?.cta?.href} bgCol={config.about?.cta?.bg} textCol={config.about?.cta?.text} onText={(v: string) => updateField('about.cta.label', v)} onHref={(v: string) => updateField('about.cta.href', v)} onBg={(v: string) => updateField('about.cta.bg', v)} onCol={(v: string) => updateField('about.cta.text', v)} />
             </div>
           </Section>
 
@@ -288,7 +297,7 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
                     <ColorText label="Service Title" textValue={item.title} onTextChange={(v: string) => updateField(`services.items[${i}].title`, v)} />
                     <ColorText label="Description" textValue={item.description} onTextChange={(v: string) => updateField(`services.items[${i}].description`, v)} isTextArea />
                     <ColorText label="Price Label" textValue={item.priceLabel} onTextChange={(v: string) => updateField(`services.items[${i}].priceLabel`, v)} />
-                    
+
                     {/* Nested Button settings inside the service card */}
                     <div className="pt-2 border-t border-gray-200">
                       <ColorText label="Button Label (Optional)" textValue={item.ctaLabel} onTextChange={(v: string) => updateField(`services.items[${i}].ctaLabel`, v)} />
@@ -512,14 +521,14 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
               </div>
             </Section>
           )}
-          
+
           {/* CONTACT SECTION */}
           {config.contactSection && (
             <Section title="Contact Form">
               <ColorText label="Background Color" colorValue={config.contactSection?.section?.bg} onColorChange={(v: string) => updateField('contactSection.section.bg', v)} />
               <ColorText label="Heading" textValue={config.contactSection?.heading?.text} colorValue={config.contactSection?.heading?.color} onTextChange={(v: string) => updateField('contactSection.heading.text', v)} onColorChange={(v: string) => updateField('contactSection.heading.color', v)} />
               <ColorText label="Description" textValue={config.contactSection?.description?.text} colorValue={config.contactSection?.description?.color} onTextChange={(v: string) => updateField('contactSection.description.text', v)} onColorChange={(v: string) => updateField('contactSection.description.color', v)} isTextArea />
-              
+
               <div className="border border-gray-200 p-3 rounded-lg bg-gray-50 mt-4 space-y-3">
                 <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Submit Button</label>
                 <ColorText label="Button Label" textValue={config.contactSection?.button?.label} onTextChange={(v: string) => updateField('contactSection.button.label', v)} />
@@ -528,7 +537,7 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
               </div>
             </Section>
           )}
-{/* 🔥 IMAGE SLIDER SECTION */}
+          {/* 🔥 IMAGE SLIDER SECTION */}
           {config.imageSlider?.items && (
             <Section title="Image Slider">
               <ColorText label="Background Color" colorValue={config.imageSlider?.section?.bg} onColorChange={(v: string) => updateField('imageSlider.section.bg', v)} />
@@ -617,21 +626,21 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
             <div className="mt-4 space-y-4 border-t border-gray-100 pt-4">
               <div className="space-y-1.5">
                 <label className="text-[11px] font-semibold text-gray-700">Google Maps Embed URL</label>
-                <input 
-                  type="text" 
-                  value={config.footer?.info?.mapEmbedUrl || ""} 
-                  onChange={(e) => updateField('footer.info.mapEmbedUrl', e.target.value)} 
-                  placeholder="https://www.google.com/maps/embed?pb=..." 
-                  className="w-full p-2 text-sm border border-gray-200 rounded outline-none focus:border-black bg-white" 
+                <input
+                  type="text"
+                  value={config.footer?.info?.mapEmbedUrl || ""}
+                  onChange={(e) => updateField('footer.info.mapEmbedUrl', e.target.value)}
+                  placeholder="https://www.google.com/maps/embed?pb=..."
+                  className="w-full p-2 text-sm border border-gray-200 rounded outline-none focus:border-black bg-white"
                 />
                 <p className="text-[10px] text-gray-400 mt-1">Go to Google Maps → Share → Embed a map → Copy link inside src="..."</p>
               </div>
 
-              <ImageUploader 
-                label="Storefront Image (Next to Map)" 
-                src={config.footer?.info?.storefrontImage?.src} 
-                isUploading={uploadingImage === 'footer.info.storefrontImage.src'} 
-                onUpload={(e: any) => handleImageUpload(e, 'footer.info.storefrontImage.src')} 
+              <ImageUploader
+                label="Storefront Image (Next to Map)"
+                src={config.footer?.info?.storefrontImage?.src}
+                isUploading={uploadingImage === 'footer.info.storefrontImage.src'}
+                onUpload={(e: any) => handleImageUpload(e, 'footer.info.storefrontImage.src')}
               />
             </div>
 
@@ -644,12 +653,12 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
 
         </div>
       </div>
-      
-   {/* RIGHT SIDE: Live Preview */}
+
+      {/* RIGHT SIDE: Live Preview */}
       <div className="flex-1 h-full bg-[#f3f3f3] overflow-y-auto relative pointer-events-auto">
         <div id="live-preview-box" className="w-full min-h-screen bg-white">
           <script src="https://cdn.tailwindcss.com"></script>
-          
+
           {/* 🔥 THIS TELLS THE EDITOR HOW TO ANIMATE THE SLIDER */}
           <script dangerouslySetInnerHTML={{
             __html: `
@@ -670,7 +679,7 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
               }
             `
           }} />
-          
+
           <WebsiteOne data={config} />
         </div>
       </div>
