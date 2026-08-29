@@ -1,9 +1,9 @@
 import { notFound, redirect } from "next/navigation";
 import { getWebsiteData } from "@/lib/get-website";
+import { headers } from "next/headers";
 
 // Import all templates
 import WebsiteOne from "@/components/templates/WebsiteOne";
-import { headers } from "next/headers";
 
 const TEMPLATES: Record<string, React.FC<any>> = {
   websiteOne: WebsiteOne,
@@ -71,21 +71,24 @@ export default async function LiveTenantPage({ params }: { params: Promise<{ slu
   const settings = data.settings || {};
 
   // ==========================================
-  // 🔥 BUILD LOCAL BUSINESS SCHEMA (JSON-LD) FOR GOOGLE
+  // 🔥 301 REDIRECTS (Wix / WordPress mapping)
   // ==========================================
-  const info = templateData?.footer?.info || {};
-  const domain = data.customDomain ? `https://${data.customDomain}` : `https://${slug}.nexpetcare.online`;
-// ... inside LiveTenantPage function ...
   const headersList = await headers();
   const currentPath = headersList.get('x-invoke-path') || '/';
 
-  // Check if current path matches any old Wix 301 redirects
   if (settings.redirects && settings.redirects.length > 0) {
       const match = settings.redirects.find((r: any) => r.oldPath === currentPath);
       if (match) {
           redirect(match.newPath); // Fires a 301 Permanent Redirect instantly
       }
   }
+
+  // ==========================================
+  // 🔥 BUILD LOCAL BUSINESS SCHEMA (JSON-LD)
+  // ==========================================
+  const info = templateData?.footer?.info || {};
+  const domain = data.customDomain ? `https://${data.customDomain}` : `https://${slug}.nexpetcare.online`;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -107,36 +110,34 @@ export default async function LiveTenantPage({ params }: { params: Promise<{ slu
     }
   };
 
-  // Check for Reduced Motion Preference & RTL Layout
+  // Check for Reduced Motion Preference
   const htmlClasses = [];
   if (settings.accessibilityReducedMotion) htmlClasses.push("motion-reduce");
 
   return (
-    // Inject language and text direction based on settings
-    <html lang={settings.language || "en"} dir={settings.rtlLayout ? "rtl" : "ltr"} className={htmlClasses.join(" ")}>
-      <body>
-        <main className="w-full min-h-screen">
-          
-          {/* Inject JSON-LD into the head invisibly */}
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-          />
+    // 🔥 Used a div wrapper instead of <html> to prevent React Hydration errors
+    <div id="tenant-wrapper" lang={settings.language || "en"} dir={settings.rtlLayout ? "rtl" : "ltr"} className={htmlClasses.join(" ")}>
+      <main className="w-full min-h-screen">
+        
+        {/* Inject JSON-LD into the head invisibly */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
 
-          <TemplateComponent data={templateData} slug={slug} />
-          
-          {settings.googleAnalyticsId && (
-            <script async src={`https://www.googletagmanager.com/gtag/js?id=${settings.googleAnalyticsId}`}></script>
-          )}
+        <TemplateComponent data={templateData} slug={slug} />
+        
+        {settings.googleAnalyticsId && (
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${settings.googleAnalyticsId}`}></script>
+        )}
 
-          {settings.googleReviewsId && (
-            <script src="https://apps.elfsight.com/p/platform.js" defer></script>
-          )}
-          {settings.googleReviewsId && (
-            <div className={`elfsight-app-${settings.googleReviewsId}`}></div>
-          )}
-        </main>
-      </body>
-    </html>
+        {settings.googleReviewsId && (
+          <script src="https://apps.elfsight.com/p/platform.js" defer></script>
+        )}
+        {settings.googleReviewsId && (
+          <div className={`elfsight-app-${settings.googleReviewsId}`}></div>
+        )}
+      </main>
+    </div>
   );
 }
