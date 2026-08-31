@@ -3,18 +3,18 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useInView } from "react-intersection-observer";
-import {
-  Home,
-  Briefcase,
-  Calendar,
-  Dog,
-  User,
-  Image as GalleryIcon,
-  Star,
+import { 
+  Home, 
+  Briefcase, 
+  Calendar, 
+  Dog, 
+  User, 
+  Image as GalleryIcon, 
+  Star, 
   MessageSquare,
   Sparkles
 } from "lucide-react";
-import PawIcon from "@/icons/icon1";
+import PawIcon from "@/icons/icon1"; 
 import { cn } from "@/lib/utils";
 
 // 🚀 Dynamic Icon Lookup Map
@@ -37,7 +37,6 @@ export default function Navbar({ data }: { data: any }) {
   const { ref, inView } = useInView({ threshold: 0, initialInView: true });
   const isScrolled = !inView;
 
-  // 🚀 Track URL Hash for `#gallery`, `#services`, `#reviews`, etc.
   const [activeHash, setActiveHash] = useState("");
 
   useEffect(() => {
@@ -49,27 +48,23 @@ export default function Navbar({ data }: { data: any }) {
       sections.forEach((section) => {
         const sectionTop = (section as HTMLElement).offsetTop;
         const sectionHeight = section.clientHeight;
-
-        // If the scroll position is within this section
+        
         if (window.scrollY >= sectionTop - 150 && window.scrollY < sectionTop + sectionHeight - 150) {
           currentSectionId = `#${section.id}`;
         }
       });
 
-      // 🔥 CRITICAL FIX: If we are at the very top, force the highlight to the first section (e.g., #home)
       if (window.scrollY < 100) {
         const firstSection = sections[0];
         currentSectionId = firstSection ? `#${firstSection.id}` : "/";
       }
-
+      
       if (currentSectionId && currentSectionId !== activeHash) {
         setActiveHash(currentSectionId);
       }
     };
 
-    // Run once on mount to set the initial highlight immediately
     handleScroll();
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [activeHash]);
@@ -79,7 +74,6 @@ export default function Navbar({ data }: { data: any }) {
   const logo = data.logo || { src: "", alt: "Logo" };
   const links = data.links || [];
 
-  // Graceful fallbacks for the nested schema
   const navBg = data.section?.bg || data.bg || "transparent";
   const linkColor = data.styling?.linkColor || data.linkColor || "#625b5b";
   const hoverColor = data.styling?.linkHoverColor || data.linkHoverColor || "#1e0c05";
@@ -92,15 +86,15 @@ export default function Navbar({ data }: { data: any }) {
     const cleanName = iconName.trim();
     return ICON_MAP[cleanName] || ICON_MAP[cleanName.charAt(0).toUpperCase() + cleanName.slice(1)] || Star;
   };
-  console.log("Navbar data:", data);
+
   return (
     <>
       <div ref={ref} className="absolute top-0 left-0 w-full h-screen pointer-events-none -z-10 bg-transparent" />
 
       {/* DESKTOP TOP NAVIGATION */}
-      <nav
+      <nav 
         className={cn("hidden md:block fixed top-0 left-0 w-full z-50 transition-all duration-300", data.section?.className)}
-        style={{
+        style={{ 
           backgroundColor: isScrolled ? '#ffffff' : 'transparent',
           backdropFilter: isScrolled ? 'blur(16px)' : 'none',
           '--nav-link': linkColor,
@@ -108,15 +102,14 @@ export default function Navbar({ data }: { data: any }) {
         } as React.CSSProperties}
       >
         <div className="px-6 md:px-12 lg:px-24 xl:px-40 py-3 flex items-center justify-between relative">
-
-
-          {/* 🔥 FIX: Removed hardcoded w-40. Added flexible height and allowed the container to grow. */}
-          <a href={"/"} className={cn("relative flex items-center justify-start h-12 md:h-[56px] w-auto shrink-0", logo.className)}>
+          
+          {/* LOGO */}
+          <a href={"/"} className={cn("relative flex items-center justify-start h-12 md:h-[56px] w-fit shrink-0", logo.className)}>
             {logo.src ? (
               <img
                 src={logo.src}
                 alt={logo.alt || "Business Logo"}
-                className="h-full w-auto object-contain object-left transition-transform duration-300"
+                className="h-full w-auto object-contain object-left transition-transform duration-300" 
               />
             ) : (
               <PawIcon className="h-11 w-11" style={{ color: data.cta?.bg }} />
@@ -124,7 +117,7 @@ export default function Navbar({ data }: { data: any }) {
           </a>
 
           {/* DYNAMIC NAVIGATION LINKS */}
-          <div
+          <div 
             className="flex items-center rounded-full px-1 py-1 gap-2 shadow-sm border bg-white"
             style={{ backgroundColor: navBg, borderColor: hoverColor + '20' }}
           >
@@ -162,8 +155,8 @@ export default function Navbar({ data }: { data: any }) {
           </div>
 
           {/* CTA BUTTON */}
-          <a
-            href={data.cta?.href || "#"}
+          <a 
+            href={data.cta?.href || "#"} 
             className={cn("flex items-center gap-2.5 text-sm font-medium pl-5 pr-2 py-2 rounded-full cursor-pointer transition-transform hover:scale-105", data.cta?.className)}
             style={{ backgroundColor: data.cta?.bg, color: data.cta?.text }}
           >
@@ -178,16 +171,16 @@ export default function Navbar({ data }: { data: any }) {
       </nav>
 
       {/* MOBILE TOP HEADER */}
-      <div
+      <div 
         className={cn("fixed top-0 left-0 w-full z-40 p-4 transition-all duration-300 md:hidden", data.section?.className)}
-        style={{
+        style={{ 
           backgroundColor: isScrolled ? `${navBg}E6` : 'transparent',
           backdropFilter: isScrolled ? 'blur(16px)' : 'none'
         }}
       >
-        <a href={"/"} className={cn("relative flex items-center justify-start h-12 md:h-[56px] w-auto shrink-0", logo.className)}>
+        <a href="/" className={cn("relative flex items-center justify-start h-12 w-fit shrink-0", logo.className)}>
           {logo.src ? (
-            <img src={logo.src} alt={logo.alt || "Business Logo"} className="h-full w-auto max-w-full object-contain object-left transition-all" />
+            <img src={logo.src} alt={logo.alt || "Business Logo"} className="h-full w-auto object-contain object-left transition-transform duration-300" />
           ) : (
             <PawIcon className="h-10 w-10" style={{ color: data.cta?.bg }} />
           )}
@@ -195,7 +188,7 @@ export default function Navbar({ data }: { data: any }) {
       </div>
 
       {/* MOBILE BOTTOM NAVIGATION */}
-      <nav
+      <nav 
         className="md:hidden fixed inset-x-0 bg-white bottom-4 mx-auto z-50 w-fit max-w-[95vw] border rounded-full flex items-center p-1.5 shadow-xl space-x-1"
         style={{ backgroundColor: navBg, borderColor: hoverColor + '20' }}
       >
@@ -207,27 +200,36 @@ export default function Navbar({ data }: { data: any }) {
             ? (pathname === "/" && (!activeHash || activeHash === "#" || activeHash === "/"))
             : activeHash === cleanHref;
 
+          {/* 🔥 RESTORED THE CORRECT RENDER RETURN FOR THE NAV ICONS */}
           return (
-            <div
-              className={cn("fixed top-0 left-0 w-full z-40 p-4 transition-all duration-300 md:hidden", data.section?.className)}
+            <a 
+              key={index} 
+              href={cleanHref} 
+              onClick={() => setActiveHash(cleanHref)}
+              className={cn(
+                "flex items-center gap-0 px-3 py-2 rounded-full transition-all duration-300 relative h-10 min-w-[44px]", 
+                isActive ? "gap-2 px-3.5" : "",
+                link.className
+              )}
               style={{
-                backgroundColor: isScrolled ? `${navBg}E6` : 'transparent',
-                backdropFilter: isScrolled ? 'blur(16px)' : 'none'
+                backgroundColor: isActive ? `${hoverColor}10` : 'transparent',
+                color: isActive ? hoverColor : linkColor
               }}
             >
-              {/* 🔥 FIX: Used h-12 and w-fit so the box naturally wraps the image and allows it to scale up! */}
-              <a href="/" className={cn("relative flex items-center justify-start h-12 w-fit shrink-0", logo.className)}>
-                {logo.src ? (
-                  <img
-                    src={logo.src}
-                    alt={logo.alt || "Business Logo"}
-                    className="h-full w-auto object-contain object-left transition-transform duration-300"
-                  />
-                ) : (
-                  <PawIcon className="h-10 w-10" style={{ color: data.cta?.bg }} />
-                )}
-              </a>
-            </div>
+              <Icon size={20} strokeWidth={2} className="flex-shrink-0" />
+              <div 
+                className="overflow-hidden flex items-center transition-all duration-300 ease-in-out" 
+                style={{ 
+                  width: isActive ? "64px" : "0px", 
+                  opacity: isActive ? 1 : 0, 
+                  marginLeft: isActive ? "4px" : "0px" 
+                }}
+              >
+                <span className="font-medium text-xs capitalize whitespace-nowrap overflow-hidden text-ellipsis leading-relaxed">
+                  {link.label?.trim()}
+                </span>
+              </div>
+            </a>
           );
         })}
       </nav>
