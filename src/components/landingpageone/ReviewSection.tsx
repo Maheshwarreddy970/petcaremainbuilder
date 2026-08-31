@@ -18,18 +18,19 @@ export default function StatsBanner({ data }: { data: any }) {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-16 sm:gap-20 md:gap-[120px]">
-                    <div className={cn("flex flex-col items-center text-center", ratingObj.className)}>
-                        <div className="text-[32px] font-medium tracking-[-1px] flex items-center" style={{ color: ratingObj.scoreColor }}>
-                            {ratingObj.score}
-                            <span className="ml-1 text-[28px] opacity-90">{ratingObj.max}</span>
+                   {/* Ratings Block */}
+                    <a href={data.rating?.href || "#reviews"} className={cn("flex flex-col items-center text-center cursor-pointer hover:opacity-80 transition-opacity", data.rating?.className)}>
+                        <div className="text-[32px] font-medium tracking-[-1px] flex items-center" style={{ color: data.rating?.scoreColor }}>
+                            {data.rating?.score}
+                            <span className="ml-1 text-[28px] opacity-90">{data.rating?.max}</span>
                         </div>
                         <div className="flex items-center gap-1 mt-2 mb-2">
                             {[...Array(starCount)].map((_, index) => (
-                                <Star key={index} className="w-[17px] h-[17px]" style={{ color: ratingObj.starColor, fill: ratingObj.starColor }} />
+                                <Star key={index} className="w-[17px] h-[17px]" style={{ color: data.rating?.starColor, fill: data.rating?.starColor }} />
                             ))}
                         </div>
-                        <p className="text-[14px]" style={{ color: ratingObj.labelColor }}>{ratingObj.label}</p>
-                    </div>
+                        <p className="text-[14px]" style={{ color: data.rating?.labelColor }}>{data.rating?.label}</p>
+                    </a>
 
                     <div className={cn("flex flex-col items-center text-center", experienceObj.className)}>
                         <CalendarDays className="w-10 h-10 stroke-[1.5]" style={{ color: experienceObj.iconColor }} />

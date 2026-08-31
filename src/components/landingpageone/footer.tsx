@@ -150,7 +150,14 @@ export default function Footer({ data }: { data: any }) {
                         </div>
                     </div>
                 )}
-
+                {/* 🔥 NEW: Legal Disclaimer Block */}
+                {data.disclaimer && (
+                    <div className="pt-8 border-t border-gray-200 mt-4">
+                        <p className="text-[13px] leading-relaxed text-justify" style={{ color: styling.mutedColor }}>
+                            {data.disclaimer}
+                        </p>
+                    </div>
+                )}
                 {/* Bottom Footer Section */}
                 <div className="pt-8 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <p className="text-sm text-center sm:text-left" style={{ color: styling.mutedColor }}>

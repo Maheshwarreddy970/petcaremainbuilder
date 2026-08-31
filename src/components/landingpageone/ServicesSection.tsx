@@ -1,18 +1,15 @@
 import React from 'react';
-import PetIcon from '@/icons/PetIcon';
-import Bath from '@/icons/Bath';
-import Scissors from '@/icons/Scissors';
-import ScissorsLineDashed from '@/icons/ScissorsLineDashed';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Sparkles, HeartPulse, Activity, ShieldCheck, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+// 🔥 Uses clean, professional Lucide icons instead of the confusing towel graphic
 const iconMappings = [
-    { keywords: ['bath', 'wash', 'clean', 'soap', 'shampoo'], component: Bath },
-    { keywords: ['grooming', 'groom', 'pet', 'full-service'], component: PetIcon },
-    { keywords: ['cut', 'trim', 'style', 'haircut', 'scissor'], component: Scissors },
-    { keywords: ['nail', 'claw', 'paw'], component: ScissorsLineDashed }
+    { keywords: ['clean', 'teeth', 'plaque', 'tartar', 'bath', 'wash', 'groom'], component: Sparkles },
+    { keywords: ['health', 'vet', 'care', 'check', 'puppy'], component: Activity },
+    { keywords: ['fresh', 'breath', 'rinse', 'mouth'], component: HeartPulse },
+    { keywords: ['protect', 'safe', 'nail', 'trim'], component: ShieldCheck }
 ];
-const fallbackIcons = [PetIcon, Bath, Scissors, ScissorsLineDashed];
+const fallbackIcons = [Sparkles, Heart, Activity, ShieldCheck];
 
 const getIconForService = (service: any) => {
     const searchString = `${service.title || ''} ${service.description || ''} ${service.iconKey || ''}`.toLowerCase();
@@ -46,6 +43,10 @@ export default function ServicesSection({ data }: { data: any }) {
                 <div className={cn("grid gap-6 w-full mb-12", getGridClasses(services.length))}>
                     {services.map((service: any, index: number) => {
                         const Icon = getIconForService(service);
+                        
+                        // Check if a valid URL exists
+                        const hasValidLink = service.href && service.href.trim() !== "" && service.href.trim() !== "#";
+
                         return (
                             <div key={index} className={cn("h-full", service.className)}>
                                 <div className={cn("group flex flex-col h-full border rounded-2xl p-7 transition-all duration-300 hover:shadow-md hover:-translate-y-1", data.styling?.className)} style={{ backgroundColor: data.styling?.cardBg || data.cardBg, borderColor: data.styling?.cardBorder || data.cardBorder }}>
@@ -58,19 +59,25 @@ export default function ServicesSection({ data }: { data: any }) {
                                             <p className="text-[14px] leading-[1.48]" style={{ color: data.description?.color || data.descColor }}>{service.description}</p>
                                         </div>
                                         {service.priceLabel && <div className="font-semibold text-sm mb-2" style={{ color: data.styling?.priceColor || data.priceColor }}>{service.priceLabel}</div>}
-                                        {/* Replace the old Learn More text with this Real Button */}
-                                        {(service.ctaLabel || service.href) && (
-                                            <a
-                                                href={service.href || "#"}
-                                                className="mt-4 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-[15px] transition-all duration-300 hover:shadow-md hover:opacity-90"
-                                                style={{
-                                                    backgroundColor: data.styling?.iconColor || data.iconColor || "#a35c38",
-                                                    color: "#ffffff"
-                                                }}
-                                            >
-                                                {service.ctaLabel || "Book Now"}
-                                                <ArrowRight className="w-4 h-4" />
-                                            </a>
+                                        
+                                        {/* 🔥 SMART BUTTON LOGIC */}
+                                        {service.ctaLabel && (
+                                            hasValidLink ? (
+                                                <a
+                                                    href={service.href}
+                                                    className="mt-4 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-[15px] transition-all duration-300 hover:shadow-md hover:opacity-90"
+                                                    style={{ backgroundColor: data.styling?.iconColor || data.iconColor || "#a35c38", color: "#ffffff" }}
+                                                >
+                                                    {service.ctaLabel} <ArrowRight className="w-4 h-4" />
+                                                </a>
+                                            ) : (
+                                                <div 
+                                                    className="mt-4 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-[15px] opacity-70 cursor-not-allowed"
+                                                    style={{ backgroundColor: data.styling?.iconColor || data.iconColor || "#a35c38", color: "#ffffff" }}
+                                                >
+                                                    {service.ctaLabel} <ArrowRight className="w-4 h-4" />
+                                                </div>
+                                            )
                                         )}
                                     </div>
                                 </div>
