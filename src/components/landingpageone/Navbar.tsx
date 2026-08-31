@@ -212,7 +212,7 @@ export default function Navbar({ data }: { data: any }) {
               href={cleanHref} 
               onClick={() => setActiveHash(cleanHref)}
               className={cn(
-                "flex items-center gap-0 px-3 py-2 rounded-full transition-all duration-300 relative h-10 min-w-[44px]", 
+                "flex items-center gap-0 px-3 py-0.5 rounded-full transition-all duration-300 relative h-10 min-w-[44px]", 
                 isActive ? "gap-2 px-3.5" : "",
                 link.className
               )}
