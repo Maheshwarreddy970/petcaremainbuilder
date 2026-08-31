@@ -215,7 +215,7 @@ export default function Navbar({ data }: { data: any }) {
               className={cn(
                 "flex items-center gap-0 px-3 py-2 rounded-full transition-all duration-300 relative h-10 min-w-[44px]",
                 isActive ? "gap-2 px-3.5" : "",
-                link.className
+                 logo.className
               )}
               style={{
                 backgroundColor: isActive ? `${hoverColor}10` : 'transparent',
