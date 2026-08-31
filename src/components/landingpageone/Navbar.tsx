@@ -208,34 +208,26 @@ export default function Navbar({ data }: { data: any }) {
             : activeHash === cleanHref;
 
           return (
-            <a
-              key={index}
-              href={cleanHref}
-              onClick={() => setActiveHash(cleanHref)}
-              className={cn(
-                "flex items-center gap-0 px-3 py-2 rounded-full transition-all duration-300 relative h-10 min-w-[44px]",
-                isActive ? "gap-2 px-3.5" : "",
-                 logo.className
-              )}
+            <div
+              className={cn("fixed top-0 left-0 w-full z-40 p-4 transition-all duration-300 md:hidden", data.section?.className)}
               style={{
-                backgroundColor: isActive ? `${hoverColor}10` : 'transparent',
-                color: isActive ? hoverColor : linkColor
+                backgroundColor: isScrolled ? `${navBg}E6` : 'transparent',
+                backdropFilter: isScrolled ? 'blur(16px)' : 'none'
               }}
             >
-              <Icon size={20} strokeWidth={2} className="flex-shrink-0" />
-              <div
-                className="overflow-hidden flex items-center transition-all duration-300 ease-in-out"
-                style={{
-                  width: isActive ? "64px" : "0px",
-                  opacity: isActive ? 1 : 0,
-                  marginLeft: isActive ? "4px" : "0px"
-                }}
-              >
-                <span className="font-medium text-xs capitalize whitespace-nowrap overflow-hidden text-ellipsis leading-relaxed">
-                  {link.label?.trim()}
-                </span>
-              </div>
-            </a>
+              {/* 🔥 FIX: Used h-12 and w-fit so the box naturally wraps the image and allows it to scale up! */}
+              <a href="/" className={cn("relative flex items-center justify-start h-12 w-fit shrink-0", logo.className)}>
+                {logo.src ? (
+                  <img
+                    src={logo.src}
+                    alt={logo.alt || "Business Logo"}
+                    className="h-full w-auto object-contain object-left transition-transform duration-300"
+                  />
+                ) : (
+                  <PawIcon className="h-10 w-10" style={{ color: data.cta?.bg }} />
+                )}
+              </a>
+            </div>
           );
         })}
       </nav>
