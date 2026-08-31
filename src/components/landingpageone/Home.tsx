@@ -1,6 +1,7 @@
 import React from 'react';
 import { Calendar, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import SmartHeading from '../ui/SmartHeading';
 
 export default function HeroSection({ data }: { data: any }) {
     if (!data) return null;
@@ -36,33 +37,32 @@ export default function HeroSection({ data }: { data: any }) {
                 <div className="flex flex-col max-w-[620px] mb-14 md:mb-0 py-20">
 
                     <div className="flex flex-col gap-6 md:gap-8">
-                        
+
                         {/* 🔥 NEW ANNOUNCEMENT BADGE */}
                         {data.announcement && (
-                            <div 
+                            <div
                                 className={cn(
-                                    "inline-flex w-fit items-center px-4 py-1.5 rounded-full text-xs md:text-sm font-bold tracking-wider uppercase shadow-sm", 
+                                    "inline-flex w-fit items-center px-4 py-1.5 rounded-full text-xs md:text-sm font-bold tracking-wider uppercase shadow-sm",
                                     data.announcement?.className
                                 )}
-                                style={{ 
-                                    backgroundColor: data.announcement?.bg || '#F28222', 
-                                    color: data.announcement?.textColor || '#ffffff' 
+                                style={{
+                                    backgroundColor: data.announcement?.bg || '#F28222',
+                                    color: data.announcement?.textColor || '#ffffff'
                                 }}
                             >
                                 {data.announcement?.text}
                             </div>
                         )}
 
-                        <h1
-                            // 🔥 Heading classes injected here
+                        <SmartHeading
+                            as="h1"
+                            text={data.heading?.text || data.heading}
                             className={cn(
-                                "text-4xl font-semibold md:font-medium md:text-6xl leading-[1.1] tracking-[-2px] lg:tracking-[-5px]",
+                                "text-4xl font-semibold md:font-normal md:text-7xl leading-[1.1] tracking-[-2px] lg:tracking-[-5px]",
                                 data.heading?.className
                             )}
-                            style={{ color: data.heading?.color }}
-                            dangerouslySetInnerHTML={{ __html: data.heading?.text || "" }}
+                            style={{ color: data.heading?.color || data.headingColor }}
                         />
-
                         <p
                             // 🔥 Description classes injected here
                             className={cn(

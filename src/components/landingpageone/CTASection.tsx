@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
+import SmartHeading from '../ui/SmartHeading';
 
 export default function CtaSection({ data }: { data: any }) {
     if (!data) return null;
@@ -17,8 +18,12 @@ export default function CtaSection({ data }: { data: any }) {
             <div className="relative z-10 mx-auto max-w-[1272px]">
                 <div className="flex max-w-[540px] flex-col items-start gap-8 md:gap-10">
                     <div className="flex flex-col gap-4">
-                        <h2 className={cn("text-balance font-sans text-3xl font-medium tracking-[-1.5px] leading-[1.15] sm:text-4xl md:text-5xl", data.heading?.className)} style={{ color: data.heading?.color || data.headingColor }} dangerouslySetInnerHTML={{ __html: data.heading?.text || data.heading || "" }} />
-                        <p className={cn("text-pretty font-sans text-base leading-relaxed sm:text-lg", data.description?.className)} style={{ color: data.description?.color || data.descColor }} dangerouslySetInnerHTML={{ __html: data.description?.text || data.description || "" }} />
+<SmartHeading 
+    as="h2"
+    text={data.heading?.text || data.heading}
+    className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)} 
+    style={{ color: data.heading?.color || data.headingColor }}
+/>                        <p className={cn("text-pretty font-sans text-base leading-relaxed sm:text-lg", data.description?.className)} style={{ color: data.description?.color || data.descColor }} dangerouslySetInnerHTML={{ __html: data.description?.text || data.description || "" }} />
                     </div>
 
                     <div className={data.cta?.className}>

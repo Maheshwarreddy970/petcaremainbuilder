@@ -54,7 +54,7 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
     initializeData();
   }, [name]);
 // 🔥 Inject Tailwind securely without upsetting React
-  useEffect(() => {
+ useEffect(() => {
     if (!document.getElementById("tailwind-cdn")) {
       const script = document.createElement("script");
       script.id = "tailwind-cdn";

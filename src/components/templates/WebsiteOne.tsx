@@ -1,4 +1,7 @@
 import React from "react";
+// 🔥 Import the premium font combination
+import { Inter, Playfair_Display } from "next/font/google";
+
 import Navbar from "@/components/landingpageone/Navbar";
 import Homepage from "@/components/landingpageone/Home";
 import StatsBanner from "@/components/landingpageone/ReviewSection";
@@ -15,13 +18,28 @@ import ContactSection from "@/components/landingpageone/ContactSection";
 import CTASection from "@/components/landingpageone/CTASection";
 import Footer from "@/components/landingpageone/footer";
 
+// 1. The ultra-clean, modern sans-serif for main structure
+const inter = Inter({ 
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-main",
+});
+
+// 2. The luxurious, elegant serif for accents and italics
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+  display: "swap",
+  variable: "--font-accent",
+});
+
 export default function WebsiteOne({ data, slug }: { data: any, slug?: string }) {
   if (!data) return null;
 
   const primaryColor = data?.theme?.primaryColor || "#a35c38";
 
-  // Added a soft drop shadow (feDropShadow) and refined the bezier curves 
-  // for a buttery-smooth, premium 3D feel without borders.
   const defaultPawSvg = encodeURIComponent(`
     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
       <defs>
@@ -39,8 +57,6 @@ export default function WebsiteOne({ data, slug }: { data: any, slug?: string })
     </svg>
   `);
 
-  // The hover state gently expands the toes and deepens the shadow
-  // to create a smooth "press" illusion without jumping.
   const hoverPawSvg = encodeURIComponent(`
     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
       <defs>
@@ -61,7 +77,12 @@ export default function WebsiteOne({ data, slug }: { data: any, slug?: string })
   return (
     <div 
       id="live-preview-box"
-      className="relative w-full min-h-screen bg-white font-sans text-gray-900"
+      // 🔥 Inject both font variables into the root container
+      className={`relative w-full min-h-screen bg-white text-gray-900 ${inter.variable} ${playfair.variable}`}
+      style={{ 
+        fontFamily: 'var(--font-main)',
+        '--primary': primaryColor // 🔥 Added this line!
+      } as React.CSSProperties}// Set default font to Inter
     >
       <style>{`
         /* Smooth scrolling for the whole page */
@@ -69,17 +90,24 @@ export default function WebsiteOne({ data, slug }: { data: any, slug?: string })
           scroll-behavior: smooth;
         }
 
-        /* 
-          Aligning the click hotspot perfectly between the top two toes (24 12) 
-          so clicking feels highly accurate and doesn't jump.
+        /* 🔥 MAGIC FONT TRICK:
+          Any text wrapped in <em> or <i> tags will automatically switch to the 
+          luxurious Playfair Display font. You can trigger this just by italicizing 
+          words in your JSON editor (e.g. <i>family</i>).
         */
+        em, i {
+          font-family: var(--font-accent), serif !important;
+          font-style: italic;
+          font-weight: 500;
+        }
+
+        /* Paw Cursors */
         body, input, textarea, select {
           cursor: url("data:image/svg+xml;utf8,${defaultPawSvg}") 24 12, auto !important;
         }
 
         a, button, [role='button'], input[type='submit'], input[type='button'], summary {
           cursor: url("data:image/svg+xml;utf8,${hoverPawSvg}") 24 12, pointer !important;
-          /* Adding smooth CSS transitions to interactive elements makes the cursor interaction feel smoother overall */
           transition: all 0.25s ease-in-out;
         }
       `}</style>

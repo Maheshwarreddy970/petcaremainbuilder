@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import SmartHeading from '../ui/SmartHeading';
 
 export default function FAQSection({ data }: { data: any }) {
     if (!data || !data.items || data.items.length === 0) return null;
@@ -14,12 +15,12 @@ export default function FAQSection({ data }: { data: any }) {
             <div className="max-w-4xl mx-auto px-6 md:px-12 flex flex-col items-center">
                 
                 <div className="flex flex-col items-center text-center mb-12">
-                    <h2 
-                        className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)} 
-                        style={{ color: data.heading?.color || data.headingColor }}
-                    >
-                        {data.heading?.text || data.heading}
-                    </h2>
+                   <SmartHeading 
+    as="h2"
+    text={data.heading?.text || data.heading}
+    className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)} 
+    style={{ color: data.heading?.color || data.headingColor }}
+/>
                     <p 
                         className={cn("text-base md:text-[18px] leading-[1.6]", data.description?.className)} 
                         style={{ color: data.description?.color || data.descColor }}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import SmartHeading from '../ui/SmartHeading';
 
 export default function GallerySection({ data }: { data: any }) {
     if (!data || !data.items) return null;
@@ -14,12 +15,12 @@ export default function GallerySection({ data }: { data: any }) {
             <div className="mx-auto px-6 md:px-12 flex flex-col items-center">
 
                 <div className="flex flex-col items-center text-center max-w-[628px] mb-16 lg:mb-[94px]">
-                    <h2
-                        className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)}
-                        style={{ color: data.heading?.color || data.headingColor }}
-                    >
-                        {data.heading?.text || data.heading}
-                    </h2>
+                   <SmartHeading 
+    as="h2"
+    text={data.heading?.text || data.heading}
+    className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)} 
+    style={{ color: data.heading?.color || data.headingColor }}
+/>
                     <p
                         className={cn("text-base md:text-[18px] leading-[1.6] max-w-[537px]", data.description?.className)}
                         style={{ color: data.description?.color || data.descColor }}

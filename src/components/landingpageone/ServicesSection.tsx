@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, Sparkles, HeartPulse, Activity, ShieldCheck, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import SmartHeading from '../ui/SmartHeading';
 
 // 🔥 Uses clean, professional Lucide icons instead of the confusing towel graphic
 const iconMappings = [
@@ -36,8 +37,12 @@ export default function ServicesSection({ data }: { data: any }) {
         <section id='services' className={cn("py-20 w-full overflow-hidden", data.section?.className)} style={{ backgroundColor: data.section?.bg || data.bg }}>
             <div className="max-w-7xl mx-auto px-6 flex flex-col items-center">
                 <div className="flex flex-col items-center text-center max-w-[560px] mb-12 lg:mb-[72px]">
-                    <h2 className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)} style={{ color: data.heading?.color || data.headingColor }} dangerouslySetInnerHTML={{ __html: data.heading?.text || data.heading || "" }} />
-                    <p className={cn("text-base md:text-[18px] leading-[1.6]", data.description?.className)} style={{ color: data.description?.color || data.descColor }} dangerouslySetInnerHTML={{ __html: data.description?.text || data.description || "" }} />
+<SmartHeading 
+    as="h2"
+    text={data.heading?.text || data.heading}
+    className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)} 
+    style={{ color: data.heading?.color || data.headingColor }}
+/>                    <p className={cn("text-base md:text-[18px] leading-[1.6]", data.description?.className)} style={{ color: data.description?.color || data.descColor }} dangerouslySetInnerHTML={{ __html: data.description?.text || data.description || "" }} />
                 </div>
 
                 <div className={cn("grid gap-6 w-full mb-12", getGridClasses(services.length))}>

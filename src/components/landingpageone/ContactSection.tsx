@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Loader2, CheckCircle2, Send, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { submitContactFormAction } from '@/actions/contact';
+import SmartHeading from '../ui/SmartHeading';
 
 export default function ContactSection({ data, slug }: { data: any, slug?: string }) {
     if (!data) return null;
@@ -71,9 +72,12 @@ export default function ContactSection({ data, slug }: { data: any, slug?: strin
             <div className="max-w-3xl mx-auto px-6 md:px-12 flex flex-col items-center">
                 
                 <div className="text-center mb-12 max-w-2xl">
-                    <h2 className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)} style={{ color: data.heading?.color || data.headingColor }}>
-                        {data.heading?.text || data.heading || "Get in Touch"}
-                    </h2>
+                    <SmartHeading 
+    as="h2"
+    text={data.heading?.text || data.heading}
+    className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)} 
+    style={{ color: data.heading?.color || data.headingColor }}
+/>
                     <p className={cn("text-base md:text-[18px] leading-[1.6]", data.description?.className)} style={{ color: data.description?.color || data.descColor }}>
                         {data.description?.text || data.description || "Have questions? Send us a message and we'll reply directly to your email."}
                     </p>

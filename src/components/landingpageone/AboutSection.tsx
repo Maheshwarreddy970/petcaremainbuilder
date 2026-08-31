@@ -1,5 +1,6 @@
 import { CircleCheck, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import SmartHeading from '../ui/SmartHeading';
 
 export default function AboutSection({ data }: { data: any }) {
     if (!data) return null;
@@ -17,8 +18,12 @@ export default function AboutSection({ data }: { data: any }) {
 
                     <div className="flex flex-col gap-10 lg:gap-[72px] max-w-[548px] mx-auto lg:mx-0">
                         <div className="flex flex-col gap-6">
-                            <h2 className={cn("font-medium text-4xl md:text-5xl lg:text-[48px] leading-[1.2] tracking-[-1.5px]", data.heading?.className)} style={{ color: data.heading?.color || data.headingColor }} dangerouslySetInnerHTML={{ __html: data.heading?.text || data.heading || "" }} />
-                            <p className={cn("text-base md:text-[18px] leading-[1.6]", data.description?.className)} style={{ color: data.description?.color || data.descColor }} dangerouslySetInnerHTML={{ __html: data.description?.text || data.description || "" }} />
+<SmartHeading 
+    as="h2"
+    text={data.heading?.text || data.heading}
+    className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)} 
+    style={{ color: data.heading?.color || data.headingColor }}
+/>                            <p className={cn("text-base md:text-[18px] leading-[1.6]", data.description?.className)} style={{ color: data.description?.color || data.descColor }} dangerouslySetInnerHTML={{ __html: data.description?.text || data.description || "" }} />
                         </div>
 
                         <div className={cn("flex flex-col gap-8 lg:gap-10", data.featuresList?.className)}>

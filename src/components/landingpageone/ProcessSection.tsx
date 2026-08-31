@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
+import SmartHeading from '../ui/SmartHeading';
 
 export default function ProcessSection({ data }: { data: any }) {
     if (!data) return null;
@@ -9,8 +10,12 @@ export default function ProcessSection({ data }: { data: any }) {
             <div className="mx-auto px-6 md:px-12 flex flex-col items-center relative">
                 <div>
                     <div className="flex flex-col items-center text-center max-w-[537px] mx-auto mb-16 lg:mb-[96px]">
-                        <h2 className={cn("font-medium text-4xl md:text-[56px] leading-[1.3] tracking-[-2px] mb-4", data.heading?.className)} style={{ color: data.heading?.color || data.headingColor }} dangerouslySetInnerHTML={{ __html: data.heading?.text || data.heading || "" }} />
-                        <p className={cn("text-base md:text-[18px] leading-[1.6]", data.description?.className)} style={{ color: data.description?.color || data.descColor }} dangerouslySetInnerHTML={{ __html: data.description?.text || data.description || "" }} />
+<SmartHeading 
+    as="h2"
+    text={data.heading?.text || data.heading}
+    className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)} 
+    style={{ color: data.heading?.color || data.headingColor }}
+/>                        <p className={cn("text-base md:text-[18px] leading-[1.6]", data.description?.className)} style={{ color: data.description?.color || data.descColor }} dangerouslySetInnerHTML={{ __html: data.description?.text || data.description || "" }} />
                     </div>
                 </div>
 
