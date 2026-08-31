@@ -115,13 +115,13 @@ export default function WebsiteOne({ data, slug }: { data: any, slug?: string })
       {data.navbar && <Navbar data={data.navbar} />}
       {data.hero && <Homepage data={data.hero} />}
       {data.statsBanner && <StatsBanner data={data.statsBanner} />}      
-      {data.imageSlider && <ImageSliderSection data={data.imageSlider} />}
       {data.gallery && <GallerySection data={data.gallery} />}
       {data.about && <AboutSection data={data.about} />}
       {data.services && <ServicesSection data={data.services} />}
       {data.process && <ProcessSection data={data.process} />}
       {data.comparison && <ComparisonSection data={data.comparison} />}
       {data.reviews && <ReviewsSection data={data.reviews} />}
+      {data.imageSlider && <ImageSliderSection data={data.imageSlider} />}
       {data.insights && <InsightsSection data={data.insights} />}
       {data.faq && <FAQSection data={data.faq} />}
       {data.contactSection && <ContactSection data={data.contactSection} slug={slug} />}

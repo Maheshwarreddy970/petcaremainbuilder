@@ -114,7 +114,7 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
 
     return () => clearTimeout(timeoutId);
   }, [config, name, currentSlug]);
-  
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, path: string) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -219,18 +219,18 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
 
           {/* 🔥 IMAGE SLIDER INSTALLED HERE */}
           {config.imageSlider && (
-            <Section title="Infinite Image Slider">
+            <Section title="Infinite Image Slider my-5">
               <ColorText label="Background Color" colorValue={config.imageSlider?.section?.bg} onColorChange={(v: string) => updateField('imageSlider.section.bg', v)} />
               <ColorText label="Heading" textValue={config.imageSlider?.heading?.text} colorValue={config.imageSlider?.heading?.color} onTextChange={(v: string) => updateField('imageSlider.heading.text', v)} onColorChange={(v: string) => updateField('imageSlider.heading.color', v)} />
               <ColorText label="Description" textValue={config.imageSlider?.description?.text} colorValue={config.imageSlider?.description?.color} onTextChange={(v: string) => updateField('imageSlider.description.text', v)} onColorChange={(v: string) => updateField('imageSlider.description.color', v)} isTextArea />
 
-              <div className="mt-4 space-y-3">
-                <label className="text-xs font-bold text-gray-500 flex justify-between items-center">
-                  Slider Images
-                  <button onClick={() => addArrayItem('imageSlider.items', { image: "", alt: "New Image", className: "" })} className="text-blue-600 hover:text-blue-700 flex items-center gap-1">
+              <div className="mt-4 mb-5 space-y-3">
+                <button onClick={() => addArrayItem('imageSlider.items', { image: "", alt: "New Image", className: "" })} className=" size-6 text-lg  text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                  <label className="text-xs font-bold text-gray-500 flex justify-between items-center">
+                    Slider Images
                     <Plus size={14} /> Add Image
-                  </button>
-                </label>
+                  </label>
+                </button>
                 {config.imageSlider.items?.map((item: any, i: number) => (
                   <div key={i} className="border border-gray-200 p-4 rounded-lg bg-gray-50 space-y-3 relative group">
                     <button onClick={() => removeArrayItem('imageSlider.items', i)} className="p-2 text-red-400 hover:text-red-600 absolute -right-3 -top-3 bg-white border border-gray-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"><Trash2 size={12} /></button>
@@ -280,13 +280,13 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
               <ColorText label="Before/After Badge Bg" colorValue={config.gallery?.styling?.badgeBg} onColorChange={(v: string) => updateField('gallery.styling.badgeBg', v)} />
               <ColorText label="Before/After Badge Text" colorValue={config.gallery?.styling?.badgeText} onColorChange={(v: string) => updateField('gallery.styling.badgeText', v)} />
 
-              <div className="mt-4 space-y-3">
+              <div className="my-4 space-y-3">
+                  <button onClick={() => addArrayItem('gallery.items', { before: "", after: "", alt: "New Image", className: "" })} className="text-blue-600 hover:text-blue-700 flex items-center gap-1">
                 <label className="text-xs font-bold text-gray-500 flex justify-between items-center">
                   Gallery Images
-                  <button onClick={() => addArrayItem('gallery.items', { before: "", after: "", alt: "New Image", className: "" })} className="text-blue-600 hover:text-blue-700 flex items-center gap-1">
                     <Plus size={14} /> Add Image
-                  </button>
                 </label>
+                  </button>
                 {config.gallery.items.map((item: any, i: number) => (
                   <div key={item.id || i} className="border border-gray-200 p-4 rounded-lg bg-gray-50 space-y-3 relative group">
                     <button onClick={() => removeArrayItem('gallery.items', i)} className="p-2 text-red-400 hover:text-red-600 absolute -right-3 -top-3 bg-white border border-gray-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"><Trash2 size={12} /></button>
@@ -684,7 +684,7 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
         </div>
       </div>
 
-     {/* RIGHT SIDE: Live Preview */}
+      {/* RIGHT SIDE: Live Preview */}
       <div className="flex-1 h-full bg-[#f3f3f3] overflow-y-auto relative pointer-events-auto">
         <div id="live-preview-box" className="w-full min-h-screen bg-white">
           {/* Scripts were removed from here and are now injected securely via useEffect! */}
