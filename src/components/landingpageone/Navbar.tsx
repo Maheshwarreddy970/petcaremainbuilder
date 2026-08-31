@@ -37,6 +37,7 @@ export default function Navbar({ data }: { data: any }) {
   const { ref, inView } = useInView({ threshold: 0, initialInView: true });
   const isScrolled = !inView;
 
+  // 🚀 Track URL Hash for `#gallery`, `#services`, `#reviews`, etc.
   const [activeHash, setActiveHash] = useState("");
 
   useEffect(() => {
@@ -49,11 +50,13 @@ export default function Navbar({ data }: { data: any }) {
         const sectionTop = (section as HTMLElement).offsetTop;
         const sectionHeight = section.clientHeight;
         
+        // If the scroll position is within this section
         if (window.scrollY >= sectionTop - 150 && window.scrollY < sectionTop + sectionHeight - 150) {
           currentSectionId = `#${section.id}`;
         }
       });
 
+      // 🔥 CRITICAL FIX: If we are at the very top, force the highlight to the first section (e.g., #home)
       if (window.scrollY < 100) {
         const firstSection = sections[0];
         currentSectionId = firstSection ? `#${firstSection.id}` : "/";
@@ -64,7 +67,9 @@ export default function Navbar({ data }: { data: any }) {
       }
     };
 
+    // Run once on mount to set the initial highlight immediately
     handleScroll();
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [activeHash]);
@@ -74,6 +79,7 @@ export default function Navbar({ data }: { data: any }) {
   const logo = data.logo || { src: "", alt: "Logo" };
   const links = data.links || [];
 
+  // Graceful fallbacks for the nested schema
   const navBg = data.section?.bg || data.bg || "transparent";
   const linkColor = data.styling?.linkColor || data.linkColor || "#625b5b";
   const hoverColor = data.styling?.linkHoverColor || data.linkHoverColor || "#1e0c05";
@@ -104,12 +110,12 @@ export default function Navbar({ data }: { data: any }) {
         <div className="px-6 md:px-12 lg:px-24 xl:px-40 py-3 flex items-center justify-between relative">
           
           {/* LOGO */}
-          <a href={"/"} className={cn("relative flex items-center justify-start h-12 md:h-[56px] w-fit shrink-0", logo.className)}>
+          <a href={"/"} className={cn("relative flex items-center justify-start w-40 h-12", logo.className)}>
             {logo.src ? (
               <img
                 src={logo.src}
                 alt={logo.alt || "Business Logo"}
-                className="h-full w-auto object-contain object-left transition-transform duration-300" 
+                className="h-full w-auto max-w-full object-contain object-left transition-all" 
               />
             ) : (
               <PawIcon className="h-11 w-11" style={{ color: data.cta?.bg }} />
@@ -178,9 +184,9 @@ export default function Navbar({ data }: { data: any }) {
           backdropFilter: isScrolled ? 'blur(16px)' : 'none'
         }}
       >
-        <a href="/" className={cn("relative flex items-center justify-start h-12 w-fit shrink-0", logo.className)}>
+        <a href="/" className={cn("relative flex items-center w-32 h-10", logo.className)}>
           {logo.src ? (
-            <img src={logo.src} alt={logo.alt || "Business Logo"} className="h-full w-auto object-contain object-left transition-transform duration-300" />
+            <img src={logo.src} alt={logo.alt || "Business Logo"} className="h-full w-auto max-w-full object-contain object-left transition-all" />
           ) : (
             <PawIcon className="h-10 w-10" style={{ color: data.cta?.bg }} />
           )}
@@ -200,7 +206,6 @@ export default function Navbar({ data }: { data: any }) {
             ? (pathname === "/" && (!activeHash || activeHash === "#" || activeHash === "/"))
             : activeHash === cleanHref;
 
-          {/* 🔥 RESTORED THE CORRECT RENDER RETURN FOR THE NAV ICONS */}
           return (
             <a 
               key={index} 
