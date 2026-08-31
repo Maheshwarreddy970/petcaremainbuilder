@@ -184,7 +184,7 @@ export default function Navbar({ data }: { data: any }) {
           backdropFilter: isScrolled ? 'blur(16px)' : 'none'
         }}
       >
-        <a href="/" className={cn("relative flex items-center w-32 h-10", logo.className)}>
+        <a href="/" className={cn("relative flex items-center w-32 h-14", logo.className)}>
           {logo.src ? (
             <img src={logo.src} alt={logo.alt || "Business Logo"} className="h-full w-auto max-w-full object-contain object-left transition-all" />
           ) : (
