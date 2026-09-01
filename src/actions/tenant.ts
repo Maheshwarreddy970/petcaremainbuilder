@@ -8,55 +8,69 @@ export async function connectCustomDomainAction(slug: string, customDomain: stri
   try {
     const cleanDomain = customDomain.replace(/^https?:\/\//, "").replace(/\/$/, "").toLowerCase();
     
-    // Reading securely from the server (no NEXT_PUBLIC)
     const zoneId = process.env.CLOUDFLARE_ZONE_ID;
-    const token = process.env.CLOUDFLARE_API_TOKEN;
+    const globalApiKey = process.env.CLOUDFLARE_GLOBAL_API_KEY;
     const email = process.env.CLOUDFLARE_EMAIL; 
     const fallbackDomain = process.env.NEXT_PUBLIC_FALLBACK_DOMAIN || "cname.nexpetcare.online";
 
-    if (!zoneId || !token || !email) {
-      return { success: false, error: "Missing Cloudflare Credentials in .env.local" };
+    if (!zoneId || !globalApiKey || !email) {
+      return { success: false, error: "Missing Cloudflare GLOBAL API KEY or Email in .env.local" };
     }
 
-    // 🔥 HARDCODED TO MATCH THE WORKING TEST SCRIPT
     const headers: any = { 
       "Content-Type": "application/json",
       "X-Auth-Email": email.trim(),
-      "X-Auth-Key": token.trim()
+      "X-Auth-Key": globalApiKey.trim()
     };
 
-    const response = await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId.trim()}/custom_hostnames`, {
-      method: "POST",
+    // 🔥 1. SMART CHECK: Look to see if the domain is already in Cloudflare
+    const checkResponse = await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId.trim()}/custom_hostnames?hostname=${cleanDomain}`, {
+      method: "GET",
       headers,
-      body: JSON.stringify({
-        hostname: cleanDomain,
-        ssl: { method: "txt", type: "dv" }
-      }),
     });
+    
+    const checkData = await checkResponse.json();
+    let domainData = checkData.result?.[0]; // Will be undefined if it doesn't exist
 
-    const data = await response.json();
+    // 🔥 2. CREATE IF MISSING: If it doesn't exist, create it normally
+    if (!domainData) {
+      const createResponse = await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId.trim()}/custom_hostnames`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          hostname: cleanDomain,
+          ssl: { method: "txt", type: "dv" }
+        }),
+      });
+      
+      const createData = await createResponse.json();
 
-    if (!response.ok) {
-      console.error("RAW CLOUDFLARE ERROR:", JSON.stringify(data, null, 2));
-      throw new Error(data.errors?.[0]?.message || "Cloudflare API Failed");
+      if (!createResponse.ok) {
+        throw new Error(createData.errors?.[0]?.message || "Cloudflare API Failed");
+      }
+      domainData = createData.result;
     }
 
-    const websiteRef = doc(db, "websites", slug);
-    await updateDoc(websiteRef, {
-      customDomain: cleanDomain,
-      cloudflareId: data.result.id,
-      domainStatus: "pending",
-      lastUpdated: new Date().toISOString()
-    });
-
-    const ownershipTxt = data.result.ownership_verification;
-    const sslTxt = data.result.ssl?.validation_records?.[0];
+    // 3. EXTRACT RECORDS: Grab the ownership and SSL TXT records
+    const ownershipTxt = domainData.ownership_verification;
+    const sslTxt = domainData.ssl?.validation_records?.[0];
 
     const dnsRecords = [{ type: "CNAME", name: "@", value: fallbackDomain }];
     if (ownershipTxt) dnsRecords.push({ type: "TXT", name: ownershipTxt.name, value: ownershipTxt.value });
     if (sslTxt) dnsRecords.push({ type: "TXT", name: sslTxt.txt_name, value: sslTxt.txt_value });
 
+    // 4. UPDATE FIREBASE: Ensure the database has the latest info
+    const websiteRef = doc(db, "websites", slug);
+    await updateDoc(websiteRef, {
+      customDomain: cleanDomain,
+      cloudflareId: domainData.id,
+      domainStatus: domainData.status === "active" ? "active" : "pending",
+      lastUpdated: new Date().toISOString()
+    });
+
+    // Return the records to the frontend so the UI table renders
     return { success: true, dnsRecords };
+
   } catch (error: any) {
     return { success: false, error: error.message };
   }
