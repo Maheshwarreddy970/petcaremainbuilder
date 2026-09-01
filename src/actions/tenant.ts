@@ -52,6 +52,9 @@ export async function connectCustomDomainAction(slug: string, customDomain: stri
     }
 
     // 3. EXTRACT RECORDS: Grab the ownership and SSL TXT records
+  // ... inside connectCustomDomainAction ...
+    
+    // 3. EXTRACT RECORDS: Grab the ownership and SSL TXT records
     const ownershipTxt = domainData.ownership_verification;
     const sslTxt = domainData.ssl?.validation_records?.[0];
 
@@ -59,14 +62,18 @@ export async function connectCustomDomainAction(slug: string, customDomain: stri
     if (ownershipTxt) dnsRecords.push({ type: "TXT", name: ownershipTxt.name, value: ownershipTxt.value });
     if (sslTxt) dnsRecords.push({ type: "TXT", name: sslTxt.txt_name, value: sslTxt.txt_value });
 
-    // 4. UPDATE FIREBASE: Ensure the database has the latest info
+    // 🔥 4. UPDATE FIREBASE: Now saving the `dnsRecords` array to the database!
     const websiteRef = doc(db, "websites", slug);
     await updateDoc(websiteRef, {
       customDomain: cleanDomain,
       cloudflareId: domainData.id,
       domainStatus: domainData.status === "active" ? "active" : "pending",
+      dnsRecords: dnsRecords, // <-- Added this line!
       lastUpdated: new Date().toISOString()
     });
+
+    // Return the records to the frontend so the UI table renders
+    return { success: true, dnsRecords };
 
     // Return the records to the frontend so the UI table renders
     return { success: true, dnsRecords };
