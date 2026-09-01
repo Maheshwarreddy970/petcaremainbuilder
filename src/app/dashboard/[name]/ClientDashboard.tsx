@@ -2,7 +2,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { LayoutTemplate, Code, ExternalLink, Loader2, Globe, Calendar, Server, ShieldCheck, CheckCircle2, Lock, Link as LinkIcon, RefreshCw, Copy, Download, Settings } from "lucide-react";
+import { 
+  LayoutTemplate, Code, ExternalLink, Loader2, Globe, Calendar, Server, 
+  ShieldCheck, CheckCircle2, Lock, Link as LinkIcon, RefreshCw, Copy, 
+  Download, Settings, Zap, Wrench, ChevronRight
+} from "lucide-react";
 import merge from "lodash/merge";
 import WebsiteOne from "@/components/templates/WebsiteOne";
 import { deployWebsiteAction, connectCustomDomainAction, checkDomainStatusAction, publishWebsiteUpdatesAction } from "@/actions/tenant";
@@ -34,6 +38,9 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
   const [domainStatus, setDomainStatus] = useState(dbData?.domainStatus || "none");
   const [isChecking, setIsChecking] = useState(false);
 
+  // UI State for Auto vs Manual DNS
+  const [dnsSetupMethod, setDnsSetupMethod] = useState<"auto" | "manual">("auto");
+
   // Template Auto-Scroll logic
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
@@ -45,7 +52,6 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
     const autoScroll = () => {
       if (scrollContainer && !isHovering) {
         scrollContainer.scrollTop += 0.5; // Scroll speed
-
         if (scrollContainer.scrollTop >= scrollContainer.scrollHeight - scrollContainer.clientHeight) {
           scrollContainer.scrollTop = 0;
         }
@@ -57,20 +63,13 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
     return () => cancelAnimationFrame(animationFrameId);
   }, [isHovering]);
 
-  const activeDisplayUrl = dbData?.customDomain
-    ? dbData.customDomain
-    : `${name}.nexpetcare.online`;
-
-  const liveHref = dbData?.customDomain
-    ? `https://${dbData.customDomain}`
-    : `https://${name}.nexpetcare.online`;
-
+  const activeDisplayUrl = dbData?.customDomain ? dbData.customDomain : `${name}.nexpetcare.online`;
+  const liveHref = dbData?.customDomain ? `https://${dbData.customDomain}` : `https://${name}.nexpetcare.online`;
   const activeData = merge({}, dbData?.websiteOneData || {});
   
   const handlePublish = async () => {
     setIsPublishing(true);
     const res = await publishWebsiteUpdatesAction(name);
-
     if (res.success) {
       alert("✅ Success! Your live website has been updated worldwide.");
     } else {
@@ -82,30 +81,23 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
   const handleDeploy = async () => {
     setIsDeploying(true);
     setDeployStep(0);
-
     for (let i = 0; i < DEPLOY_STEPS.length; i++) {
       setDeployStep(i);
       await new Promise(res => setTimeout(res, 800));
     }
-
     const res = await deployWebsiteAction(name);
-
     if (res.success) {
       setIsDeployed(true);
     } else {
       alert("Deployment failed.");
     }
-
     setIsDeploying(false);
   };
 
-  // 🔥 RESTORED LOGIC: This sends the domain to Cloudflare
   const handleConnectDomain = async () => {
     if (!customDomainInput) return;
     setIsConnecting(true);
-
     const res = await connectCustomDomainAction(name, customDomainInput);
-
     if (res.success) {
       setDnsRecords(res.dnsRecords);
       setDomainStatus("pending");
@@ -115,7 +107,6 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
     setIsConnecting(false);
   };
 
-  // 🔥 RESTORED LOGIC: This checks if the TXT records have been verified
   const handleCheckStatus = async () => {
     const domainToCheck = customDomainInput || dbData?.customDomain;
     if (!domainToCheck) return;
@@ -129,7 +120,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
         alert("✅ Domain successfully verified and connected!");
         setDnsRecords(null);
       } else {
-        alert("Domain is still pending. Make sure you added the TXT records to your DNS settings.");
+        alert("Domain is still pending. Make sure you authorized your provider or added the TXT records.");
       }
     } else {
       alert(`Error checking status: ${res.error}`);
@@ -139,7 +130,6 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
 
   function copyToClipboard(value: any): void {
     const text = typeof value === "string" ? value : String(value ?? "");
-
     if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
       navigator.clipboard.writeText(text).catch(() => {
         const tempInput = document.createElement("textarea");
@@ -151,7 +141,6 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
       });
       return;
     }
-
     const tempInput = document.createElement("textarea");
     tempInput.value = text;
     document.body.appendChild(tempInput);
@@ -167,35 +156,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
       const contentNode = document.getElementById("export-container");
       const contentHtml = contentNode ? contentNode.innerHTML : "";
 
-      const fullHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${settings.seoTitle || dbData?.clientName || name}</title>
-  <meta name="description" content="${settings.seoDescription || ""}">
-  <meta name="keywords" content="${settings.keywords || ""}">
-  ${settings.favicon ? `<link rel="icon" href="${settings.favicon}">` : ""}
-  <meta property="og:title" content="${settings.seoTitle || name}">
-  <meta property="og:description" content="${settings.seoDescription || ""}">
-  ${settings.ogImage ? `<meta property="og:image" content="${settings.ogImage}">` : ""}
-  <script src="https://cdn.tailwindcss.com"></script>
-  ${settings.googleAnalyticsId ? `
-  <script async src="https://www.googletagmanager.com/gtag/js?id=${settings.googleAnalyticsId}"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', '${settings.googleAnalyticsId}');
-  </script>
-  ` : ""}
-  ${settings.googleReviewsId ? `<script src="https://apps.elfsight.com/p/platform.js" defer></script>` : ""}
-</head>
-<body>
-  ${contentHtml}
-  ${settings.googleReviewsId ? `<div class="elfsight-app-${settings.googleReviewsId}"></div>` : ""}
-</body>
-</html>`;
+      const fullHtml = `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>${settings.seoTitle || dbData?.clientName || name}</title>\n  <meta name="description" content="${settings.seoDescription || ""}">\n  <meta name="keywords" content="${settings.keywords || ""}">\n  ${settings.favicon ? `<link rel="icon" href="${settings.favicon}">` : ""}\n  <meta property="og:title" content="${settings.seoTitle || name}">\n  <meta property="og:description" content="${settings.seoDescription || ""}">\n  ${settings.ogImage ? `<meta property="og:image" content="${settings.ogImage}">` : ""}\n  <script src="https://cdn.tailwindcss.com"></script>\n  ${settings.googleAnalyticsId ? `\n  <script async src="https://www.googletagmanager.com/gtag/js?id=${settings.googleAnalyticsId}"></script>\n  <script>\n    window.dataLayer = window.dataLayer || [];\n    function gtag(){dataLayer.push(arguments);}\n    gtag('js', new Date());\n    gtag('config', '${settings.googleAnalyticsId}');\n  </script>\n  ` : ""}\n  ${settings.googleReviewsId ? `<script src="https://apps.elfsight.com/p/platform.js" defer></script>` : ""}\n</head>\n<body>\n  ${contentHtml}\n  ${settings.googleReviewsId ? `<div class="elfsight-app-${settings.googleReviewsId}"></div>` : ""}\n</body>\n</html>`;
 
       const res = await fetch("/api/export", {
         method: "POST",
@@ -213,7 +174,6 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
       document.body.appendChild(a);
       a.click();
       a.remove();
-
     } catch (error) {
       console.error(error);
       alert("Failed to export ZIP.");
@@ -221,8 +181,14 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
     setDownloading(false);
   };
 
+  // Helper to extract the TXT verification value for Auto-Connect
+  const getTxtVerificationValue = () => {
+    if (!dnsRecords) return "";
+    const ownershipRecord = dnsRecords.find((r: any) => r.name.includes("_cf-custom-hostname"));
+    return ownershipRecord ? ownershipRecord.value : "";
+  };
+
   return (
-    // 🔥 suppressHydrationWarning added here to prevent your Temp Mail extension from crashing the page
     <div className="min-h-screen bg-[#f8f9fa] text-black p-6 md:p-10 font-sans flex flex-col items-center" suppressHydrationWarning>
 
       {/* Dashboard Header */}
@@ -314,7 +280,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
         </div>
       )}
 
-      {/* Custom Domain Management */}
+      {/* Custom Domain Management Card */}
       {isDeployed && (
         <div className="w-full max-w-7xl mx-auto mt-6 bg-gradient-to-r from-blue-900 to-slate-900 rounded-2xl p-8 text-white flex flex-col md:flex-row items-center justify-between shadow-lg">
           <div className="flex-1 pr-8">
@@ -323,7 +289,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
               <span className="text-sm font-bold uppercase tracking-wider">Cloudflare Network</span>
             </div>
             <h3 className="text-2xl font-bold mb-2">
-              {domainStatus === "active" ? "Custom Domain Connected" : "Connect Your Own Domain (Free)"}
+              {domainStatus === "active" ? "Custom Domain Connected" : "Connect Your Own Domain"}
             </h3>
 
             {domainStatus === "active" ? (
@@ -342,7 +308,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
                 className="bg-white text-black px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors flex items-center gap-2"
               >
                 <LinkIcon size={16} />
-                {dbData?.customDomain ? "View DNS Records" : "Setup Custom Domain"}
+                {dbData?.customDomain ? "View Domain Settings" : "Setup Custom Domain"}
               </button>
 
               <a
@@ -354,91 +320,143 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
                 <Calendar size={16} />
                 Book Free 1-on-1 Setup Call
               </a>
-
-              <span className="text-xs text-blue-200/70 max-w-[200px] leading-tight">
-                Stuck on DNS or have questions? Get completely free personal support.
-              </span>
             </div>
           </div>
         </div>
       )}
 
-      {/* DNS Setup Block */}
+      {/* DNS Setup Modal / Panel */}
+     {/* DNS Setup Modal / Panel */}
       {showDnsModal && (
-        <div className="w-full max-w-7xl mx-auto mt-4 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-          <h4 className="font-bold text-lg mb-4">Domain Configuration</h4>
+        <div className="w-full max-w-7xl mx-auto mt-4 bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
+          <h4 className="font-bold text-xl mb-6">Domain Configuration</h4>
 
           {(!dbData?.customDomain || dnsRecords) && (
-            <div className="flex items-center gap-3 mb-6">
-              <input
-                type="text"
-                placeholder="Enter domain (e.g. nexpetcare.info or yoursite.com)"
-                value={customDomainInput}
-                onChange={e => setCustomDomainInput(e.target.value)}
-                className="w-full max-w-md border border-gray-300 px-4 py-2 rounded-lg text-sm outline-none focus:border-blue-500"
-              />
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-3 mb-8">
+              <div className="relative w-full md:flex-1 max-w-md">
+                <Globe className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                <input
+                  type="text"
+                  placeholder="Enter domain (e.g. yoursite.com)"
+                  value={customDomainInput}
+                  onChange={e => setCustomDomainInput(e.target.value.toLowerCase())}
+                  className="w-full border border-gray-300 pl-10 pr-4 py-3 rounded-xl text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                />
+              </div>
               <button
                 onClick={handleConnectDomain}
                 disabled={isConnecting || !customDomainInput}
-                className="bg-black text-white px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-70 flex items-center gap-2"
+                className="bg-black text-white px-6 py-3 w-full md:w-auto rounded-xl text-sm font-semibold disabled:opacity-70 flex items-center justify-center gap-2 hover:bg-gray-800 transition-all"
               >
-                {isConnecting ? <Loader2 size={16} className="animate-spin" /> : null}
-                Generate DNS Records
+                {isConnecting ? <Loader2 size={18} className="animate-spin" /> : null}
+                Initialize Domain
               </button>
             </div>
           )}
 
           {(dnsRecords || dbData?.domainStatus === "pending") && (
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-5">
-              <div className="flex justify-between items-start mb-4">
-                <p className="text-sm text-gray-700 font-medium">Add these records to your domain registrar (GoDaddy, Namecheap, etc.)</p>
-                <div className="flex items-center gap-2 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-bold">
-                  <Loader2 size={12} className="animate-spin" /> Pending Verification
+            <div className="bg-gray-50 border border-gray-200 rounded-xl overflow-hidden p-6 md:p-8">
+              
+              {/* Step 1: Registrar Deep Links */}
+              <div className="mb-8">
+                <h5 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
+                  <span className="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span> 
+                  Open your DNS Settings
+                </h5>
+                <p className="text-sm text-gray-600 mb-4 ml-8">Select your provider to jump directly to your domain's DNS management page.</p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 ml-8">
+                  {/* GoDaddy Deep Link */}
+                  <a 
+                    href={`https://dcc.godaddy.com/manage/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/dns`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-sm transition-all"
+                  >
+                    <div className="w-8 h-8 bg-[#1bdbdb] rounded flex items-center justify-center font-bold text-black text-sm">G</div>
+                    <span className="font-semibold text-sm text-gray-800">GoDaddy</span>
+                    <ExternalLink size={14} className="ml-auto text-gray-400" />
+                  </a>
+
+                  {/* Namecheap Deep Link */}
+                  <a 
+                    href={`https://ap.www.namecheap.com/Domains/DomainControlPanel/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/advancedns`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-sm transition-all"
+                  >
+                    <div className="w-8 h-8 bg-[#de3723] rounded flex items-center justify-center font-bold text-white text-sm">N</div>
+                    <span className="font-semibold text-sm text-gray-800">Namecheap</span>
+                    <ExternalLink size={14} className="ml-auto text-gray-400" />
+                  </a>
+
+                  {/* IONOS Deep Link */}
+                  <a 
+                    href={`https://my.ionos.com/domain-details/${(customDomainInput || dbData?.customDomain).replace('www.', '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-sm transition-all"
+                  >
+                    <div className="w-8 h-8 bg-[#003d8f] rounded flex items-center justify-center font-bold text-white text-sm">I</div>
+                    <span className="font-semibold text-sm text-gray-800">IONOS</span>
+                    <ExternalLink size={14} className="ml-auto text-gray-400" />
+                  </a>
                 </div>
               </div>
 
-              <div className="flex flex-col gap-3">
-                {dnsRecords?.map((record: any, idx: number) => (
-                  <div key={idx} className="grid grid-cols-12 gap-4 bg-white p-3 rounded border border-gray-200 text-sm font-mono text-gray-700 items-center">
-                    <div className="col-span-1 border-r border-gray-100 pr-2">
-                      <span className="text-[10px] text-gray-400 block mb-0.5 uppercase tracking-wider font-sans">Type</span>
-                      <span className="font-bold text-blue-600">{record.type}</span>
+              {/* Step 2: Manual Records Table */}
+              <div>
+                <h5 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
+                  <span className="bg-blue-100 text-blue-700 w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span> 
+                  Add these records
+                </h5>
+                <p className="text-sm text-gray-600 mb-4 ml-8">Copy and paste these exact values into your DNS settings.</p>
+
+                <div className="flex flex-col gap-3 ml-8">
+                  {dnsRecords?.map((record: any, idx: number) => (
+                    <div key={idx} className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 bg-white p-4 rounded-xl border border-gray-200 text-sm font-mono text-gray-800 items-center">
+                      <div className="md:col-span-2 md:border-r border-gray-100 pr-2">
+                        <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Type</span>
+                        <span className="font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">{record.type}</span>
+                      </div>
+                      <div className="md:col-span-4 md:border-r border-gray-100 pr-2 overflow-hidden text-ellipsis">
+                        <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Name / Host</span>
+                        {record.name}
+                      </div>
+                      <div className="md:col-span-5 overflow-hidden text-ellipsis">
+                        <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Target / Value</span>
+                        {record.value}
+                      </div>
+                      <div className="md:col-span-1 flex justify-end mt-2 md:mt-0">
+                        <button onClick={() => copyToClipboard(record.value)} className="w-full md:w-auto p-2 bg-gray-50 border border-gray-200 hover:bg-gray-100 hover:text-black rounded-lg text-gray-500 transition-colors shadow-sm flex justify-center items-center gap-2" title="Copy Value">
+                          <Copy size={16} /> <span className="md:hidden font-sans text-xs">Copy Value</span>
+                        </button>
+                      </div>
                     </div>
-                    <div className="col-span-4 border-r border-gray-100 pr-2 overflow-hidden text-ellipsis">
-                      <span className="text-[10px] text-gray-400 block mb-0.5 uppercase tracking-wider font-sans">Name</span>
-                      {record.name}
-                    </div>
-                    <div className="col-span-6 overflow-hidden text-ellipsis">
-                      <span className="text-[10px] text-gray-400 block mb-0.5 uppercase tracking-wider font-sans">Target / Value</span>
-                      {record.value}
-                    </div>
-                    <div className="col-span-1 flex justify-end">
-                      <button onClick={() => copyToClipboard(record.value)} className="p-2 hover:bg-gray-100 rounded text-gray-500 transition-colors" title="Copy Value" aria-label="Copy Value">
-                        <Copy size={14} />
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
 
-              <div className="mt-6 flex items-center justify-between border-t border-gray-200 pt-4">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <CheckCircle2 size={16} className="text-green-500" /> SSL Certificate will be provisioned automatically.
+              {/* Step 3: Verification */}
+              <div className="mt-8 ml-8 flex flex-col md:flex-row items-center justify-between border-t border-gray-200 pt-6 gap-4">
+                <div className="flex items-center gap-2 text-sm text-gray-600 font-medium bg-green-50 text-green-700 px-4 py-2 rounded-lg border border-green-200">
+                  <CheckCircle2 size={18} className="text-green-600" /> SSL Certificate will be provisioned automatically.
                 </div>
+                
                 <button
                   onClick={handleCheckStatus}
                   disabled={isChecking}
-                  className="bg-blue-50 text-blue-600 border border-blue-200 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-100 transition-colors flex items-center gap-2"
+                  className="bg-black text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 shadow-md w-full md:w-auto"
                 >
-                  {isChecking ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
-                  Verify Connection
+                  {isChecking ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
+                  Verify Connection Status
                 </button>
               </div>
+
             </div>
           )}
         </div>
       )}
-
       {/* Auto-scrolling Template Preview - ALWAYS VISIBLE */}
       <div className="w-full max-w-7xl mx-auto mt-10 flex flex-col bg-white rounded-2xl shadow-2xl border border-gray-300 overflow-hidden ring-1 ring-black/5">
         <div className="h-14 bg-gray-100/80 border-b border-gray-200 flex items-center px-4 justify-between select-none shrink-0 z-10 relative">
