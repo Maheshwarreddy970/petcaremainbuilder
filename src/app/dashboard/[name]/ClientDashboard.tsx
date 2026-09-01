@@ -366,36 +366,51 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
                   <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold text-xs">1</span>
                   <h5 className="font-bold text-lg text-gray-900">Open your DNS Settings</h5>
                 </div>
-                <p className="text-gray-600 mb-6 ml-9 text-sm">Select your provider to log in and jump directly to your domain's DNS management page.</p>
+                <p className="text-gray-600 mb-6 ml-0 md:ml-9 text-sm">Select your provider to log in and jump directly to your domain's DNS management page.</p>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 ml-9">
+                {/* 🔥 Updated Grid to fit 4 Providers perfectly */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 ml-0 md:ml-9">
+                  
                   {/* GoDaddy Deep Link */}
                   <a href={`https://dcc.godaddy.com/manage/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/dns`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group">
-                    <div className="w-8 h-8 bg-[#1bdbdb] rounded-lg flex items-center justify-center font-bold text-black">G</div>
-                    <div>
-                      <p className="font-bold text-gray-900 text-sm">GoDaddy</p>
-                      <p className="text-[11px] text-gray-500 font-medium">Open DNS Page</p>
+                    <div className="w-8 h-8 bg-[#1bdbdb] rounded-lg flex items-center justify-center font-bold text-black shrink-0">G</div>
+                    <div className="overflow-hidden">
+                      <p className="font-bold text-gray-900 text-sm truncate">GoDaddy</p>
+                      <p className="text-[11px] text-gray-500 font-medium truncate">Open DNS Page</p>
                     </div>
-                    <ExternalLink size={14} className="ml-auto text-gray-300 group-hover:text-blue-500 transition-colors" />
+                    <ExternalLink size={14} className="ml-auto shrink-0 text-gray-300 group-hover:text-blue-500 transition-colors" />
                   </a>
+
                   {/* Namecheap Deep Link */}
                   <a href={`https://ap.www.namecheap.com/Domains/DomainControlPanel/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/advancedns`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group">
-                    <div className="w-8 h-8 bg-[#de3723] rounded-lg flex items-center justify-center font-bold text-white">N</div>
-                    <div>
-                      <p className="font-bold text-gray-900 text-sm">Namecheap</p>
-                      <p className="text-[11px] text-gray-500 font-medium">Open DNS Page</p>
+                    <div className="w-8 h-8 bg-[#de3723] rounded-lg flex items-center justify-center font-bold text-white shrink-0">N</div>
+                    <div className="overflow-hidden">
+                      <p className="font-bold text-gray-900 text-sm truncate">Namecheap</p>
+                      <p className="text-[11px] text-gray-500 font-medium truncate">Open DNS Page</p>
                     </div>
-                    <ExternalLink size={14} className="ml-auto text-gray-300 group-hover:text-blue-500 transition-colors" />
+                    <ExternalLink size={14} className="ml-auto shrink-0 text-gray-300 group-hover:text-blue-500 transition-colors" />
                   </a>
+
                   {/* IONOS Deep Link */}
                   <a href={`https://my.ionos.com/domain-details/${(customDomainInput || dbData?.customDomain).replace('www.', '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group">
-                    <div className="w-8 h-8 bg-[#003d8f] rounded-lg flex items-center justify-center font-bold text-white">I</div>
-                    <div>
-                      <p className="font-bold text-gray-900 text-sm">IONOS</p>
-                      <p className="text-[11px] text-gray-500 font-medium">Open DNS Page</p>
+                    <div className="w-8 h-8 bg-[#003d8f] rounded-lg flex items-center justify-center font-bold text-white shrink-0">I</div>
+                    <div className="overflow-hidden">
+                      <p className="font-bold text-gray-900 text-sm truncate">IONOS</p>
+                      <p className="text-[11px] text-gray-500 font-medium truncate">Open DNS Page</p>
                     </div>
-                    <ExternalLink size={14} className="ml-auto text-gray-300 group-hover:text-blue-500 transition-colors" />
+                    <ExternalLink size={14} className="ml-auto shrink-0 text-gray-300 group-hover:text-blue-500 transition-colors" />
                   </a>
+
+                  {/* 🔥 NEW: Squarespace Deep Link */}
+                  <a href={`https://account.squarespace.com/domains/managed/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/dns`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-black hover:shadow-md transition-all group">
+                    <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center font-bold text-white shrink-0">S</div>
+                    <div className="overflow-hidden">
+                      <p className="font-bold text-gray-900 text-sm truncate">Squarespace</p>
+                      <p className="text-[11px] text-gray-500 font-medium truncate">Open DNS Page</p>
+                    </div>
+                    <ExternalLink size={14} className="ml-auto shrink-0 text-gray-300 group-hover:text-black transition-colors" />
+                  </a>
+
                 </div>
               </div>
 
