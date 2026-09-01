@@ -327,9 +327,12 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
       )}
 
       {/* DNS Setup Modal / Panel */}
+     {/* DNS Setup Modal / Panel */}
       {showDnsModal && (
-        <div className="w-full max-w-7xl mx-auto mt-4 bg-white border border-gray-200 rounded-2xl p-8 shadow-sm animate-in fade-in slide-in-from-top-4 duration-300">
-          <h4 className="font-bold text-xl mb-6">Domain Configuration</h4>
+        <div className="w-full max-w-7xl mx-auto mt-4 bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="flex items-center justify-between mb-6">
+            <h4 className="font-bold text-xl text-gray-900">Domain Configuration</h4>
+          </div>
 
           {/* Domain Input Form */}
           <div className="flex flex-col md:flex-row items-start md:items-center gap-3 mb-8">
@@ -345,143 +348,106 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
             </div>
             <button
               onClick={handleConnectDomain}
-              // Prevent spam clicking if they haven't changed the text
               disabled={isConnecting || !customDomainInput || customDomainInput === dbData?.customDomain}
-              className="bg-black text-white px-6 py-3 w-full md:w-auto rounded-xl text-sm font-semibold disabled:opacity-70 flex items-center justify-center gap-2 hover:bg-gray-800 transition-all"
+              className="bg-black text-white px-6 py-3 w-full md:w-auto rounded-xl text-sm font-semibold disabled:opacity-70 flex items-center justify-center gap-2 hover:bg-gray-800 transition-all shadow-sm"
             >
               {isConnecting ? <Loader2 size={18} className="animate-spin" /> : null}
               {dbData?.customDomain ? "Update Domain" : "Initialize Domain"}
             </button>
           </div>
 
-          {/* Shows Automatic and Manual Setup instructions if records exist */}
+          {/* Shows Step-by-Step Instructions if records exist */}
           {(dnsRecords || dbData?.domainStatus === "pending") && (
-            <div className="bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
+            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
               
-              {/* Tabs for Auto vs Manual */}
-              <div className="flex bg-gray-100/50 border-b border-gray-200">
-                <button 
-                  onClick={() => setDnsSetupMethod("auto")} 
-                  className={`flex-1 py-4 text-sm font-semibold flex items-center justify-center gap-2 transition-all ${dnsSetupMethod === "auto" ? "bg-white text-blue-600 border-b-2 border-blue-600" : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"}`}
-                >
-                  <Zap size={16} className={dnsSetupMethod === "auto" ? "fill-current" : ""} /> 
-                  Automatic Setup (Recommended)
-                </button>
-                <button 
-                  onClick={() => setDnsSetupMethod("manual")} 
-                  className={`flex-1 py-4 text-sm font-semibold flex items-center justify-center gap-2 transition-all ${dnsSetupMethod === "manual" ? "bg-white text-gray-900 border-b-2 border-gray-900" : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"}`}
-                >
-                  <Wrench size={16} /> 
-                  Manual Setup
-                </button>
-              </div>
-
-              <div className="p-6 md:p-8 bg-white">
-                
-                {/* ⚡ AUTOMATIC SETUP TAB */}
-                {dnsSetupMethod === "auto" && (
-                  <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-                    <p className="text-gray-600 mb-6 font-medium">Select your domain registrar to connect automatically. No copy-pasting required.</p>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {/* GoDaddy Deep Link */}
-                      <a 
-                        href={`https://dcc.godaddy.com/manage/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/dns`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-sm transition-all group"
-                      >
-                        <div className="w-10 h-10 bg-[#1bdbdb] rounded-lg flex items-center justify-center font-bold text-black text-xl">G</div>
-                        <div>
-                          <p className="font-bold text-gray-900">GoDaddy</p>
-                          <p className="text-xs text-gray-500 font-medium">Connect in 1-Click</p>
-                        </div>
-                        <ExternalLink size={16} className="ml-auto text-gray-300 group-hover:text-blue-500 transition-colors" />
-                      </a>
-
-                      {/* Namecheap Deep Link */}
-                      <a 
-                        href={`https://ap.www.namecheap.com/Domains/DomainControlPanel/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/advancedns`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-sm transition-all group"
-                      >
-                        <div className="w-10 h-10 bg-[#de3723] rounded-lg flex items-center justify-center font-bold text-white text-xl">N</div>
-                        <div>
-                          <p className="font-bold text-gray-900">Namecheap</p>
-                          <p className="text-xs text-gray-500 font-medium">Connect in 1-Click</p>
-                        </div>
-                        <ExternalLink size={16} className="ml-auto text-gray-300 group-hover:text-blue-500 transition-colors" />
-                      </a>
-
-                      {/* IONOS Deep Link */}
-                      <a 
-                        href={`https://my.ionos.com/domain-details/${(customDomainInput || dbData?.customDomain).replace('www.', '')}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-sm transition-all group"
-                      >
-                        <div className="w-10 h-10 bg-[#003d8f] rounded-lg flex items-center justify-center font-bold text-white text-xl">I</div>
-                        <div>
-                          <p className="font-bold text-gray-900">IONOS</p>
-                          <p className="text-xs text-gray-500 font-medium">Connect in 1-Click</p>
-                        </div>
-                        <ExternalLink size={16} className="ml-auto text-gray-300 group-hover:text-blue-500 transition-colors" />
-                      </a>
-                    </div>
-                    
-                    <p className="text-xs text-gray-400 mt-6 text-center">Using a different provider like Cloudflare or HostGator? Click <button onClick={() => setDnsSetupMethod("manual")} className="text-blue-500 underline font-medium">Manual Setup</button> above.</p>
-                  </div>
-                )}
-
-                {/* ⚙️ MANUAL SETUP TAB */}
-                {dnsSetupMethod === "manual" && (
-                  <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-                    <p className="text-sm text-gray-700 font-medium mb-4">Add these records exactly as shown to your domain registrar's DNS settings.</p>
-
-                    <div className="flex flex-col gap-3">
-                      {dnsRecords?.map((record: any, idx: number) => (
-                        <div key={idx} className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 bg-gray-50 p-4 rounded-xl border border-gray-200 text-sm font-mono text-gray-800 items-center hover:bg-white transition-colors">
-                          <div className="md:col-span-2 md:border-r border-gray-200 pr-2">
-                            <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Type</span>
-                            <span className="font-bold text-blue-600 bg-blue-100 px-2 py-0.5 rounded">{record.type}</span>
-                          </div>
-                          <div className="md:col-span-4 md:border-r border-gray-200 pr-2 overflow-hidden text-ellipsis">
-                            <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Name / Host</span>
-                            {record.name}
-                          </div>
-                          <div className="md:col-span-5 overflow-hidden text-ellipsis">
-                            <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Target / Value</span>
-                            {record.value}
-                          </div>
-                          <div className="md:col-span-1 flex justify-end mt-2 md:mt-0">
-                            <button onClick={() => copyToClipboard(record.value)} className="w-full md:w-auto p-2.5 bg-white border border-gray-200 hover:bg-gray-100 hover:text-black rounded-lg text-gray-500 transition-colors shadow-sm flex justify-center items-center gap-2" title="Copy Value">
-                              <Copy size={16} /> <span className="md:hidden font-sans text-xs">Copy Value</span>
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Footer Validation Block */}
-                <div className="mt-8 flex flex-col md:flex-row items-center justify-between border-t border-gray-100 pt-6 gap-4">
-                  <div className="flex items-center gap-2 text-sm text-gray-600 font-medium bg-green-50 text-green-700 px-4 py-2 rounded-lg border border-green-200">
-                    <CheckCircle2 size={18} className="text-green-600" /> SSL Certificate will be provisioned automatically.
-                  </div>
-                  
-                  <button
-                    onClick={handleCheckStatus}
-                    disabled={isChecking}
-                    className="bg-black text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 shadow-md w-full md:w-auto"
-                  >
-                    {isChecking ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
-                    Verify Connection Status
-                  </button>
+              {/* STEP 1: Open Provider */}
+              <div className="p-6 md:p-8 border-b border-gray-100 bg-gray-50/50">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold text-xs">1</span>
+                  <h5 className="font-bold text-lg text-gray-900">Open your DNS Settings</h5>
                 </div>
-
+                <p className="text-gray-600 mb-6 ml-9 text-sm">Select your provider to log in and jump directly to your domain's DNS management page.</p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 ml-9">
+                  {/* GoDaddy Deep Link */}
+                  <a href={`https://dcc.godaddy.com/manage/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/dns`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group">
+                    <div className="w-8 h-8 bg-[#1bdbdb] rounded-lg flex items-center justify-center font-bold text-black">G</div>
+                    <div>
+                      <p className="font-bold text-gray-900 text-sm">GoDaddy</p>
+                      <p className="text-[11px] text-gray-500 font-medium">Open DNS Page</p>
+                    </div>
+                    <ExternalLink size={14} className="ml-auto text-gray-300 group-hover:text-blue-500 transition-colors" />
+                  </a>
+                  {/* Namecheap Deep Link */}
+                  <a href={`https://ap.www.namecheap.com/Domains/DomainControlPanel/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/advancedns`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group">
+                    <div className="w-8 h-8 bg-[#de3723] rounded-lg flex items-center justify-center font-bold text-white">N</div>
+                    <div>
+                      <p className="font-bold text-gray-900 text-sm">Namecheap</p>
+                      <p className="text-[11px] text-gray-500 font-medium">Open DNS Page</p>
+                    </div>
+                    <ExternalLink size={14} className="ml-auto text-gray-300 group-hover:text-blue-500 transition-colors" />
+                  </a>
+                  {/* IONOS Deep Link */}
+                  <a href={`https://my.ionos.com/domain-details/${(customDomainInput || dbData?.customDomain).replace('www.', '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group">
+                    <div className="w-8 h-8 bg-[#003d8f] rounded-lg flex items-center justify-center font-bold text-white">I</div>
+                    <div>
+                      <p className="font-bold text-gray-900 text-sm">IONOS</p>
+                      <p className="text-[11px] text-gray-500 font-medium">Open DNS Page</p>
+                    </div>
+                    <ExternalLink size={14} className="ml-auto text-gray-300 group-hover:text-blue-500 transition-colors" />
+                  </a>
+                </div>
               </div>
+
+              {/* STEP 2: Add Records */}
+              <div className="p-6 md:p-8 border-b border-gray-100">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold text-xs">2</span>
+                  <h5 className="font-bold text-lg text-gray-900">Add these records</h5>
+                </div>
+                <p className="text-gray-600 mb-6 ml-9 text-sm">Copy and paste these exact values into your DNS settings to connect the domain.</p>
+
+                <div className="flex flex-col gap-3 ml-0 md:ml-9">
+                  {dnsRecords?.map((record: any, idx: number) => (
+                    <div key={idx} className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 bg-gray-50 p-4 rounded-xl border border-gray-200 text-sm font-mono text-gray-800 items-center hover:bg-white hover:border-blue-200 hover:shadow-sm transition-all">
+                      <div className="md:col-span-2 md:border-r border-gray-200 pr-2">
+                        <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Type</span>
+                        <span className="font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded tracking-widest">{record.type}</span>
+                      </div>
+                      <div className="md:col-span-4 md:border-r border-gray-200 pr-2 overflow-hidden text-ellipsis">
+                        <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Name / Host</span>
+                        {record.name}
+                      </div>
+                      <div className="md:col-span-5 overflow-hidden text-ellipsis">
+                        <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Target / Value</span>
+                        {record.value}
+                      </div>
+                      <div className="md:col-span-1 flex justify-end mt-2 md:mt-0">
+                        <button onClick={() => copyToClipboard(record.value)} className="w-full md:w-auto p-2.5 bg-white border border-gray-200 hover:bg-gray-100 hover:text-black rounded-lg text-gray-500 transition-colors shadow-sm flex justify-center items-center gap-2 group" title="Copy Value">
+                          <Copy size={16} className="group-hover:text-blue-600" /> <span className="md:hidden font-sans text-xs font-semibold">Copy Value</span>
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* STEP 3: Verify */}
+              <div className="p-6 md:p-8 bg-gray-50/50 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-2 text-sm text-green-700 font-medium bg-green-50 px-4 py-2.5 rounded-lg border border-green-200 w-full md:w-auto">
+                  <CheckCircle2 size={18} className="text-green-600 shrink-0" /> SSL Certificate will be provisioned automatically.
+                </div>
+                
+                <button
+                  onClick={handleCheckStatus}
+                  disabled={isChecking}
+                  className="bg-black text-white px-8 py-3 rounded-xl text-sm font-bold hover:bg-gray-800 transition-all flex items-center justify-center gap-2 shadow-md w-full md:w-auto"
+                >
+                  {isChecking ? <Loader2 size={18} className="animate-spin" /> : <RefreshCw size={18} />}
+                  Verify Connection
+                </button>
+              </div>
+
             </div>
           )}
         </div>
