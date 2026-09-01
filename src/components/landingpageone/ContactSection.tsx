@@ -94,7 +94,7 @@ export default function ContactSection({ data, slug }: { data: any, slug?: strin
                             {errors.name && <span className="text-[12px] text-red-500 flex items-center gap-1 ml-1"><AlertCircle size={12}/> {errors.name}</span>}
                         </div>
                         <div className="flex flex-col gap-1.5">
-                            <label className="text-sm font-semibold text-gray-800 ml-1">Email Address *</label>
+                            <label suppressHydrationWarning={true} className="text-sm font-semibold text-gray-800 ml-1">Email Address *</label>
                             <input name="email" value={form.email} onChange={handleInputChange} onBlur={handleBlur} type="email" placeholder="john@example.com" className={cn("px-4 py-3.5 rounded-xl border focus:outline-none focus:ring-1 bg-white/80 transition-all text-gray-900", errors.email ? "border-red-400 focus:border-red-500 focus:ring-red-500" : "border-black/10 focus:border-black focus:ring-black")} />
                             {errors.email && <span className="text-[12px] text-red-500 flex items-center gap-1 ml-1"><AlertCircle size={12}/> {errors.email}</span>}
                         </div>

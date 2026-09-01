@@ -66,6 +66,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
     : `https://${name}.nexpetcare.online`;
 
   const activeData = merge({}, dbData?.websiteOneData || {});
+  
   const handlePublish = async () => {
     setIsPublishing(true);
     const res = await publishWebsiteUpdatesAction(name);
@@ -77,6 +78,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
     }
     setIsPublishing(false);
   };
+  
   const handleDeploy = async () => {
     setIsDeploying(true);
     setDeployStep(0);
@@ -97,6 +99,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
     setIsDeploying(false);
   };
 
+  // 🔥 RESTORED LOGIC: This sends the domain to Cloudflare
   const handleConnectDomain = async () => {
     if (!customDomainInput) return;
     setIsConnecting(true);
@@ -112,18 +115,24 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
     setIsConnecting(false);
   };
 
+  // 🔥 RESTORED LOGIC: This checks if the TXT records have been verified
   const handleCheckStatus = async () => {
-    if (!dbData?.customDomain && !customDomainInput) return;
+    const domainToCheck = customDomainInput || dbData?.customDomain;
+    if (!domainToCheck) return;
+    
     setIsChecking(true);
-
-    const domainToCheck = dbData?.customDomain || customDomainInput;
     const res = await checkDomainStatusAction(name, domainToCheck);
 
     if (res.success) {
       setDomainStatus(res.status);
       if (res.status === "active") {
-        setTimeout(() => window.location.reload(), 1500);
+        alert("✅ Domain successfully verified and connected!");
+        setDnsRecords(null);
+      } else {
+        alert("Domain is still pending. Make sure you added the TXT records to your DNS settings.");
       }
+    } else {
+      alert(`Error checking status: ${res.error}`);
     }
     setIsChecking(false);
   };
@@ -151,38 +160,26 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
     document.body.removeChild(tempInput);
   }
 
-  // 🚀 SMART ZIP EXPORT: Injects SEO, Analytics, and Integrations into the final HTML!
   const handleDownload = async () => {
     setDownloading(true);
     try {
       const settings = dbData?.settings || {};
-
-      // Grab the raw HTML from our preview wrapper
       const contentNode = document.getElementById("export-container");
       const contentHtml = contentNode ? contentNode.innerHTML : "";
 
-      // Build the standard HTML5 boilerplate and inject all dynamic settings
       const fullHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- SEO Metadata -->
   <title>${settings.seoTitle || dbData?.clientName || name}</title>
   <meta name="description" content="${settings.seoDescription || ""}">
   <meta name="keywords" content="${settings.keywords || ""}">
   ${settings.favicon ? `<link rel="icon" href="${settings.favicon}">` : ""}
-  
-  <!-- Social Media Branding -->
   <meta property="og:title" content="${settings.seoTitle || name}">
   <meta property="og:description" content="${settings.seoDescription || ""}">
   ${settings.ogImage ? `<meta property="og:image" content="${settings.ogImage}">` : ""}
-  
-  <!-- Tailwind CSS (Required for styling the static export) -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Google Analytics -->
   ${settings.googleAnalyticsId ? `
   <script async src="https://www.googletagmanager.com/gtag/js?id=${settings.googleAnalyticsId}"></script>
   <script>
@@ -192,23 +189,14 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
     gtag('config', '${settings.googleAnalyticsId}');
   </script>
   ` : ""}
-
-  <!-- Google Reviews Script -->
   ${settings.googleReviewsId ? `<script src="https://apps.elfsight.com/p/platform.js" defer></script>` : ""}
 </head>
 <body>
-  
-  <!-- Website Content -->
   ${contentHtml}
-
-  <!-- Google Reviews Widget Container -->
   ${settings.googleReviewsId ? `<div class="elfsight-app-${settings.googleReviewsId}"></div>` : ""}
-
 </body>
 </html>`;
 
-      // Send to the backend route to process assets and generate ZIP
-      // Replace "/api/export" with your actual route name if it differs!
       const res = await fetch("/api/export", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -217,7 +205,6 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
 
       if (!res.ok) throw new Error("Failed to generate ZIP");
 
-      // Trigger the browser to download the blob
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -235,7 +222,8 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] text-black p-6 md:p-10 font-sans flex flex-col items-center">
+    // 🔥 suppressHydrationWarning added here to prevent your Temp Mail extension from crashing the page
+    <div className="min-h-screen bg-[#f8f9fa] text-black p-6 md:p-10 font-sans flex flex-col items-center" suppressHydrationWarning>
 
       {/* Dashboard Header */}
       <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
@@ -251,20 +239,14 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
           </div>
         </div>
 
-<div className="flex flex-wrap items-center gap-3">
-          {/* Visual Editor - Routes dynamically to the correct template folder */}
+        <div className="flex flex-wrap items-center gap-3">
           <Link 
             className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-blue-600 transition-colors shadow-sm"
-            // If template is websiteOne, go to landingpageone folder. Add logic here for future templates.
             href={`/dashboard/${name}/${dbData?.template === 'websiteOne' ? 'websiteOne' : 'websiteOne'}/edit`}
           >
             <LayoutTemplate size={16} /> Visual Editor
           </Link>
 
-          {/* ❌ THE JSON EDIT BUTTON HAS BEEN COMPLETELY REMOVED FROM HERE */}
-          {/* You will access it manually by typing: /dashboard/[name]/landingpageone/edit/json in your URL bar */}
-
-          {/* Settings Button */}
           <Link className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors shadow-sm" href={`/dashboard/${name}/settings`}>
             <Settings size={16} /> Settings
           </Link>
@@ -363,18 +345,16 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
                 {dbData?.customDomain ? "View DNS Records" : "Setup Custom Domain"}
               </button>
 
-              {/* Free Support Booking Link */}
               <a
                 href="https://cal.com/maheshwar-reddy-20/nexpetcare-demo"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-blue-800/50 border border-blue-400/50 text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-blue-700 transition-colors flex items-center gap-2"
               >
-                <Calendar size={16} /> {/* Ensure you import { Calendar } from 'lucide-react' */}
+                <Calendar size={16} />
                 Book Free 1-on-1 Setup Call
               </a>
 
-              {/* Optional small text to emphasize that it's free/helpful */}
               <span className="text-xs text-blue-200/70 max-w-[200px] leading-tight">
                 Stuck on DNS or have questions? Get completely free personal support.
               </span>
@@ -477,20 +457,17 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
           <div className="w-20" />
         </div>
 
-        {/* Outer wrapper to catch mouse hover */}
         <div
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
           className="relative w-full h-[750px] bg-gray-50 overflow-hidden"
         >
-          {/* Inner scrolling container (overflow-hidden prevents manual scroll, contain-paint traps the fixed navbar) */}
           <div
             ref={scrollRef}
             className="absolute inset-0 overflow-hidden"
             style={{ contain: 'paint' }}
           >
-            {/* pointer-events-none completely blocks clicking and manual dragging */}
-            <div id="export-container" className="w-full min-h-full bg-white flex flex-col relative pointer-events-none">
+            <div id="export-container" className="w-full min-h-full bg-white flex flex-col relative pointer-events-none" suppressHydrationWarning>
               <WebsiteOne data={activeData} />
             </div>
           </div>
