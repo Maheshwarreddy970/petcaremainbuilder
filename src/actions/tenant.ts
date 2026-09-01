@@ -8,21 +8,18 @@ export async function connectCustomDomainAction(slug: string, customDomain: stri
   try {
     const cleanDomain = customDomain.replace(/^https?:\/\//, "").replace(/\/$/, "").toLowerCase();
     
-    // Reading securely from the server (no NEXT_PUBLIC)
     const zoneId = process.env.CLOUDFLARE_ZONE_ID;
     const token = process.env.CLOUDFLARE_API_TOKEN;
-    const email = process.env.CLOUDFLARE_EMAIL; 
     const fallbackDomain = process.env.NEXT_PUBLIC_FALLBACK_DOMAIN || "cname.nexpetcare.online";
 
-    if (!zoneId || !token || !email) {
+    if (!zoneId || !token) {
       return { success: false, error: "Missing Cloudflare Credentials in .env.local" };
     }
 
-    // 🔥 HARDCODED TO MATCH THE WORKING TEST SCRIPT
+    // 🔥 FIX: Use Authorization Bearer for API Tokens (Do not use X-Auth-Email)
     const headers: any = { 
       "Content-Type": "application/json",
-      "X-Auth-Email": email.trim(),
-      "X-Auth-Key": token.trim()
+      "Authorization": `Bearer ${token.trim()}`
     };
 
     const response = await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId.trim()}/custom_hostnames`, {
@@ -66,15 +63,13 @@ export async function checkDomainStatusAction(slug: string, customDomain: string
   try {
     const zoneId = process.env.CLOUDFLARE_ZONE_ID;
     const token = process.env.CLOUDFLARE_API_TOKEN;
-    const email = process.env.CLOUDFLARE_EMAIL;
 
-    if (!zoneId || !token || !email) return { success: false, error: "Missing Credentials" };
+    if (!zoneId || !token) return { success: false, error: "Missing Credentials" };
 
-    // 🔥 HARDCODED TO MATCH THE WORKING TEST SCRIPT
+    // 🔥 FIX: Use Authorization Bearer here too
     const headers: any = { 
       "Content-Type": "application/json",
-      "X-Auth-Email": email.trim(),
-      "X-Auth-Key": token.trim()
+      "Authorization": `Bearer ${token.trim()}`
     };
 
     const response = await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId.trim()}/custom_hostnames?hostname=${customDomain}`, {
