@@ -41,7 +41,44 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
 
   // UI State for Auto vs Manual DNS
   const [dnsSetupMethod, setDnsSetupMethod] = useState<"auto" | "manual">("auto");
+// 🚀 NEW: Smart DNS Registrar Detection State
+  const [detectedRegistrar, setDetectedRegistrar] = useState<"godaddy" | "namecheap" | "ionos" | "squarespace" | "unknown" | "detecting">("detecting");
 
+  // 🚀 NEW: Smart DNS Registrar Detection Effect
+  useEffect(() => {
+    const targetDomain = customDomainInput || dbData?.customDomain;
+    if (!showDnsModal || !targetDomain) return;
+
+    const detectProvider = async () => {
+      setDetectedRegistrar("detecting");
+      try {
+        // Strip www. and https:// to get the root domain for accurate NS lookup
+        const cleanDomain = targetDomain.replace(/^https?:\/\//, "").replace(/\/$/, "").replace(/^www\./, '');
+        if (!cleanDomain || !cleanDomain.includes('.')) return;
+
+        // Call Cloudflare's free DNS-over-HTTPS API
+        const res = await fetch(`https://cloudflare-dns.com/dns-query?name=${cleanDomain}&type=NS`, {
+          headers: { 'Accept': 'application/dns-json' }
+        });
+        
+        const data = await res.json();
+        const nsString = (data.Answer || []).map((a: any) => a.data.toLowerCase()).join(' ');
+
+        // Match against known provider Name Servers
+        if (nsString.includes('domaincontrol')) setDetectedRegistrar('godaddy');
+        else if (nsString.includes('registrar-servers') || nsString.includes('namecheap')) setDetectedRegistrar('namecheap');
+        else if (nsString.includes('ui-dns') || nsString.includes('1and1')) setDetectedRegistrar('ionos');
+        else if (nsString.includes('squarespacedns') || nsString.includes('googledomains')) setDetectedRegistrar('squarespace');
+        else setDetectedRegistrar('unknown');
+      } catch (e) {
+        setDetectedRegistrar('unknown');
+      }
+    };
+
+    // Debounce the detection slightly so it doesn't spam the API while they type
+    const timeoutId = setTimeout(detectProvider, 800);
+    return () => clearTimeout(timeoutId);
+  }, [showDnsModal, customDomainInput, dbData?.customDomain]);
   // Template Auto-Scroll logic
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
@@ -366,52 +403,92 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
                   <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold text-xs">1</span>
                   <h5 className="font-bold text-lg text-gray-900">Open your DNS Settings</h5>
                 </div>
-                <p className="text-gray-600 mb-6 ml-0 md:ml-9 text-sm">Select your provider to log in and jump directly to your domain's DNS management page.</p>
-                
-                {/* 🔥 Updated Grid to fit 4 Providers perfectly */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 ml-0 md:ml-9">
-                  
-                  {/* GoDaddy Deep Link */}
-                  <a href={`https://dcc.godaddy.com/manage/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/dns`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group">
-                    <div className="w-8 h-8 bg-[#1bdbdb] rounded-lg flex items-center justify-center font-bold text-black shrink-0">G</div>
-                    <div className="overflow-hidden">
-                      <p className="font-bold text-gray-900 text-sm truncate">GoDaddy</p>
-                      <p className="text-[11px] text-gray-500 font-medium truncate">Open DNS Page</p>
-                    </div>
-                    <ExternalLink size={14} className="ml-auto shrink-0 text-gray-300 group-hover:text-blue-500 transition-colors" />
-                  </a>
 
-                  {/* Namecheap Deep Link */}
-                  <a href={`https://ap.www.namecheap.com/Domains/DomainControlPanel/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/advancedns`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group">
-                    <div className="w-8 h-8 bg-[#de3723] rounded-lg flex items-center justify-center font-bold text-white shrink-0">N</div>
-                    <div className="overflow-hidden">
-                      <p className="font-bold text-gray-900 text-sm truncate">Namecheap</p>
-                      <p className="text-[11px] text-gray-500 font-medium truncate">Open DNS Page</p>
+                {detectedRegistrar === "detecting" ? (
+                  <div className="flex items-center gap-2 ml-0 md:ml-9 text-sm text-gray-500 mt-4">
+                    <Loader2 size={16} className="animate-spin" /> Detecting your domain provider...
+                  </div>
+                ) : detectedRegistrar !== "unknown" ? (
+                  <div className="ml-0 md:ml-9 mt-4">
+                    <p className="text-gray-700 mb-4 text-sm">
+                      We detected your domain is registered with <span className="font-bold capitalize text-blue-700">{detectedRegistrar}</span>. Click below to jump directly to your settings.
+                    </p>
+                    <div className="max-w-sm">
+                      {detectedRegistrar === 'godaddy' && (
+                        <a href={`https://dcc.godaddy.com/manage/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/dns`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group">
+                          <div className="w-8 h-8 bg-[#1bdbdb] rounded-lg flex items-center justify-center font-bold text-black shrink-0">G</div>
+                          <div className="overflow-hidden">
+                            <p className="font-bold text-gray-900 text-sm truncate">GoDaddy</p>
+                            <p className="text-[11px] text-gray-500 font-medium truncate">Open DNS Page</p>
+                          </div>
+                          <ExternalLink size={14} className="ml-auto shrink-0 text-gray-300 group-hover:text-blue-500 transition-colors" />
+                        </a>
+                      )}
+                      {detectedRegistrar === 'namecheap' && (
+                        <a href={`https://ap.www.namecheap.com/Domains/DomainControlPanel/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/advancedns`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group">
+                          <div className="w-8 h-8 bg-[#de3723] rounded-lg flex items-center justify-center font-bold text-white shrink-0">N</div>
+                          <div className="overflow-hidden">
+                            <p className="font-bold text-gray-900 text-sm truncate">Namecheap</p>
+                            <p className="text-[11px] text-gray-500 font-medium truncate">Open DNS Page</p>
+                          </div>
+                          <ExternalLink size={14} className="ml-auto shrink-0 text-gray-300 group-hover:text-blue-500 transition-colors" />
+                        </a>
+                      )}
+                      {detectedRegistrar === 'ionos' && (
+                        <a href={`https://my.ionos.com/domain-details/${(customDomainInput || dbData?.customDomain).replace('www.', '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group">
+                          <div className="w-8 h-8 bg-[#003d8f] rounded-lg flex items-center justify-center font-bold text-white shrink-0">I</div>
+                          <div className="overflow-hidden">
+                            <p className="font-bold text-gray-900 text-sm truncate">IONOS</p>
+                            <p className="text-[11px] text-gray-500 font-medium truncate">Open DNS Page</p>
+                          </div>
+                          <ExternalLink size={14} className="ml-auto shrink-0 text-gray-300 group-hover:text-blue-500 transition-colors" />
+                        </a>
+                      )}
+                      {detectedRegistrar === 'squarespace' && (
+                        <a href={`https://account.squarespace.com/domains/managed/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/dns`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-black hover:shadow-md transition-all group">
+                          <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center font-bold text-white shrink-0">S</div>
+                          <div className="overflow-hidden">
+                            <p className="font-bold text-gray-900 text-sm truncate">Squarespace</p>
+                            <p className="text-[11px] text-gray-500 font-medium truncate">Open DNS Page</p>
+                          </div>
+                          <ExternalLink size={14} className="ml-auto shrink-0 text-gray-300 group-hover:text-black transition-colors" />
+                        </a>
+                      )}
                     </div>
-                    <ExternalLink size={14} className="ml-auto shrink-0 text-gray-300 group-hover:text-blue-500 transition-colors" />
-                  </a>
-
-                  {/* IONOS Deep Link */}
-                  <a href={`https://my.ionos.com/domain-details/${(customDomainInput || dbData?.customDomain).replace('www.', '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group">
-                    <div className="w-8 h-8 bg-[#003d8f] rounded-lg flex items-center justify-center font-bold text-white shrink-0">I</div>
-                    <div className="overflow-hidden">
-                      <p className="font-bold text-gray-900 text-sm truncate">IONOS</p>
-                      <p className="text-[11px] text-gray-500 font-medium truncate">Open DNS Page</p>
+                  </div>
+                ) : (
+                  <div className="ml-0 md:ml-9 mt-4">
+                    <p className="text-gray-600 mb-6 text-sm">We couldn't automatically detect your provider. Select it below to jump directly to your DNS management page.</p>
+                    
+                    {/* Fallback: Show all 4 if we can't figure it out */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                      <a href={`https://dcc.godaddy.com/manage/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/dns`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group">
+                        <div className="w-8 h-8 bg-[#1bdbdb] rounded-lg flex items-center justify-center font-bold text-black shrink-0">G</div>
+                        <div className="overflow-hidden">
+                          <p className="font-bold text-gray-900 text-sm truncate">GoDaddy</p>
+                        </div>
+                      </a>
+                      <a href={`https://ap.www.namecheap.com/Domains/DomainControlPanel/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/advancedns`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group">
+                        <div className="w-8 h-8 bg-[#de3723] rounded-lg flex items-center justify-center font-bold text-white shrink-0">N</div>
+                        <div className="overflow-hidden">
+                          <p className="font-bold text-gray-900 text-sm truncate">Namecheap</p>
+                        </div>
+                      </a>
+                      <a href={`https://my.ionos.com/domain-details/${(customDomainInput || dbData?.customDomain).replace('www.', '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group">
+                        <div className="w-8 h-8 bg-[#003d8f] rounded-lg flex items-center justify-center font-bold text-white shrink-0">I</div>
+                        <div className="overflow-hidden">
+                          <p className="font-bold text-gray-900 text-sm truncate">IONOS</p>
+                        </div>
+                      </a>
+                      <a href={`https://account.squarespace.com/domains/managed/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/dns`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-black hover:shadow-md transition-all group">
+                        <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center font-bold text-white shrink-0">S</div>
+                        <div className="overflow-hidden">
+                          <p className="font-bold text-gray-900 text-sm truncate">Squarespace</p>
+                        </div>
+                      </a>
                     </div>
-                    <ExternalLink size={14} className="ml-auto shrink-0 text-gray-300 group-hover:text-blue-500 transition-colors" />
-                  </a>
-
-                  {/* 🔥 NEW: Squarespace Deep Link */}
-                  <a href={`https://account.squarespace.com/domains/managed/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/dns`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-black hover:shadow-md transition-all group">
-                    <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center font-bold text-white shrink-0">S</div>
-                    <div className="overflow-hidden">
-                      <p className="font-bold text-gray-900 text-sm truncate">Squarespace</p>
-                      <p className="text-[11px] text-gray-500 font-medium truncate">Open DNS Page</p>
-                    </div>
-                    <ExternalLink size={14} className="ml-auto shrink-0 text-gray-300 group-hover:text-black transition-colors" />
-                  </a>
-
-                </div>
+                  </div>
+                )}
               </div>
 
               {/* STEP 2: Add Records */}
