@@ -5,7 +5,7 @@ import Link from "next/link";
 import { 
   LayoutTemplate, Code, ExternalLink, Loader2, Globe, Calendar, Server, 
   ShieldCheck, CheckCircle2, Lock, Link as LinkIcon, RefreshCw, Copy, 
-  Download, Settings, Zap, Wrench, ChevronRight
+  Download, Settings 
 } from "lucide-react";
 import merge from "lodash/merge";
 import WebsiteOne from "@/components/templates/WebsiteOne";
@@ -31,20 +31,20 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
   const [isDeploying, setIsDeploying] = useState(false);
   const [deployStep, setDeployStep] = useState(0);
   const [isPublishing, setIsPublishing] = useState(false);
-  const [showDnsModal, setShowDnsModal] = useState(false);
-// 🔥 Pre-load the saved domain and DNS records from Firebase
+  
+  // 🔥 Automatically open the modal if the domain is still pending
+  const [showDnsModal, setShowDnsModal] = useState(dbData?.domainStatus === "pending");
+
   const [customDomainInput, setCustomDomainInput] = useState(dbData?.customDomain || "");
   const [dnsRecords, setDnsRecords] = useState<any>(dbData?.dnsRecords || null);
   const [isConnecting, setIsConnecting] = useState(false);
   const [domainStatus, setDomainStatus] = useState(dbData?.domainStatus || "none");
   const [isChecking, setIsChecking] = useState(false);
 
-  // UI State for Auto vs Manual DNS
-  const [dnsSetupMethod, setDnsSetupMethod] = useState<"auto" | "manual">("auto");
-// 🚀 NEW: Smart DNS Registrar Detection State
+  // 🚀 Smart DNS Registrar Detection State
   const [detectedRegistrar, setDetectedRegistrar] = useState<"godaddy" | "namecheap" | "ionos" | "squarespace" | "unknown" | "detecting">("detecting");
 
-  // 🚀 NEW: Smart DNS Registrar Detection Effect
+  // 🚀 Smart DNS Registrar Detection Effect
   useEffect(() => {
     const targetDomain = customDomainInput || dbData?.customDomain;
     if (!showDnsModal || !targetDomain) return;
@@ -52,11 +52,9 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
     const detectProvider = async () => {
       setDetectedRegistrar("detecting");
       try {
-        // Strip www. and https:// to get the root domain for accurate NS lookup
         const cleanDomain = targetDomain.replace(/^https?:\/\//, "").replace(/\/$/, "").replace(/^www\./, '');
         if (!cleanDomain || !cleanDomain.includes('.')) return;
 
-        // Call Cloudflare's free DNS-over-HTTPS API
         const res = await fetch(`https://cloudflare-dns.com/dns-query?name=${cleanDomain}&type=NS`, {
           headers: { 'Accept': 'application/dns-json' }
         });
@@ -64,7 +62,6 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
         const data = await res.json();
         const nsString = (data.Answer || []).map((a: any) => a.data.toLowerCase()).join(' ');
 
-        // Match against known provider Name Servers
         if (nsString.includes('domaincontrol')) setDetectedRegistrar('godaddy');
         else if (nsString.includes('registrar-servers') || nsString.includes('namecheap')) setDetectedRegistrar('namecheap');
         else if (nsString.includes('ui-dns') || nsString.includes('1and1')) setDetectedRegistrar('ionos');
@@ -75,11 +72,10 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
       }
     };
 
-    // Debounce the detection slightly so it doesn't spam the API while they type
     const timeoutId = setTimeout(detectProvider, 800);
     return () => clearTimeout(timeoutId);
   }, [showDnsModal, customDomainInput, dbData?.customDomain]);
-  // Template Auto-Scroll logic
+
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
 
@@ -89,7 +85,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
 
     const autoScroll = () => {
       if (scrollContainer && !isHovering) {
-        scrollContainer.scrollTop += 0.5; // Scroll speed
+        scrollContainer.scrollTop += 0.5;
         if (scrollContainer.scrollTop >= scrollContainer.scrollHeight - scrollContainer.clientHeight) {
           scrollContainer.scrollTop = 0;
         }
@@ -156,9 +152,8 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
       setDomainStatus(res.status);
       if (res.status === "active") {
         alert("✅ Domain successfully verified and connected!");
-        setDnsRecords(null);
       } else {
-        alert("Domain is still pending. Make sure you authorized your provider or added the TXT records.");
+        alert("Domain is still pending. Make sure you added the TXT records to your DNS settings.");
       }
     } else {
       alert(`Error checking status: ${res.error}`);
@@ -217,13 +212,6 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
       alert("Failed to export ZIP.");
     }
     setDownloading(false);
-  };
-
-  // Helper to extract the TXT verification value for Auto-Connect
-  const getTxtVerificationValue = () => {
-    if (!dnsRecords) return "";
-    const ownershipRecord = dnsRecords.find((r: any) => r.name.includes("_cf-custom-hostname"));
-    return ownershipRecord ? ownershipRecord.value : "";
   };
 
   return (
@@ -364,7 +352,6 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
       )}
 
       {/* DNS Setup Modal / Panel */}
-     {/* DNS Setup Modal / Panel */}
       {showDnsModal && (
         <div className="w-full max-w-7xl mx-auto mt-4 bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm animate-in fade-in slide-in-from-top-4 duration-300">
           <div className="flex items-center justify-between mb-6">
@@ -385,11 +372,12 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
             </div>
             <button
               onClick={handleConnectDomain}
-              disabled={isConnecting || !customDomainInput || customDomainInput === dbData?.customDomain}
+              // 🔥 FIX: Now they can click the button if dnsRecords is missing!
+              disabled={isConnecting || !customDomainInput}
               className="bg-black text-white px-6 py-3 w-full md:w-auto rounded-xl text-sm font-semibold disabled:opacity-70 flex items-center justify-center gap-2 hover:bg-gray-800 transition-all shadow-sm"
             >
               {isConnecting ? <Loader2 size={18} className="animate-spin" /> : null}
-              {dbData?.customDomain ? "Update Domain" : "Initialize Domain"}
+              {(!dnsRecords && dbData?.customDomain === customDomainInput) ? "Retrieve DNS Records" : (dbData?.customDomain ? "Update Domain" : "Initialize Domain")}
             </button>
           </div>
 
@@ -403,7 +391,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
                   <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold text-xs">1</span>
                   <h5 className="font-bold text-lg text-gray-900">Open your DNS Settings</h5>
                 </div>
-
+                
                 {detectedRegistrar === "detecting" ? (
                   <div className="flex items-center gap-2 ml-0 md:ml-9 text-sm text-gray-500 mt-4">
                     <Loader2 size={16} className="animate-spin" /> Detecting your domain provider...
@@ -414,6 +402,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
                       We detected your domain is registered with <span className="font-bold capitalize text-blue-700">{detectedRegistrar}</span>. Click below to jump directly to your settings.
                     </p>
                     <div className="max-w-sm">
+                      {/* 🔥 SINGLE DETECTED BUTTON */}
                       {detectedRegistrar === 'godaddy' && (
                         <a href={`https://dcc.godaddy.com/manage/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/dns`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group">
                           <div className="w-8 h-8 bg-[#1bdbdb] rounded-lg flex items-center justify-center font-bold text-black shrink-0">G</div>
@@ -460,7 +449,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
                   <div className="ml-0 md:ml-9 mt-4">
                     <p className="text-gray-600 mb-6 text-sm">We couldn't automatically detect your provider. Select it below to jump directly to your DNS management page.</p>
                     
-                    {/* Fallback: Show all 4 if we can't figure it out */}
+                    {/* Fallback Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                       <a href={`https://dcc.godaddy.com/manage/${(customDomainInput || dbData?.customDomain).replace('www.', '')}/dns`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group">
                         <div className="w-8 h-8 bg-[#1bdbdb] rounded-lg flex items-center justify-center font-bold text-black shrink-0">G</div>
@@ -492,37 +481,39 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
               </div>
 
               {/* STEP 2: Add Records */}
-              <div className="p-6 md:p-8 border-b border-gray-100">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold text-xs">2</span>
-                  <h5 className="font-bold text-lg text-gray-900">Add these records</h5>
-                </div>
-                <p className="text-gray-600 mb-6 ml-9 text-sm">Copy and paste these exact values into your DNS settings to connect the domain.</p>
+              {dnsRecords && (
+                <div className="p-6 md:p-8 border-b border-gray-100">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold text-xs">2</span>
+                    <h5 className="font-bold text-lg text-gray-900">Add these records</h5>
+                  </div>
+                  <p className="text-gray-600 mb-6 ml-9 text-sm">Copy and paste these exact values into your DNS settings to connect the domain.</p>
 
-                <div className="flex flex-col gap-3 ml-0 md:ml-9">
-                  {dnsRecords?.map((record: any, idx: number) => (
-                    <div key={idx} className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 bg-gray-50 p-4 rounded-xl border border-gray-200 text-sm font-mono text-gray-800 items-center hover:bg-white hover:border-blue-200 hover:shadow-sm transition-all">
-                      <div className="md:col-span-2 md:border-r border-gray-200 pr-2">
-                        <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Type</span>
-                        <span className="font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded tracking-widest">{record.type}</span>
+                  <div className="flex flex-col gap-3 ml-0 md:ml-9">
+                    {dnsRecords.map((record: any, idx: number) => (
+                      <div key={idx} className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 bg-gray-50 p-4 rounded-xl border border-gray-200 text-sm font-mono text-gray-800 items-center hover:bg-white hover:border-blue-200 hover:shadow-sm transition-all">
+                        <div className="md:col-span-2 md:border-r border-gray-200 pr-2">
+                          <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Type</span>
+                          <span className="font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded tracking-widest">{record.type}</span>
+                        </div>
+                        <div className="md:col-span-4 md:border-r border-gray-200 pr-2 overflow-hidden text-ellipsis">
+                          <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Name / Host</span>
+                          {record.name}
+                        </div>
+                        <div className="md:col-span-5 overflow-hidden text-ellipsis">
+                          <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Target / Value</span>
+                          {record.value}
+                        </div>
+                        <div className="md:col-span-1 flex justify-end mt-2 md:mt-0">
+                          <button onClick={() => copyToClipboard(record.value)} className="w-full md:w-auto p-2.5 bg-white border border-gray-200 hover:bg-gray-100 hover:text-black rounded-lg text-gray-500 transition-colors shadow-sm flex justify-center items-center gap-2 group" title="Copy Value">
+                            <Copy size={16} className="group-hover:text-blue-600" /> <span className="md:hidden font-sans text-xs font-semibold">Copy Value</span>
+                          </button>
+                        </div>
                       </div>
-                      <div className="md:col-span-4 md:border-r border-gray-200 pr-2 overflow-hidden text-ellipsis">
-                        <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Name / Host</span>
-                        {record.name}
-                      </div>
-                      <div className="md:col-span-5 overflow-hidden text-ellipsis">
-                        <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Target / Value</span>
-                        {record.value}
-                      </div>
-                      <div className="md:col-span-1 flex justify-end mt-2 md:mt-0">
-                        <button onClick={() => copyToClipboard(record.value)} className="w-full md:w-auto p-2.5 bg-white border border-gray-200 hover:bg-gray-100 hover:text-black rounded-lg text-gray-500 transition-colors shadow-sm flex justify-center items-center gap-2 group" title="Copy Value">
-                          <Copy size={16} className="group-hover:text-blue-600" /> <span className="md:hidden font-sans text-xs font-semibold">Copy Value</span>
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* STEP 3: Verify */}
               <div className="p-6 md:p-8 bg-gray-50/50 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -544,6 +535,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
           )}
         </div>
       )}
+
       {/* Auto-scrolling Template Preview - ALWAYS VISIBLE */}
       <div className="w-full max-w-7xl mx-auto mt-10 flex flex-col bg-white rounded-2xl shadow-2xl border border-gray-300 overflow-hidden ring-1 ring-black/5">
         <div className="h-14 bg-gray-100/80 border-b border-gray-200 flex items-center px-4 justify-between select-none shrink-0 z-10 relative">
