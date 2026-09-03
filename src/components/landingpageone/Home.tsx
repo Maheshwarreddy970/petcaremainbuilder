@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Star } from 'lucide-react';
+import { Calendar, Mail, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import SmartHeading from '../ui/SmartHeading';
 
@@ -13,7 +13,6 @@ export default function HeroSection({ data }: { data: any }) {
     return (
         <section
             id='home'
-            // 🔥 The section itself gets a custom class
             className={cn(
                 "relative w-full lg:min-h-[115vh] h-screen flex md:items-center items-end overflow-hidden",
                 data.section?.className
@@ -37,8 +36,6 @@ export default function HeroSection({ data }: { data: any }) {
                 <div className="flex flex-col max-w-[620px] mb-14 md:mb-0 py-20">
 
                     <div className="flex flex-col gap-6 md:gap-8">
-
-                        {/* 🔥 NEW ANNOUNCEMENT BADGE */}
                         {data.announcement && (
                             <div
                                 className={cn(
@@ -64,7 +61,6 @@ export default function HeroSection({ data }: { data: any }) {
                             style={{ color: data.heading?.color || data.headingColor }}
                         />
                         <p
-                            // 🔥 Description classes injected here
                             className={cn(
                                 "text-sm md:text-[18px] leading-[1.6] max-w-[380px] font-medium",
                                 data.description?.className
@@ -74,11 +70,13 @@ export default function HeroSection({ data }: { data: any }) {
                         />
                     </div>
 
-                    <div className={cn("mt-10 md:mt-12", data.cta?.className)}>
+                    {/* 🔥 DUAL CALL TO ACTION BUTTONS */}
+                    <div className={cn("mt-10 md:mt-12 flex flex-col sm:flex-row gap-4", data.cta?.className)}>
+                        {/* Primary Button (Square) */}
                         <a
                             href={data.cta?.href || "#"}
                             className={cn(
-                                "group relative rounded-2xl py-3.5 px-6 flex items-center justify-center gap-[14px] w-fit overflow-hidden",
+                                "group relative rounded-2xl py-3.5 px-6 flex items-center justify-center gap-[14px] w-full sm:w-fit overflow-hidden",
                                 "transition-all duration-300 shadow-md hover:opacity-90 hover:shadow-lg"
                             )}
                             style={{
@@ -88,23 +86,46 @@ export default function HeroSection({ data }: { data: any }) {
                         >
                             <Calendar className="w-5 h-5 flex-shrink-0" />
                             <span className="font-medium text-[16px] whitespace-nowrap">
-                                {data.cta?.label}
+                                {data.cta?.label || "Book Online"}
                             </span>
                         </a>
+
+                        {/* Secondary Button (Contact Form) - NOW FULL AND SOLID */}
+                        {data.ctaSecondary && (
+                            <a
+                                href={data.ctaSecondary?.href || "#contact"}
+                                className={cn(
+                                    "group relative rounded-2xl py-3.5 px-6 flex items-center justify-center gap-[14px] w-full sm:w-fit overflow-hidden",
+                                    "transition-all duration-300 shadow-md hover:opacity-90 hover:shadow-lg",
+                                    data.ctaSecondary?.className
+                                )}
+                                style={{
+                                    backgroundColor: data.ctaSecondary?.bg || '#1e0c05',
+                                    color: data.ctaSecondary?.text || '#ffffff'
+                                }}
+                            >
+                                <Mail className="w-5 h-5 flex-shrink-0" />
+                                <span className="font-medium text-[16px] whitespace-nowrap">
+                                    {data.ctaSecondary?.label || "Request via Form"}
+                                </span>
+                            </a>
+                        )}
                     </div>
 
                     <div className={cn("flex flex-col gap-2 mt-6 md:mt-10", data.socialProof?.className)}>
-                        <div className="flex items-center gap-1 drop-shadow-md">
-                            {[...Array(starCount)].map((_, index) => (
-                                <Star
-                                    key={index}
-                                    className="w-[18px] h-[18px]"
-                                    style={{
-                                        color: data.socialProof?.starColor || '#8c863a',
-                                        fill: data.socialProof?.starColor || '#8c863a'
-                                    }}
-                                />
-                            ))}
+                        <div className="flex items-center gap-1 drop-shadow-md cursor-pointer hover:opacity-80 transition-opacity">
+                            <a href={data.socialProof?.href || "#"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
+                                {[...Array(starCount)].map((_, index) => (
+                                    <Star
+                                        key={index}
+                                        className="w-[18px] h-[18px]"
+                                        style={{
+                                            color: data.socialProof?.starColor || '#8c863a',
+                                            fill: data.socialProof?.starColor || '#8c863a'
+                                        }}
+                                    />
+                                ))}
+                            </a>
                         </div>
                         <p
                             className="font-semibold text-[16px] opacity-100"

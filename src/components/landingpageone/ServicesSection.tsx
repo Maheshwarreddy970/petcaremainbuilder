@@ -1,36 +1,30 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import SmartHeading from '../ui/SmartHeading';
-import { ArrowRight } from 'lucide-react'; // Keep ArrowRight for the buttons
+import { ArrowRight } from 'lucide-react';
 
-// 🔥 Imported all the highly specific pet service icons from react-icons
-import { IoCutSharp } from "react-icons/io5";
-import { GiFrontTeeth, GiShower, GiComb, GiBarbedNails, GiToothbrush } from "react-icons/gi";
-import { LuBrush, LuWind } from "react-icons/lu";
-import { PiBathtubFill, PiPawPrintLight, PiCatLight, PiSprayBottleLight } from "react-icons/pi";
-import { FaEarListen, FaSprayCanSparkles, FaBottleDroplet } from "react-icons/fa6";
-import { FiHeart } from "react-icons/fi";
+// 🔥 Outline Icons from react-icons
+import { IoCutOutline } from "react-icons/io5";
+import { PiToothLight, PiShowerLight, PiCatLight, PiPawPrintLight, PiDropLight } from "react-icons/pi";
+import { LuWind, LuBrush } from "react-icons/lu";
+import { FaRegFaceGrinStars } from "react-icons/fa6";
+import { FiHeart, FiScissors } from "react-icons/fi";
+import { TbDental } from "react-icons/tb";
 
-// 🔥 The Smart Mapper: Connects service names/descriptions to the perfect icon
 const iconMappings = [
-    { keywords: ['haircut', 'cut', 'scissor', 'trim', 'styling', 'shave'], component: IoCutSharp },
-    { keywords: ['bath', 'tub', 'wash', 'cleansing', 'shampoo'], component: PiBathtubFill },
-    { keywords: ['shower', 'rinse'], component: GiShower },
+    { keywords: ['haircut', 'cut', 'scissor', 'trim', 'styling', 'shave'], component: IoCutOutline },
+    { keywords: ['bath', 'tub', 'wash', 'cleansing', 'shampoo'], component: PiShowerLight },
     { keywords: ['dry', 'blow dry', 'wind', 'blow'], component: LuWind },
-    { keywords: ['nail', 'clipping', 'claw', 'paw'], component: GiBarbedNails },
-    { keywords: ['ear', 'infection', 'deaf'], component: FaEarListen },
-    { keywords: ['brushing', 'brush', 'coat'], component: LuBrush },
-    { keywords: ['comb', 'matting', 'dematting'], component: GiComb },
-    { keywords: ['flea', 'tick', 'spray', 'perfume'], component: FaSprayCanSparkles },
-    { keywords: ['skin', 'treatment', 'nourishing', 'conditioner', 'balm'], component: FaBottleDroplet },
-    { keywords: ['teeth brushing', 'toothbrush', 'paste'], component: GiToothbrush },
-    { keywords: ['teeth', 'dental', 'plaque', 'tartar', 'mouth', 'scaling', 'smile'], component: GiFrontTeeth },
+    { keywords: ['nail', 'clipping', 'claw', 'paw'], component: PiPawPrintLight },
+    { keywords: ['brushing', 'brush', 'coat', 'comb', 'deshedding'], component: LuBrush },
+    { keywords: ['rinse', 'breath', 'spray', 'perfume'], component: FaRegFaceGrinStars },
+    { keywords: ['skin', 'treatment', 'nourishing', 'conditioner'], component: PiDropLight },
+    { keywords: ['teeth', 'dental', 'plaque', 'tartar', 'mouth', 'scaling', 'smile', 'clean'], component: TbDental },
     { keywords: ['cat', 'feline', 'kitten'], component: PiCatLight },
     { keywords: ['health', 'care', 'protect', 'safe'], component: FiHeart },
 ];
 
-// Fallback sequence if no keywords match
-const fallbackIcons = [PiPawPrintLight, FiHeart, LuBrush, PiBathtubFill];
+const fallbackIcons = [TbDental, FiHeart, LuBrush, PiShowerLight];
 
 const getIconForService = (service: any) => {
     const searchString = `${service.title || ''} ${service.description || ''} ${service.iconKey || ''}`.toLowerCase();
@@ -84,16 +78,14 @@ export default function ServicesSection({ data }: { data: any }) {
                                     }}
                                 >
                                     <div className="mb-6">
-                                        {/* 🔥 react-icons scale beautifully using text sizing/w-h classes */}
-                                        <Icon className="w-11 h-11 transition-transform group-hover:scale-110 duration-300" style={{ color: data.styling?.iconColor || data.iconColor }} />
+                                        <Icon className="w-11 h-11 transition-transform group-hover:scale-110 duration-300" style={{ color: data.styling?.iconColor || data.iconColor }} strokeWidth={1.5} />
                                     </div>
 
-                                    {/* Content Wrapper */}
                                     <div className="flex flex-col flex-grow">
                                         <h3 className="font-semibold text-[22px] leading-[1.3] mb-3" style={{ color: data.styling?.titleColor || data.titleColor }}>
                                             {service.title}
                                         </h3>
-                                        <p className="text-[15px] leading-[1.6] mb-6 flex-grow" style={{ color: data.description?.color || data.descColor }}>
+                                        <p className="text-[15px] leading-[1.6] mb-6 flex-grow whitespace-pre-line" style={{ color: data.description?.color || data.descColor }}>
                                             {service.description}
                                         </p>
 
@@ -103,7 +95,6 @@ export default function ServicesSection({ data }: { data: any }) {
                                             </div>
                                         )}
 
-                                        {/* SMART BUTTON LOGIC */}
                                         {service.ctaLabel && (
                                             hasValidLink ? (
                                                 <a
@@ -128,16 +119,9 @@ export default function ServicesSection({ data }: { data: any }) {
                         );
                     })}
                 </div>
-
-                {data.cta && (
-                    <div className="mt-4">
-                        <a href={data.cta.href || "#"} className={cn("group relative rounded-2xl py-4 px-8 flex items-center justify-center gap-2.5 w-fit overflow-hidden transition-all duration-300 shadow-sm hover:opacity-90", data.cta.className)} style={{ backgroundColor: data.cta.bg, color: data.cta.text }}>
-                            <span className="font-semibold text-[16px] whitespace-nowrap">{data.cta.label}</span>
-                            <ArrowRight className="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 transition-transform duration-300" />
-                        </a>
-                    </div>
-                )}
             </div>
         </section>
     );
 }
+
+
