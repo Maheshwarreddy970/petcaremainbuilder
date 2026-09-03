@@ -1,7 +1,6 @@
 "use server";
 
 import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
-import sharp from "sharp";
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -19,37 +18,32 @@ export async function uploadImageAction(formData: FormData) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    console.log("⚙️ Resizing, compressing, and converting to AVIF...");
-    
-    // 🔥 NEW: Sharp Pipeline with Resizing and Aggressive Compression
-    const processedBuffer = await sharp(buffer)
-      // Caps width at 1920px (standard HD). If the image is smaller, it won't enlarge it.
-      .resize({ width: 1920, withoutEnlargement: true }) 
-      // Quality 65 for AVIF is the sweet spot for web.
-      .avif({ quality: 65, effort: 6 })
-      .toBuffer();
-
-    console.log(`✅ Processed down to: ${(processedBuffer.length / 1024).toFixed(2)} KB`);
-    
+    // Stream the raw buffer directly to Cloudinary and let Cloudinary 
+    // handle the resizing, format conversion (to AVIF), and compression natively.
     const uploadResult: UploadApiResponse = await new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
         {
           folder: "nexpetcare_uploads",
-          format: "avif",
           resource_type: "image",
+          // 🔥 Cloudinary Transformation flags (Replaces Sharp entirely on the server)
+          transformation: [
+            { width: 1920, crop: "limit" }, // Caps max width at 1920px without enlarging smaller images
+            { fetch_format: "avif", quality: "auto:good" } // Automatically optimizes and converts to AVIF
+          ]
         },
         (error, result) => {
           if (error || !result) reject(error);
           else resolve(result);
         }
       );
-      uploadStream.end(processedBuffer);
+      uploadStream.end(buffer);
     });
 
+    console.log(`✅ Uploaded & Optimized via Cloudinary: ${uploadResult.secure_url}`);
     return { success: true, url: uploadResult.secure_url };
     
   } catch (error: any) {
-    console.error("Image upload & optimization failed:", error);
+    console.error("Image upload failed:", error);
     return { success: false, error: error.message };
   }
 }
