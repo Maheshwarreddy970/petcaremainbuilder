@@ -7,20 +7,24 @@ export default function InsightsSection({ data }: { data: any }) {
 
     const insights = data.items || [];
 
+    // 🔥 FIX: Safely extract text. If it is exactly "", it won't accidentally render the object!
+    const headingText = data.heading?.text !== undefined ? data.heading.text : data.heading;
+    const descText = data.description?.text !== undefined ? data.description.text : data.description;
+
     return (
         <section id='insights' className={cn("py-20 w-full overflow-hidden", data.section?.className)} style={{ backgroundColor: data.section?.bg || data.bg }}>
             <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center">
                 
                 <div className="flex flex-col items-center text-center mb-12 lg:mb-16">
                   <SmartHeading 
-    as="h2"
-    text={data.heading?.text || data.heading}
-    className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)} 
-    style={{ color: data.heading?.color || data.headingColor }}
-/>
-                    <p className={cn("text-base md:text-[18px] leading-[1.6]", data.description?.className)} style={{ color: data.description?.color || data.descColor }}>
-                        {data.description?.text || data.description}
-                    </p>
+                    as="h2"
+                    text={headingText}
+                    className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)} 
+                    style={{ color: data.heading?.color || data.headingColor }}
+                  />
+                  <p className={cn("text-base md:text-[18px] leading-[1.6]", data.description?.className)} style={{ color: data.description?.color || data.descColor }}>
+                      {descText}
+                  </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-8 w-full">

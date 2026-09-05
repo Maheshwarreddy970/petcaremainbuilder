@@ -1,11 +1,46 @@
 "use client";
 
-import { useEffect, useState, useRef, use } from "react";
+import React, { useEffect, useState, useRef, use } from "react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Loader2, ArrowLeft, CheckCircle2, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import WebsiteOne from "@/components/templates/WebsiteOne";
+
+// 🔥 1. ERROR BOUNDARY: Prevents bad JSON from crashing the whole page
+class PreviewErrorBoundary extends React.Component<{data: any, children: React.ReactNode}, {hasError: boolean, error: any}> {
+  constructor(props: any) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error: any) {
+    return { hasError: true, error };
+  }
+  componentDidUpdate(prevProps: any) {
+    // If user changes JSON, automatically reset the error state to try rendering again
+    if (prevProps.data !== this.props.data) {
+      this.setState({ hasError: false, error: null });
+    }
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="flex flex-col items-center justify-center h-full p-10 bg-[#f3f3f3] text-center">
+          <div className="bg-white p-8 rounded-3xl shadow-xl border border-red-200 max-w-lg w-full">
+            <h3 className="text-red-600 font-bold text-xl mb-3">Preview Crashed 💥</h3>
+            <p className="text-gray-600 text-sm mb-6 leading-relaxed">
+              The template encountered a rendering error. This usually happens when the JSON structure does not perfectly match what <strong>WebsiteOne.tsx</strong> expects (like passing an Object instead of a String).
+            </p>
+            <div className="bg-gray-900 text-red-400 p-4 rounded-xl font-mono text-[11px] text-left overflow-auto max-h-48 whitespace-pre-wrap">
+              {this.state.error?.message}
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 // Helper component for clean accordions
 const SectionAccordion = ({ title, children }: { title: string, children: React.ReactNode }) => (
@@ -33,7 +68,7 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const isFirstLoad = useRef(true);
 
-  // 1. Initial Data Fetch
+  // Initial Data Fetch
   useEffect(() => {
     const initializeData = async () => {
       try {
@@ -53,36 +88,39 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
     };
     initializeData();
   }, [name]);
-// 🔥 Inject Tailwind securely without upsetting React
- useEffect(() => {
+
+  // 🔥 2. TAILWIND FIX: Wait for script to load before setting config
+  useEffect(() => {
     if (!document.getElementById("tailwind-cdn")) {
       const script = document.createElement("script");
       script.id = "tailwind-cdn";
       script.src = "https://cdn.tailwindcss.com";
-      document.head.appendChild(script);
-
-      const configScript = document.createElement("script");
-      configScript.innerHTML = `
-        tailwind.config = {
-          theme: {
-            extend: {
-              keyframes: {
-                'infinite-scroll': {
-                  from: { transform: 'translateX(0)' },
-                  to: { transform: 'translateX(calc(-100% - 1rem))' },
+      
+      script.onload = () => {
+        if (typeof window !== "undefined" && (window as any).tailwind) {
+          (window as any).tailwind.config = {
+            theme: {
+              extend: {
+                keyframes: {
+                  'infinite-scroll': {
+                    from: { transform: 'translateX(0)' },
+                    to: { transform: 'translateX(calc(-100% - 1rem))' },
+                  }
+                },
+                animation: {
+                  'infinite-scroll': 'infinite-scroll 30s linear infinite',
                 }
-              },
-              animation: {
-                'infinite-scroll': 'infinite-scroll 30s linear infinite',
               }
             }
-          }
+          };
         }
-      `;
-      document.head.appendChild(configScript);
+      };
+      
+      document.head.appendChild(script);
     }
   }, []);
-  // 2. AUTO-SAVE LOGIC
+
+  // AUTO-SAVE LOGIC
   useEffect(() => {
     if (isFirstLoad.current) {
       if (config) isFirstLoad.current = false;
@@ -136,7 +174,6 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
     setJsonInput(JSON.stringify(newConfig, null, 2));
   };
 
-  // Helper to render class inputs dynamically
   const renderClassInput = (label: string, path: string[], placeholder: string) => {
     const val = path.reduce((acc, curr) => acc?.[curr], config) || "";
     return (
@@ -285,15 +322,16 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
           </div>
         </div>
       </div>
-{/* RIGHT SIDE: Live Preview */}
+
+      {/* RIGHT SIDE: Live Preview */}
       <div className="flex-1 h-full bg-[#f3f3f3] overflow-y-auto relative pointer-events-auto">
         <div id="live-preview-box" className="w-full min-h-screen bg-white">
-          {/* Scripts were removed from here and are now injected securely via useEffect! */}
-          <WebsiteOne data={config} />
+          {/* 🔥 3. ERROR BOUNDARY WRAPPER: If WebsiteOne crashes, it shows the error safely here! */}
+          <PreviewErrorBoundary data={config}>
+            <WebsiteOne data={config} />
+          </PreviewErrorBoundary>
         </div>
       </div>
     </div>
   );
 }
-
-
