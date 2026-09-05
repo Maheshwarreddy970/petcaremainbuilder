@@ -29,12 +29,18 @@ export default function HeroSection({ data }: { data: any }) {
                     )}
                 />
             )}
-
-            <div className="absolute inset-0 z-[5] bg-gradient-to-t from-white/90 via-white/60 to-transparent md:hidden pointer-events-none" />
+            
+            {/* 🔥 Guaranteed White Shadow Overlay using mask-image inline styles */}
+            <div 
+                className="absolute inset-0 z-[5] bg-white/80 md:hidden pointer-events-none" 
+                style={{
+                    WebkitMaskImage: 'linear-gradient(to top, black 20%, transparent 70%)',
+                    maskImage: 'linear-gradient(to top, black 20%, transparent 70%)'
+                }}
+            />
 
             <div className="relative z-10 w-full mx-auto px-6 md:px-12 lg:px-0 lg:ml-[10%]">
-                <div className="flex flex-col max-w-[620px] mb-14 md:mb-0 py-20">
-
+                <div className="flex flex-col max-w-[620px] py-20 md:py-0 pb-12">
                     <div className="flex flex-col gap-6 md:gap-8">
                         {data.announcement && (
                             <div
@@ -71,12 +77,12 @@ export default function HeroSection({ data }: { data: any }) {
                     </div>
 
                     {/* 🔥 DUAL CALL TO ACTION BUTTONS */}
-                    <div className={cn("mt-10 md:mt-12 flex flex-col sm:flex-row gap-4", data.cta?.className)}>
+                    <div className={cn("mt-10 md:mt-12 flex gap-2 md:gap-4", data.cta?.className)}>
                         {/* Primary Button (Square) */}
                         <a
                             href={data.cta?.href || "#"}
                             className={cn(
-                                "group relative rounded-2xl py-3.5 px-6 flex items-center justify-center gap-[14px] w-full sm:w-fit overflow-hidden",
+                                "group relative text-sm sm:text-base rounded-2xl py-3.5 px-6 flex items-center justify-center gap-[14px] w-full sm:w-fit overflow-hidden",
                                 "transition-all duration-300 shadow-md hover:opacity-90 hover:shadow-lg"
                             )}
                             style={{
@@ -84,18 +90,18 @@ export default function HeroSection({ data }: { data: any }) {
                                 color: data.cta?.text || '#ffffff'
                             }}
                         >
-                            <Calendar className="w-5 h-5 flex-shrink-0" />
+                            <Calendar className="sm:w-5 sm:h-5 w-4 h-4 flex-shrink-0" />
                             <span className="font-medium text-[16px] whitespace-nowrap">
                                 {data.cta?.label || "Book Online"}
                             </span>
                         </a>
 
-                        {/* Secondary Button (Contact Form) - NOW FULL AND SOLID */}
+                        {/* Secondary Button (Contact Form) */}
                         {data.ctaSecondary && (
                             <a
                                 href={data.ctaSecondary?.href || "#contact"}
                                 className={cn(
-                                    "group relative rounded-2xl py-3.5 px-6 flex items-center justify-center gap-[14px] w-full sm:w-fit overflow-hidden",
+                                    "group relative text-sm sm:text-base rounded-2xl py-3.5 px-6 flex items-center justify-center gap-[14px] w-full sm:w-fit overflow-hidden",
                                     "transition-all duration-300 shadow-md hover:opacity-90 hover:shadow-lg",
                                     data.ctaSecondary?.className
                                 )}
@@ -104,7 +110,7 @@ export default function HeroSection({ data }: { data: any }) {
                                     color: data.ctaSecondary?.text || '#ffffff'
                                 }}
                             >
-                                <Mail className="w-5 h-5 flex-shrink-0" />
+                                <Mail className="sm:w-5 sm:h-5 w-4 h-4 flex-shrink-0" />
                                 <span className="font-medium text-[16px] whitespace-nowrap">
                                     {data.ctaSecondary?.label || "Request via Form"}
                                 </span>
@@ -134,7 +140,6 @@ export default function HeroSection({ data }: { data: any }) {
                             {data.socialProof?.text}
                         </p>
                     </div>
-
                 </div>
             </div>
         </section>
