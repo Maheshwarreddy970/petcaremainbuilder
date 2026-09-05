@@ -168,25 +168,13 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
     setIsChecking(false);
   };
 
-  function copyToClipboard(value: any): void {
+  function copyToClipboard(value: any, key?: string): void {
     const text = typeof value === "string" ? value : String(value ?? "");
     if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
-      navigator.clipboard.writeText(text).catch(() => {
-        const tempInput = document.createElement("textarea");
-        tempInput.value = text;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand("copy");
-        document.body.removeChild(tempInput);
-      });
-      return;
+      navigator.clipboard.writeText(text).then(() => {
+        // Optional quick alert or UI cue if desired
+      }).catch(() => {});
     }
-    const tempInput = document.createElement("textarea");
-    tempInput.value = text;
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    document.execCommand("copy");
-    document.body.removeChild(tempInput);
   }
 
   const handleDownload = async () => {
@@ -487,7 +475,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
                 )}
               </div>
 
-              {/* STEP 2: Add Records */}
+             {/* STEP 2: Add Records with Individual Copy Buttons */}
               {dnsRecords && (
                 <div className="p-6 md:p-8 border-b border-gray-100">
                   <div className="flex items-center gap-3 mb-2">
@@ -497,27 +485,40 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
                   <p className="text-gray-600 mb-6 ml-9 text-sm">Copy and paste these exact values into your DNS settings to connect the domain.</p>
 
                   <div className="flex flex-col gap-3 ml-0 md:ml-9">
-                    {dnsRecords.map((record: any, idx: number) => (
-                      <div key={idx} className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 bg-gray-50 p-4 rounded-xl border border-gray-200 text-sm font-mono text-gray-800 items-center hover:bg-white hover:border-blue-200 hover:shadow-sm transition-all">
-                        <div className="md:col-span-2 md:border-r border-gray-200 pr-2">
-                          <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Type</span>
-                          <span className="font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded tracking-widest">{record.type}</span>
+                    {dnsRecords.map((record: any, idx: number) => {
+                      // Unique tracking state for individual button feedback
+                      const copyKey = `${record.type}-${idx}`;
+                      
+                      return (
+                        <div key={idx} className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 bg-gray-50 p-4 rounded-xl border border-gray-200 text-sm font-mono text-gray-800 items-center hover:bg-white hover:border-blue-200 hover:shadow-sm transition-all">
+                          <div className="md:col-span-2 md:border-r border-gray-200 pr-2">
+                            <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Type</span>
+                            <span className="font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded tracking-widest">{record.type}</span>
+                          </div>
+                          
+                          <div className="md:col-span-4 md:border-r border-gray-200 pr-2 overflow-hidden text-ellipsis" title={record.name}>
+                            <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Name / Host</span>
+                            <span className="truncate block">{record.name}</span>
+                          </div>
+                          
+                          <div className="md:col-span-5 overflow-hidden text-ellipsis" title={record.value}>
+                            <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Target / Value</span>
+                            <span className="truncate block">{record.value}</span>
+                          </div>
+                          
+                          <div className="md:col-span-1 flex justify-end mt-2 md:mt-0">
+                            <button 
+                              onClick={() => copyToClipboard(record.value, copyKey)} 
+                              className="w-full md:w-auto px-3 py-2 bg-white border border-gray-200 hover:bg-gray-100 hover:text-black rounded-lg text-gray-600 transition-colors shadow-sm flex justify-center items-center gap-1.5 font-sans text-xs font-semibold"
+                              title="Copy Value"
+                            >
+                              <Copy size={14} className="text-blue-600" />
+                              <span>Copy</span>
+                            </button>
+                          </div>
                         </div>
-                        <div className="md:col-span-4 md:border-r border-gray-200 pr-2 overflow-hidden text-ellipsis">
-                          <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Name / Host</span>
-                          {record.name}
-                        </div>
-                        <div className="md:col-span-5 overflow-hidden text-ellipsis">
-                          <span className="text-[10px] text-gray-400 block mb-1 uppercase tracking-wider font-sans font-bold">Target / Value</span>
-                          {record.value}
-                        </div>
-                        <div className="md:col-span-1 flex justify-end mt-2 md:mt-0">
-                          <button onClick={() => copyToClipboard(record.value)} className="w-full md:w-auto p-2.5 bg-white border border-gray-200 hover:bg-gray-100 hover:text-black rounded-lg text-gray-500 transition-colors shadow-sm flex justify-center items-center gap-2 group" title="Copy Value">
-                            <Copy size={16} className="group-hover:text-blue-600" /> <span className="md:hidden font-sans text-xs font-semibold">Copy Value</span>
-                          </button>
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               )}

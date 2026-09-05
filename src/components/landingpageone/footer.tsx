@@ -10,6 +10,10 @@ export default function Footer({ data }: { data: any }) {
     const socials = data.socials || {};
     const styling = data.styling || data; // Fallback to root data if styling object doesn't exist
 
+    // 🔥 DYNAMIC LINKS ARRAYS FROM JSON
+    const quickLinks = data.quickLinks || [];
+    const legalLinks = data.legalLinks || [];
+
     // Check if map URL exists
     const hasMap = !!info.mapEmbedUrl;
 
@@ -21,11 +25,7 @@ export default function Footer({ data }: { data: any }) {
         >
             <div className="max-w-7xl mx-auto flex flex-col gap-16">
 
-                {/* 
-                  🔥 DYNAMIC GRID:
-                  If Map exists -> 12 column layout.
-                  If NO Map -> standard 4 column layout.
-                */}
+                {/* Grid layout */}
                 <div className={cn(
                     "grid grid-cols-1 sm:grid-cols-2 gap-10 items-start",
                     hasMap ? "lg:grid-cols-12" : "md:grid-cols-4"
@@ -44,45 +44,49 @@ export default function Footer({ data }: { data: any }) {
                         </div>
                     </div>
 
-                    {/* Quick Links */}
-                    <div className={cn(hasMap && "lg:col-span-2")}>
-                        <nav aria-label="Quick links">
-                            <h4 className="text-sm font-normal mb-5 tracking-wide" style={{ color: styling.mutedColor }}>Quick Links</h4>
-                            <ul className="space-y-4">
-                                {[{ label: "About", href: "#" }, { label: "Services", href: "#" }, { label: "Contact", href: "#" }].map((link, index) => (
-                                    <li key={index}>
-                                        <a
-                                            href={link.href}
-                                            className="text-base font-medium hover:opacity-75 transition-opacity"
-                                            style={{ color: styling.textColor }}
-                                        >
-                                            {link.label}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </nav>
-                    </div>
+                    {/* 🔥 DYNAMIC Quick Links (Only renders if added to JSON) */}
+                    {quickLinks.length > 0 && (
+                        <div className={cn(hasMap && "lg:col-span-2")}>
+                            <nav aria-label="Quick links">
+                                <h4 className="text-sm font-normal mb-5 tracking-wide" style={{ color: styling.mutedColor }}>Quick Links</h4>
+                                <ul className="space-y-4">
+                                    {quickLinks.map((link: any, index: number) => (
+                                        <li key={index}>
+                                            <a
+                                                href={link.href}
+                                                className="text-base font-medium hover:opacity-75 transition-opacity"
+                                                style={{ color: styling.textColor }}
+                                            >
+                                                {link.label}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </nav>
+                        </div>
+                    )}
 
-                    {/* Legal */}
-                    <div className={cn(hasMap && "lg:col-span-2")}>
-                        <nav aria-label="Legal documents">
-                            <h4 className="text-sm font-normal mb-5 tracking-wide" style={{ color: styling.mutedColor }}>Legal</h4>
-                            <ul className="space-y-4">
-                                {[{ label: "Terms & Conditions", href: "#" }, { label: "Privacy Policy", href: "#" }].map((link, index) => (
-                                    <li key={index}>
-                                        <a
-                                            href={link.href}
-                                            className="text-base font-medium hover:opacity-75 transition-opacity"
-                                            style={{ color: styling.textColor }}
-                                        >
-                                            {link.label}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </nav>
-                    </div>
+                    {/* 🔥 DYNAMIC Legal Links (Only renders if added to JSON) */}
+                    {legalLinks.length > 0 && (
+                        <div className={cn(hasMap && "lg:col-span-2")}>
+                            <nav aria-label="Legal documents">
+                                <h4 className="text-sm font-normal mb-5 tracking-wide" style={{ color: styling.mutedColor }}>Legal</h4>
+                                <ul className="space-y-4">
+                                    {legalLinks.map((link: any, index: number) => (
+                                        <li key={index}>
+                                            <a
+                                                href={link.href}
+                                                className="text-base font-medium hover:opacity-75 transition-opacity"
+                                                style={{ color: styling.textColor }}
+                                            >
+                                                {link.label}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </nav>
+                        </div>
+                    )}
 
                     {/* Contact Info */}
                     <div className={cn(hasMap && "lg:col-span-2")}>
@@ -109,6 +113,7 @@ export default function Footer({ data }: { data: any }) {
                     </div>
 
                 </div>
+
                 {/* 🗺️ Google Map & Storefront Side-by-Side */}
                 {(hasMap || info.storefrontImage?.src) && (
                     <div className="w-full flex flex-col mt-4">
@@ -116,7 +121,6 @@ export default function Footer({ data }: { data: any }) {
                             Location & Storefront
                         </h4>
 
-                        {/* If both map and image exist, split them. Otherwise full width. */}
                         <div className={cn("grid gap-4", hasMap && info.storefrontImage?.src ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1")}>
 
                             {info.storefrontImage?.src && (
@@ -146,11 +150,11 @@ export default function Footer({ data }: { data: any }) {
                                 </div>
                             )}
 
-
                         </div>
                     </div>
                 )}
-                {/* 🔥 NEW: Legal Disclaimer Block */}
+
+                {/* 🔥 Legal Disclaimer Block */}
                 {data.disclaimer && (
                     <div className="pt-8 border-t border-gray-200 mt-4">
                         <p className="text-[13px] leading-relaxed text-justify" style={{ color: styling.mutedColor }}>
@@ -158,6 +162,7 @@ export default function Footer({ data }: { data: any }) {
                         </p>
                     </div>
                 )}
+
                 {/* Bottom Footer Section */}
                 <div className="pt-8 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <p className="text-sm text-center sm:text-left" style={{ color: styling.mutedColor }}>
