@@ -48,7 +48,7 @@ export default function ServicesSection({ data }: { data: any }) {
     };
 
     return (
-        <section id='services' className={cn("py-24 w-full overflow-hidden", data.section?.className)} style={{ backgroundColor: data.section?.bg || data.bg }}>
+        <section id='services' className={cn("md:py-24 w-full overflow-hidden", data.section?.className)} style={{ backgroundColor: data.section?.bg || data.bg }}>
             <div className="max-w-7xl mx-auto px-6 flex flex-col items-center">
 
                 <div className="flex flex-col items-center text-center max-w-[620px] mb-16">

@@ -5,8 +5,34 @@ import SmartHeading from '../ui/SmartHeading';
 export default function ImageSliderSection({ data }: { data: any }) {
     if (!data || !data.items || data.items.length === 0) return null;
 
-    // We duplicate the items array so the infinite scroll loops seamlessly without snapping
-    const scrollingItems = [...data.items, ...data.items];
+    // 1. Split data into two halves for the mobile two-row layout
+    const halfIndex = Math.ceil(data.items.length / 2);
+    const topRowItems = data.items.slice(0, halfIndex);
+    const bottomRowItems = data.items.slice(halfIndex);
+
+    // 2. Duplicate arrays for the seamless infinite scroll looping
+    const scrollAll = [...data.items, ...data.items];
+    const scrollTopRow = [...topRowItems, ...topRowItems];
+    const scrollBottomRow = [...bottomRowItems, ...bottomRowItems];
+
+    // Reusable image card to keep code clean
+    const ImageCard = ({ item, index }: { item: any, index: number }) => (
+        <li
+            key={index}
+            className={cn(
+                "relative w-[180px] md:w-[320px] aspect-square shrink-0 overflow-hidden rounded-2xl border border-gray-100 shadow-sm",
+                item.className
+            )}
+        >
+            {item.image && (
+                <img
+                    src={item.image}
+                    alt={item.alt || "Gallery Image"}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 hover:scale-110"
+                />
+            )}
+        </li>
+    );
 
     return (
         <section
@@ -34,31 +60,34 @@ export default function ImageSliderSection({ data }: { data: any }) {
 
             </div>
 
-            {/* 🔥 INFINITE SCROLL WRAPPER */}
-            {/* INFINITE SCROLL */}
-            <div
-                className="w-full overflow-hidden
-    [mask-image:linear-gradient(to_right,transparent_0%,black_128px,black_calc(100%-128px),transparent_100%)]"
-            >
-                <ul className="flex w-max flex-nowrap items-center gap-4 animate-infinite-scroll hover:[animation-play-state:paused]">
-                    {scrollingItems.map((item: any, index: number) => (
-                        <li
-                            key={index}
-                            className={cn(
-                                "relative w-[250px] md:w-[320px] aspect-square shrink-0 overflow-hidden rounded-2xl border border-gray-100 shadow-sm",
-                                item.className
-                            )}
-                        >
-                            {item.image && (
-                                <img
-                                    src={item.image}
-                                    alt={item.alt || "Gallery Image"}
-                                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 hover:scale-110"
-                                />
-                            )}
-                        </li>
+            {/* 🔥 INFINITE SCROLL WRAPPERS */}
+            <div className="w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent_0%,black_10%,black_90%,transparent_100%)]">
+                
+                {/* DESKTOP: Single Row (Hidden on Mobile) */}
+                <ul className="hidden md:flex w-max flex-nowrap items-center gap-4 animate-infinite-scroll hover:[animation-play-state:paused]">
+                    {scrollAll.map((item, index) => (
+                        <ImageCard item={item} index={index} key={`desktop-${index}`} />
                     ))}
                 </ul>
+
+                {/* MOBILE: Two Rows (Hidden on Desktop) */}
+                <div className="flex md:hidden flex-col gap-4">
+                    
+                    {/* Top Row */}
+                    <ul className="flex w-max flex-nowrap items-center gap-4 animate-infinite-scroll hover:[animation-play-state:paused]">
+                        {scrollTopRow.map((item, index) => (
+                            <ImageCard item={item} index={index} key={`mobile-top-${index}`} />
+                        ))}
+                    </ul>
+
+                    {/* Bottom Row (Slightly offset visually so the images stagger nicely) */}
+                    <ul className="flex w-max flex-nowrap items-center gap-4 animate-infinite-scroll hover:[animation-play-state:paused] ml-[-40px]">
+                        {scrollBottomRow.map((item, index) => (
+                            <ImageCard item={item} index={index} key={`mobile-bottom-${index}`} />
+                        ))}
+                    </ul>
+
+                </div>
             </div>
         </section>
     );

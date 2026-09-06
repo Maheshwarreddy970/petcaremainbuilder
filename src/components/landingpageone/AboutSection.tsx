@@ -6,24 +6,26 @@ export default function AboutSection({ data }: { data: any }) {
     if (!data) return null;
 
     return (
-        <section id='about' className={cn("py-20 w-full overflow-hidden", data.section?.className)} style={{ backgroundColor: data.section?.bg || data.bg }}>
+        <section id='about' className={cn("pt-16 pb-10 lg:py-20 w-full overflow-hidden", data.section?.className)} style={{ backgroundColor: data.section?.bg || data.bg }}>
             <div className="max-w-7xl mx-auto px-6 md:px-12 w-full">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-[108px] items-center">
-                    
-                    <div className={cn("relative w-full max-w-[552px] mx-auto lg:mx-0 aspect-[552/640] rounded-3xl overflow-hidden shadow-sm", data.image?.className)}>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-[108px] items-center">
+
+                    {/* 🔥 FIXED MOBILE IMAGE SIZE: aspect-[4/3] on mobile, normal tall aspect on desktop */}
+                    <div className={cn("relative w-full max-w-[552px] mx-auto lg:mx-0 aspect-[4/3] md:aspect-square lg:aspect-[552/640] rounded-3xl overflow-hidden shadow-sm", data.image?.className)}>
                         {(data.image?.src || data.image) && (
                             <img src={data.image?.src || data.image} alt="About Image" className="object-cover absolute inset-0 w-full h-full" />
                         )}
                     </div>
 
-                    <div className="flex flex-col gap-10 lg:gap-[72px] max-w-[548px] mx-auto lg:mx-0">
-                        <div className="flex flex-col gap-6">
-<SmartHeading 
-    as="h2"
-    text={data.heading?.text || data.heading}
-    className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)} 
-    style={{ color: data.heading?.color || data.headingColor }}
-/>                            <p className={cn("text-base md:text-[18px] leading-[1.6]", data.description?.className)} style={{ color: data.description?.color || data.descColor }} dangerouslySetInnerHTML={{ __html: data.description?.text || data.description || "" }} />
+                    <div className="flex flex-col gap-8 lg:gap-[72px] max-w-[548px] mx-auto lg:mx-0">
+                        <div className="flex flex-col gap-5">
+                            <SmartHeading
+                                as="h2"
+                                text={data.heading?.text || data.heading}
+                                className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-2", data.heading?.className)}
+                                style={{ color: data.heading?.color || data.headingColor }}
+                            />                            
+                            <p className={cn("text-base md:text-[18px] leading-[1.6]", data.description?.className)} style={{ color: data.description?.color || data.descColor }} dangerouslySetInnerHTML={{ __html: data.description?.text || data.description || "" }} />
                         </div>
 
                         <div className={cn("flex flex-col gap-8 lg:gap-10", data.featuresList?.className)}>
