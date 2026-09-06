@@ -76,41 +76,42 @@ export default function HeroSection({ data }: { data: any }) {
                         />
                     </div>
 
-                    {/* 🔥 DUAL CALL TO ACTION BUTTONS */}
-                    <div className={cn("mt-10 md:mt-12 flex gap-2 md:gap-4", data.cta?.className)}>
+                    {/* 🔥 DUAL CALL TO ACTION BUTTONS - NOW SOFTER & ROUNDED */}
+                    <div className={cn("mt-8 md:mt-10 flex flex-col sm:flex-row gap-3 md:gap-4", data.cta?.className)}>
                         {/* Primary Button (Square) */}
                         <a
                             href={data.cta?.href || "#"}
                             className={cn(
-                                "group relative text-sm sm:text-base rounded-2xl py-3.5 px-6 flex items-center justify-center gap-[14px] w-full sm:w-fit overflow-hidden",
-                                "transition-all duration-300 shadow-md hover:opacity-90 hover:shadow-lg"
+                                "group relative text-sm rounded-full py-3.5 px-8 flex items-center justify-center gap-[10px] w-full sm:w-fit overflow-hidden",
+                                "transition-all duration-300 shadow-sm hover:opacity-90 hover:shadow-md"
                             )}
                             style={{
                                 backgroundColor: data.cta?.bg || '#a35c38',
                                 color: data.cta?.text || '#ffffff'
                             }}
                         >
-                            <Calendar className="sm:w-5 sm:h-5 w-4 h-4 flex-shrink-0" />
+                            <Calendar className="w-4 h-4 flex-shrink-0" />
                             <span className="font-medium text-[16px] whitespace-nowrap">
                                 {data.cta?.label || "Book Online"}
                             </span>
                         </a>
 
-                        {/* Secondary Button (Contact Form) */}
+                        {/* Secondary Button (Contact Form) - NOW AN OUTLINE BUTTON */}
                         {data.ctaSecondary && (
                             <a
                                 href={data.ctaSecondary?.href || "#contact"}
                                 className={cn(
-                                    "group relative text-sm sm:text-base rounded-2xl py-3.5 px-6 flex items-center justify-center gap-[14px] w-full sm:w-fit overflow-hidden",
-                                    "transition-all duration-300 shadow-md hover:opacity-90 hover:shadow-lg",
+                                    "group relative text-sm rounded-full py-3.5 px-8 flex items-center justify-center gap-[10px] w-full sm:w-fit overflow-hidden border-2",
+                                    "transition-all duration-300 hover:bg-black/5 shadow-none",
                                     data.ctaSecondary?.className
                                 )}
                                 style={{
-                                    backgroundColor: data.ctaSecondary?.bg || '#1e0c05',
-                                    color: data.ctaSecondary?.text || '#ffffff'
+                                    backgroundColor: data.ctaSecondary?.bg || 'transparent',
+                                    color: data.ctaSecondary?.text || '#a35c38',
+                                    borderColor: data.ctaSecondary?.borderColor || '#a35c38'
                                 }}
                             >
-                                <Mail className="sm:w-5 sm:h-5 w-4 h-4 flex-shrink-0" />
+                                <Mail className="w-4 h-4 flex-shrink-0" />
                                 <span className="font-medium text-[16px] whitespace-nowrap">
                                     {data.ctaSecondary?.label || "Request via Form"}
                                 </span>
@@ -118,7 +119,7 @@ export default function HeroSection({ data }: { data: any }) {
                         )}
                     </div>
 
-                    <div className={cn("flex flex-col gap-2 mt-6 md:mt-10", data.socialProof?.className)}>
+                    <div className={cn("flex flex-col gap-2 mt-6 md:mt-8", data.socialProof?.className)}>
                         <div className="flex items-center gap-1 drop-shadow-md cursor-pointer hover:opacity-80 transition-opacity">
                             <a href={data.socialProof?.href || "#"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
                                 {[...Array(starCount)].map((_, index) => (
