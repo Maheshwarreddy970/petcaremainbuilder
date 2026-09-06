@@ -704,9 +704,8 @@
     },
     "ctaSecondary": {
       "label": "Request via Form",
-      "text": "#a35c38",
-      "bg": "transparent",
-      "borderColor": "#a35c38",
+      "text": "#ffffff",
+      "bg": "#68844d",
       "href": "#contact",
       "className": ""
     },

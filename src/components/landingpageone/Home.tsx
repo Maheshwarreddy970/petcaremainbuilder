@@ -108,7 +108,6 @@ export default function HeroSection({ data }: { data: any }) {
                                 style={{
                                     backgroundColor: data.ctaSecondary?.bg || 'transparent',
                                     color: data.ctaSecondary?.text || '#a35c38',
-                                    borderColor: data.ctaSecondary?.borderColor || '#a35c38'
                                 }}
                             >
                                 <Mail className="w-4 h-4 flex-shrink-0" />
