@@ -19,18 +19,32 @@ export default function HeroSection({ data }: { data: any }) {
             )}
             style={{ backgroundColor: data.section?.bg }}
         >
+            {/* 🔥 DESKTOP IMAGE (Falls back to full-screen if no mobile image exists) */}
             {data.image?.src && (
                 <img
                     src={data.image.src}
                     alt="Hero Background"
                     className={cn(
                         "absolute inset-0 w-full h-full object-cover object-[70%_center] md:object-center z-0",
+                        data.mobileImage?.src ? "hidden md:block" : "block",
                         data.image?.className
                     )}
                 />
             )}
+
+            {/* 🔥 MOBILE IMAGE (Only renders on small screens if explicitly provided in JSON) */}
+            {data.mobileImage?.src && (
+                <img
+                    src={data.mobileImage.src}
+                    alt="Hero Background Mobile"
+                    className={cn(
+                        "absolute inset-0 w-full h-full object-cover object-center z-0 md:hidden block",
+                        data.mobileImage?.className
+                    )}
+                />
+            )}
             
-            {/* 🔥 Guaranteed White Shadow Overlay using mask-image inline styles */}
+            {/* Guaranteed White Shadow Overlay using mask-image inline styles */}
             <div 
                 className="absolute inset-0 z-[5] bg-white/80 md:hidden pointer-events-none" 
                 style={{
@@ -76,9 +90,7 @@ export default function HeroSection({ data }: { data: any }) {
                         />
                     </div>
 
-                    {/* 🔥 DUAL CALL TO ACTION BUTTONS - NOW SOFTER & ROUNDED */}
                     <div className={cn("mt-8 md:mt-10 flex flex-col sm:flex-row gap-3 md:gap-4", data.cta?.className)}>
-                        {/* Primary Button (Square) */}
                         <a
                             href={data.cta?.href || "#"}
                             className={cn(
@@ -96,7 +108,6 @@ export default function HeroSection({ data }: { data: any }) {
                             </span>
                         </a>
 
-                        {/* Secondary Button (Contact Form) - NOW AN OUTLINE BUTTON */}
                         {data.ctaSecondary && (
                             <a
                                 href={data.ctaSecondary?.href || "#contact"}
@@ -118,7 +129,7 @@ export default function HeroSection({ data }: { data: any }) {
                         )}
                     </div>
 
-                    <div className={cn("flex flex-col gap-2 mt-6 md:mt-8", data.socialProof?.className)}>
+                    <div className={cn("sm:flex flex-col gap-2 mt-6 md:mt-8 hidden", data.socialProof?.className)}>
                         <div className="flex items-center gap-1 drop-shadow-md cursor-pointer hover:opacity-80 transition-opacity">
                             <a href={data.socialProof?.href || "#"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
                                 {[...Array(starCount)].map((_, index) => (

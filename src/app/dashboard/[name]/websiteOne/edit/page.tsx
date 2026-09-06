@@ -182,12 +182,18 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
             <ButtonConfig label="CTA Button" textVal={config.navbar?.cta?.label} hrefVal={config.navbar?.cta?.href} bgCol={config.navbar?.cta?.bg} textCol={config.navbar?.cta?.text} onText={(v: string) => updateField('navbar.cta.label', v)} onHref={(v: string) => updateField('navbar.cta.href', v)} onBg={(v: string) => updateField('navbar.cta.bg', v)} onCol={(v: string) => updateField('navbar.cta.text', v)} />
           </Section>
 
-          {/* HERO SECTION */}
+         {/* HERO SECTION */}
           <Section title="Hero Section">
             <ColorText label="Background Color" colorValue={config.hero?.section?.bg} onColorChange={(v: string) => updateField('hero.section.bg', v)} />
             <ColorText label="Heading" textValue={config.hero?.heading?.text} colorValue={config.hero?.heading?.color} onTextChange={(v: string) => updateField('hero.heading.text', v)} onColorChange={(v: string) => updateField('hero.heading.color', v)} />
             <ColorText label="Description" textValue={config.hero?.description?.text} colorValue={config.hero?.description?.color} onTextChange={(v: string) => updateField('hero.description.text', v)} onColorChange={(v: string) => updateField('hero.description.color', v)} isTextArea />
-            <ImageUploader label="Background Image" src={config.hero?.image?.src} isUploading={uploadingImage === 'hero.image.src'} onUpload={(e: any) => handleImageUpload(e, 'hero.image.src')} />
+            
+            {/* 🔥 Added Dedicated Mobile Image Uploader */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <ImageUploader label="Desktop Background Image" src={config.hero?.image?.src} isUploading={uploadingImage === 'hero.image.src'} onUpload={(e: any) => handleImageUpload(e, 'hero.image.src')} />
+              <ImageUploader label="Mobile Background Image (Optional)" src={config.hero?.mobileImage?.src} isUploading={uploadingImage === 'hero.mobileImage.src'} onUpload={(e: any) => handleImageUpload(e, 'hero.mobileImage.src')} />
+            </div>
+
             <ButtonConfig label="CTA Button" textVal={config.hero?.cta?.label} hrefVal={config.hero?.cta?.href} bgCol={config.hero?.cta?.bg} textCol={config.hero?.cta?.text} onText={(v: string) => updateField('hero.cta.label', v)} onHref={(v: string) => updateField('hero.cta.href', v)} onBg={(v: string) => updateField('hero.cta.bg', v)} onCol={(v: string) => updateField('hero.cta.text', v)} />
 
             <div className="border border-gray-200 p-3 rounded-lg bg-gray-50 mt-4 space-y-3">
