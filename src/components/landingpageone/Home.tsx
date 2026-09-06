@@ -127,7 +127,7 @@ export default function HeroSection({ data }: { data: any }) {
                         )}
                     </div>
 
-                    <div className={cn(" flex-col gap-2 mt-6 md:mt-8", data.socialProof?.className)}>
+                    <div className={cn(" hidden md:flex flex-col gap-2 mt-6 md:mt-8", data.socialProof?.className)}>
                         <div className="flex items-center gap-1 drop-shadow-md cursor-pointer hover:opacity-80 transition-opacity">
                             <a href={data.socialProof?.href || "#"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
                                 {[...Array(starCount)].map((_, index) => (
