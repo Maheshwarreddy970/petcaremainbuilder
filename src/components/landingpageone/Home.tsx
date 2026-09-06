@@ -90,7 +90,7 @@ export default function HeroSection({ data }: { data: any }) {
                         />
                     </div>
 
-                    <div className={cn("mt-8 md:mt-10 flex flex-col sm:flex-row gap-3 md:gap-4", data.cta?.className)}>
+                    <div className={cn("mt-8 md:mt-10 flex  gap-3 md:gap-4", data.cta?.className)}>
                         <a
                             href={data.cta?.href || "#"}
                             className={cn(
@@ -102,7 +102,6 @@ export default function HeroSection({ data }: { data: any }) {
                                 color: data.cta?.text || '#ffffff'
                             }}
                         >
-                            <Calendar className="w-4 h-4 flex-shrink-0" />
                             <span className="font-medium text-[16px] whitespace-nowrap">
                                 {data.cta?.label || "Book Online"}
                             </span>
@@ -121,7 +120,6 @@ export default function HeroSection({ data }: { data: any }) {
                                     color: data.ctaSecondary?.text || '#a35c38',
                                 }}
                             >
-                                <Mail className="w-4 h-4 flex-shrink-0" />
                                 <span className="font-medium text-[16px] whitespace-nowrap">
                                     {data.ctaSecondary?.label || "Request via Form"}
                                 </span>
@@ -129,7 +127,7 @@ export default function HeroSection({ data }: { data: any }) {
                         )}
                     </div>
 
-                    <div className={cn("sm:flex flex-col gap-2 mt-6 md:mt-8 hidden", data.socialProof?.className)}>
+                    <div className={cn(" flex-col gap-2 mt-6 md:mt-8", data.socialProof?.className)}>
                         <div className="flex items-center gap-1 drop-shadow-md cursor-pointer hover:opacity-80 transition-opacity">
                             <a href={data.socialProof?.href || "#"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
                                 {[...Array(starCount)].map((_, index) => (
