@@ -91,9 +91,11 @@ export default function Footer({ data }: { data: any }) {
                     {/* Contact Info */}
                     <div className={cn(hasMap && "lg:col-span-2")}>
                         <div>
-                            <h4 className="text-sm font-normal mb-5 tracking-wide" style={{ color: styling.mutedColor }}>Our Info</h4>
+                            <h4 className="text-sm font-normal mb-5 tracking-wide uppercase" style={{ color: styling.mutedColor }}>
+                                {info.heading || "Locations"}
+                            </h4>
                             <address className="not-italic space-y-4 text-base font-normal leading-relaxed" style={{ color: styling.textColor }}>
-                                <p>{info.address}</p>
+                                <p className="whitespace-pre-line">{info.address}</p>
                                 {info.phone?.label && (
                                     <p>
                                         <a href={info.phone.href} className="hover:opacity-75 transition-opacity">
@@ -118,7 +120,7 @@ export default function Footer({ data }: { data: any }) {
                 {(hasMap || info.storefrontImage?.src) && (
                     <div className="w-full flex flex-col mt-4">
                         <h4 className="text-sm font-semibold mb-4 tracking-wider uppercase" style={{ color: styling.mutedColor }}>
-                            Location & Storefront
+                            {info.storefrontImage?.src ? "Location & Storefront" : "Our Location"}
                         </h4>
 
                         <div className={cn("grid gap-4", hasMap && info.storefrontImage?.src ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1")}>

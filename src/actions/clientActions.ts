@@ -38,7 +38,7 @@ const defaultWebsiteOneData = {
   imageSlider: {
     section: { bg: "#ffffff", className: "" },
     heading: { text: "Happy Pet Smiles", color: "#1e0c05", className: "" },
-    description: { text: "Check out a few of the brave pups and kitties who visited our clinic.", color: "#625b5b", className: "" },
+    description: { text: "Check out a many of the pups and kitties who visited our clinic.", color: "#625b5b", className: "" },
     items: [
       { image: `${CLOUD_URL}/1.avif`, alt: "Happy Pet 1", className: "" },
       { image: `${CLOUD_URL}/2.avif`, alt: "Happy Pet 2", className: "" },
