@@ -213,7 +213,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
     <div className="min-h-screen bg-[#f8f9fa] text-black p-6 md:p-10 font-sans flex flex-col items-center" suppressHydrationWarning>
 
       {/* Dashboard Header */}
-      <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+      <div className="w-full  mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
         <div>
           <h1 className="text-2xl font-bold tracking-tight capitalize text-gray-900">
             {dbData?.clientName || name}
@@ -270,7 +270,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
 
       {/* Deploy Banner */}
       {!isDeployed && (
-        <div className="w-full max-w-7xl mx-auto mt-6 bg-white p-8 rounded-2xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="w-full  mx-auto mt-6 bg-white p-8 rounded-2xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center shrink-0">
               <Server className="w-7 h-7 text-blue-600" />
@@ -303,7 +303,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
 
       {/* Custom Domain Management Card */}
       {isDeployed && (
-        <div className="w-full max-w-7xl mx-auto mt-6 bg-gradient-to-r from-blue-900 to-slate-900 rounded-2xl p-8 text-white flex flex-col md:flex-row items-center justify-between shadow-lg">
+        <div className="w-full  mx-auto mt-6 bg-gradient-to-r from-blue-900 to-slate-900 rounded-2xl p-8 text-white flex flex-col md:flex-row items-center justify-between shadow-lg">
           <div className="flex-1 pr-8">
             <div className="flex items-center gap-2 text-blue-300 mb-2">
               <ShieldCheck size={18} />
@@ -348,7 +348,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
 
       {/* DNS Setup Modal / Panel */}
       {showDnsModal && (
-        <div className="w-full max-w-7xl mx-auto mt-4 bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm animate-in fade-in slide-in-from-top-4 duration-300">
+        <div className="w-full  mx-auto mt-4 bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm animate-in fade-in slide-in-from-top-4 duration-300">
           <div className="flex items-center justify-between mb-6">
             <h4 className="font-bold text-xl text-gray-900">Domain Configuration</h4>
           </div>
@@ -545,7 +545,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
       )}
 
       {/* Auto-scrolling Template Preview - ALWAYS VISIBLE */}
-      <div className="w-full max-w-7xl mx-auto mt-10 flex flex-col bg-white rounded-2xl shadow-2xl border border-gray-300 overflow-hidden ring-1 ring-black/5">
+      <div className="w-full  mx-auto mt-10 flex flex-col bg-white rounded-2xl border border-gray-300 overflow-hidden ring-1 ring-black/5">
         <div className="h-14 bg-gray-100/80 border-b border-gray-200 flex items-center px-4 justify-between select-none shrink-0 z-10 relative">
           <div className="flex gap-2 w-20">
             <div className="w-3 h-3 rounded-full bg-[#ff5f56] border border-[#e0443e]" />
