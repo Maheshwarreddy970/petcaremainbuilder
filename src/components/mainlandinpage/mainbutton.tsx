@@ -107,8 +107,10 @@ export const AntiMetalButton = React.forwardRef<
         ref={ref as React.Ref<any>}
         href={href}
         className={cn(
-          "group/btn relative inline-flex h-11 w-36 overflow-hidden rounded-xl transition-transform active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-          "bg-[#2462EA] ",
+          // Changed to `w-fit`, added `items-center` for vertical alignment, 
+          // and used padding (`pl-12 pr-4`) to space the text out dynamically.
+          "group/btn relative inline-flex h-11 w-fit items-center overflow-hidden rounded-xl pl-12 pr-4 transition-transform active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          "bg-[#2462EA]",
           className
         )}
         {...(props as React.HTMLAttributes<HTMLElement>)}
@@ -129,8 +131,8 @@ export const AntiMetalButton = React.forwardRef<
           }
         `}</style>
 
-        {/* Text Content */}
-        <span className="absolute inset-y-0 right-4 flex items-center text-[14px] font-medium tracking-tight text-white dark:text-[#0a0a0a]">
+        {/* Text Content - Removed absolute positioning so it defines the button's width */}
+        <span className="text-[14px] font-medium tracking-tight text-white dark:text-[#0a0a0a]">
           {content}
         </span>
 

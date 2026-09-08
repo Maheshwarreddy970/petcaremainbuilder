@@ -46,7 +46,7 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu Button */}
-      <div className="md:hidden -mt-4">
+      <div className="md:hidden -mt-4 mr-6">
         <button tabIndex={0}>
           <svg
             className="w-8 h-8"

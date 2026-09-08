@@ -22,7 +22,7 @@ export const HERO_CONTENT = {
   badgeLink: "/pricing",
   badgeText: "Stop renting your website. Own it forever →",
   heading: ["Premium,", "Done-For-You", "Websites for", "Pet", "Professionals."],
-  description: "We build, design, and launch stunning custom websites for groomers, daycares, and clinics. Zero monthly hosting fees. Fully integrated with your booking software.",
+  description: "We build, design, and launch stunning custom websites for groomers, daycares, and clinics. Zero monthly hosting fees. Fully integrated with your booking software to fill your calendar on autopilot.",
   images: {
     logo: { src: "/logosvg.svg", alt: "NexPet Care logo" },
     daycare: { src: "/daycare.svg", alt: "Dog daycare icon" },
@@ -49,8 +49,8 @@ export const INTEGRATE_CONTENT = {
 // --- 4. COMPARISON CONTENT ---
 export const SECTION_CONTENT_COMPARISON = {
     badge: "The Smart Choice",
-    title: "Why Groomers are Ditching Wix & Squarespace",
-    subtitle: "Stop paying endless monthly fees for a clunky template you had to build yourself.",
+    title: "Why Pet Pros Are Ditching Wix & Squarespace",
+    subtitle: "Stop paying endless monthly fees for a clunky DIY template. Let experts build it so you can focus on the pets.",
 };
 
 export const TABLE_HEADERS = {
@@ -75,7 +75,7 @@ export const COMPARISON_DATA = [
         wp: "Expensive local agencies",
     },
     {
-        feature: "Mobile Speed",
+        feature: "Mobile Speed & SEO",
         us: "Lightning fast (React code)",
         wix: "Often slow and clunky",
         wp: "Bloated with heavy plugins",
@@ -94,11 +94,11 @@ export const COMPARISON_DATA = [
     },
 ];
 
-// --- 5. FEATURES CONTENT (Replaced the "Map" section) ---
+// --- 5. FEATURES CONTENT ---
 export const AVAILABILITY_CONTENT = {
     badge: "Built for Growth",
     title: "Everything your pet business needs to thrive online",
-    description: "We don't just build a website; we build a 24/7 lead-generation machine for your salon. Designed specifically for the pet care industry.",
+    description: "We don't just build a website; we build a 24/7 lead-generation machine for your salon. Designed specifically to convert local pet parents into loyal clients.",
     stats: {
         number: "$0",
         suffix: "",
@@ -107,7 +107,7 @@ export const AVAILABILITY_CONTENT = {
     features: [
         "Mobile-First Design for Pet Parents on the go",
         "Direct integration with your booking calendar",
-        "Automated SEO built-in to rank locally",
+        "Local SEO built-in to rank locally on Google",
     ],
 };
 
@@ -168,13 +168,13 @@ export const testimonials = [
 export const pricingContent = {
   badge: "Pricing",
   title: "One flat fee. Yours forever.",
-  description: "No subscriptions, no contracts, no surprise invoices. Pay once and own your premium website outright.",
+  description: "No subscriptions, no contracts, no surprise invoices. Pay once, own your premium website outright, and let it pay for itself with just a few new bookings.",
   planName: "Complete Website Build",
   planSubtitle: "Perfect for Groomers, Salons, and Daycares",
   currency: "$",
-  price: "799", // Adjusted to reflect your standard build price
-  buttonText: "Get started",
-  footerNote: "Includes: Custom Design, Mobile Optimization, SEO Setup, and 30 Days of Support",
+  price: "799", 
+  buttonText: "Claim Your Website Build",
+  footerNote: "Includes: Custom Design, Mobile Optimization, Local SEO Setup, and 30 Days of Support",
   features: [
     "100% Done-For-You Custom Build",
     "$0 Monthly Hosting Fees",
@@ -185,7 +185,7 @@ export const pricingContent = {
   ],
 };
 
-// --- 9. FAQ CONTENT ---
+// --- 9. FAQ CONTENT (Heavily Expanded for Conversion) ---
 export const FAQ_CONTENT = {
   heading: 'Frequently Asked Questions',
   logoAlt: 'NexPet Care',
@@ -195,7 +195,7 @@ export const FAQ_CONTENT = {
     {
       id: 'faq-1',
       question: 'Do I really pay $0 in monthly hosting fees?',
-      answer: 'Yes! We use modern serverless hosting technology. Once you pay the one-time flat fee for the website build, the site is yours forever. You will never receive a monthly hosting bill from us. (You only pay your standard annual domain name renewal to your registrar like GoDaddy).',
+      answer: 'Yes! We use modern serverless hosting technology. Once you pay the one-time flat fee for the website build, the site is yours forever. You will never receive a monthly hosting bill from us. (You only pay your standard annual domain name renewal to your registrar like GoDaddy or Namecheap).',
     },
     {
       id: 'faq-2',
@@ -204,13 +204,33 @@ export const FAQ_CONTENT = {
     },
     {
       id: 'faq-3',
-      question: 'Can I make changes to the site myself?',
-      answer: 'Yes! We provide you with a simple, private editing dashboard. If you need to change a price, update your holiday hours, or swap out a photo, you just log in, click the text, and type. No coding required.',
+      question: 'What if I already own a domain name?',
+      answer: 'Perfect! Once your new website is approved and ready to launch, we will simply point your new site to your existing domain name (e.g., www.yourgroomingsalon.com). You keep your domain and your business emails remain completely untouched.',
     },
     {
       id: 'faq-4',
+      question: 'Do I have to write the text and provide photos?',
+      answer: 'Nope! We provide professional, industry-specific copywriting that highlights your services perfectly. If you have your own photos, we’d love to use them! If not, we have access to high-quality, authentic pet photography we can use to make your site look stunning.',
+    },
+    {
+      id: 'faq-5',
+      question: 'How long does it take to build my website?',
+      answer: 'Our standard turnaround time is 5 to 7 business days from the moment we start. We handle all the heavy lifting so you can stay focused on running your business.',
+    },
+    {
+      id: 'faq-6',
+      question: 'Will my website rank locally on Google?',
+      answer: 'Yes! We build your site with local SEO (Search Engine Optimization) best practices from day one. We structure your headings, locations, and service keywords perfectly so that pet parents in your specific city can find you when they search for groomers or daycares.',
+    },
+    {
+      id: 'faq-7',
+      question: 'Can I make changes to the site myself?',
+      answer: 'Yes! We provide you with a simple, private editing dashboard. If you need to change a price, update your holiday hours, or swap out a photo, you just log in, click the text, and type. No coding or developers required.',
+    },
+    {
+      id: 'faq-8',
       question: 'Do I own the website after it is built?',
-      answer: '100%. Unlike Wix or Squarespace where you lose your site if you stop paying their monthly subscription, you own this website outright. You can even download the full source code if you ever want to move it elsewhere.',
+      answer: '100%. Unlike Wix or Squarespace where you lose your entire site if you stop paying their monthly subscription, you own this website outright. You can even download the full source code if you ever want to move it elsewhere.',
     },
   ],
 };
@@ -219,7 +239,7 @@ export const FAQ_CONTENT = {
 export const CTA_CONTENT = {
   headingHighlight: "Ready to upgrade ",
   headingRest: "your online presence?",
-  description: "Stop losing clients to an outdated website. Let us build you a stunning, lightning-fast site that works exactly as hard as you do.",
+  description: "Stop losing clients to competitors with better websites. Let us build you a stunning, lightning-fast site that works exactly as hard as you do.",
   buttonText: "Book Your Free Strategy Call",
   images: {
     hero: {
@@ -294,5 +314,3 @@ export const FOOTER_CONTENT = {
     ],
   },
 };
-
-

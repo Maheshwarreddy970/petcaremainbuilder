@@ -1,19 +1,20 @@
 import React from 'react'
 import { FOOTER_CONTENT } from './data'
 
-
 export default function Footer() {
   return (
-    <div className="md:h-[683px] h-[200%] p-4 pb-0 relative rounded-[35px] border border-[#E6E6E6] mb-11 overflow-hidden flex flex-col justify-between">
+    <footer className="relative mb-11 flex min-h-[500px] w-full flex-col justify-between overflow-hidden rounded-[28px] border border-[#E6E6E6] p-4 pb-0 sm:rounded-[35px] md:p-8 md:pb-0 lg:p-12 lg:pb-0">
+      {/* Background Dot Grid */}
       <div
-        className="absolute -z-20 top-0 left-0 w-full h-full"
+        className="absolute left-0 top-0 -z-20 h-full w-full"
         style={{
           backgroundImage: 'radial-gradient(circle, #e6e6e6 1px, transparent 1px)',
           backgroundSize: '10px 10px',
         }}
       />
 
-      <div className="absolute  -bottom-44 -left-36 md:-bottom-40 md:-left-20 md:z-10 -z-10 rotate-[20deg] md:[&>*]:scale-100 [&>*]:scale-50">
+      {/* Decorative Left Graphic */}
+      <div className="pointer-events-none absolute -bottom-36 -left-32 -z-10 rotate-[20deg] scale-50 opacity-60 sm:scale-75 md:-bottom-40 md:-left-20 md:z-0 md:opacity-100 [&>*]:scale-100">
         <div className="relative h-[439px] w-[405px]">
           <img
             src={FOOTER_CONTENT.graphics.left.src}
@@ -25,8 +26,9 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="absolute  -bottom-48 -right-36 md:-bottom-36 md:-right-10 rotate-[-10deg] md:z-10 -z-10 md:[&>*]:scale-100 [&>*]:scale-50">
-        <div className="relative w-[400px] h-[439px]">
+      {/* Decorative Right Graphic */}
+      <div className="pointer-events-none absolute -bottom-40 -right-32 -z-10 rotate-[-10deg] scale-50 opacity-60 sm:scale-75 md:-bottom-36 md:-right-10 md:z-0 md:opacity-100 [&>*]:scale-100">
+        <div className="relative h-[439px] w-[400px]">
           <img
             src={FOOTER_CONTENT.graphics.right.src}
             alt={FOOTER_CONTENT.graphics.right.alt}
@@ -37,8 +39,10 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="relative flex xl:flex-row flex-col">
-        <div className="w-[740px] md:p-9 p-2">
+      {/* Main Content Area */}
+      <div className="relative z-10 flex w-full flex-col justify-between gap-10 xl:flex-row xl:gap-12">
+        {/* Brand Header */}
+        <div className="w-full xl:max-w-[650px]">
           <div className="flex items-center gap-3">
             <img
               src={FOOTER_CONTENT.brand.logo.src}
@@ -47,23 +51,25 @@ export default function Footer() {
               height={100}
               className="size-8"
             />
-            <label className="text-3xl font-semibold">
+            <span className="text-2xl font-semibold sm:text-3xl">
               {FOOTER_CONTENT.brand.name}
-            </label>
+            </span>
           </div>
-          <p className="md:text-3xl lg:text-5xl font-bold text-lg tracking-tight md:leading-[54px] md:w-[700px] w-[300px] md:mt-9 mt-4">
+          <p className="mt-4 text-2xl font-bold tracking-tight text-black sm:text-3xl md:mt-8 md:text-4xl lg:text-5xl xl:leading-[54px]">
             {FOOTER_CONTENT.brand.tagline}
           </p>
         </div>
-        <div className="flex items-center xl:justify-end justify-start w-full md:px-10 xl:px-0">
-          <div className="grid grid-cols-2 md:grid-cols-3 justify-end md:w-1/2 w-[80%] md:gap-10 gap-20 xl:mt-32 mt-5 mr-10 px-2">
+
+        {/* Navigation Grid */}
+        <div className="flex w-full items-start xl:justify-end">
+          <div className="grid w-full grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-10 md:max-w-lg xl:max-w-none">
             {FOOTER_CONTENT.navigation.map((section) => (
-              <div key={section.title} className="flex flex-col gap-4">
-                <h1 className="font-extrabold">{section.title}</h1>
+              <div key={section.title} className="flex flex-col gap-3 sm:gap-4">
+                <h2 className="text-base font-extrabold text-black">{section.title}</h2>
                 {section.links.map((link) => (
                   <a
                     key={link.label}
-                    className="font-normal text-[#535353] text-nowrap transition-colors hover:text-[#2462EA]"
+                    className="text-sm font-normal text-[#535353] transition-colors hover:text-[#2462EA] sm:text-base"
                     href={link.href}
                   >
                     {link.label}
@@ -75,13 +81,14 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="relative w-full">
-        <div className="border-[#CCCCCC] border-dashed border-t w-full h-1 mt:mt-10 mt-32" />
-        <div className="h-20 flex justify-center items-center md:gap-10 gap-2 mb-36 md:mb-0">
-          <p className="text-[#737373] font-normal md:text-lg text-xs text-nowrap">
+      {/* Bottom Footer Bar */}
+      <div className="relative z-10 mt-12 w-full sm:mt-16 md:mt-20">
+        <div className="h-px w-full border-t border-dashed border-[#CCCCCC]" />
+        <div className="flex flex-col-reverse items-center justify-between gap-4 py-6 sm:flex-row sm:gap-0 sm:py-8">
+          <p className="text-center text-xs font-normal text-[#737373] sm:text-left sm:text-sm md:text-base">
             {FOOTER_CONTENT.bottom.copyright}
           </p>
-          <div className="flex md:gap-5 gap-3 [&>*]:md:scale-100 scale-75">
+          <div className="flex items-center gap-4">
             {FOOTER_CONTENT.bottom.socials.map((social) => (
               <a
                 key={social.name}
@@ -103,6 +110,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-    </div>
+    </footer>
   )
 }

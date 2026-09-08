@@ -19,8 +19,8 @@ export function CallToAction() {
             }}
           />
 
-          <div className="relative flex flex-col md:flex-row md:items-center gap-10 md:gap-14">
-            <div className="flex-1">
+          <div className="relative flex flex-col justify-center md:flex-row md:items-center gap-10 md:gap-14">
+            <div className="flex-1 text-center sm:text-start ">
               <h1 className="max-w-lg text-4xl font-semibold tracking-tight text-balance text-black md:text-6xl">
                 <span className="text-[#2462EA]">{CTA_CONTENT.headingHighlight}</span>
                 {CTA_CONTENT.headingRest}
@@ -28,12 +28,12 @@ export function CallToAction() {
               <p className="mt-4 mb-6 text-lg text-balance text-[#737373]">
                 {CTA_CONTENT.description}
               </p>
-              <div className="flex gap-4 mt-8">
+              <div className="flex justify-center md:justify-start gap-4 mt-8">
                 <AntiMetalButton>{CTA_CONTENT.buttonText}</AntiMetalButton>
               </div>
             </div>
 
-            <div className="w-full max-w-xs md:w-72 md:max-w-none shrink-0">
+            <div className="w-full  md:w-72  shrink-0">
               <div className="grid grid-cols-2 gap-3">
                 <div className="relative col-span-2 aspect-[16/9] overflow-hidden rounded-xl shadow-xl before:absolute before:inset-0 before:rounded-xl before:border before:border-black/5 before:bg-[#2462EA]/5">
                   <img

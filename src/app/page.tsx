@@ -24,7 +24,7 @@ export default function Home() {
         <Pricing></Pricing>
         <Faq></Faq>
         <CallToAction></CallToAction>
-        <Footer></Footer>
+        <Footer></Footer> 
       </div>
     </>
   );

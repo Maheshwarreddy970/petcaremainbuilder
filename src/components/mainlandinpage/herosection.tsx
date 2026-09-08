@@ -24,7 +24,7 @@ export default function Herosection() {
           }}
           className="size-12 md:size-16 lg:size-24 flex items-center justify-center rounded-xl lg:rounded-3xl border border-[#f3f3f3] shadow-[0px_5px_11px_0px_rgba(0,0,0,0.1),0px_20px_20px_0px_rgba(0,0,0,0.09),0px_44px_27px_0px_rgba(0,0,0,0.05),0px_79px_32px_0px_rgba(0,0,0,0.01),0px_123px_35px_0px_rgba(0,0,0,0)]"
         >
-          <GlobeCheck className="text-[#2462EA] size-12" />
+          <GlobeCheck className="text-[#2462EA] md:size-12 size-7" />
         </div>
       </div>
 
@@ -34,14 +34,14 @@ export default function Herosection() {
           style={{
             background: "linear-gradient(147.09deg, #fbfbfb 9.63%, #e8e8e8 91.74%)",
           }}
-          className="size-12 md:size-16 lg:size-24 flex items-center justify-center rounded-xl lg:rounded-3xl border border-[#f3f3f3] shadow-[0px_5px_11px_0px_rgba(0,0,0,0.1),0px_20px_20px_0px_rgba(0,0,0,0.09),0px_44px_27px_0px_rgba(0,0,0,0.05),0px_79px_32px_0px_rgba(0,0,0,0.01),0px_123px_35px_0px_rgba(0,0,0,0)]"
+          className="size-16 lg:size-24 flex items-center justify-center rounded-xl lg:rounded-3xl border border-[#f3f3f3] shadow-[0px_5px_11px_0px_rgba(0,0,0,0.1),0px_20px_20px_0px_rgba(0,0,0,0.09),0px_44px_27px_0px_rgba(0,0,0,0.05),0px_79px_32px_0px_rgba(0,0,0,0.01),0px_123px_35px_0px_rgba(0,0,0,0)]"
         >
           <img
             src={HERO_CONTENT.images.logo.src}
             alt={HERO_CONTENT.images.logo.alt}
             width={100}
             height={100}
-            className="size-16"
+            className=" size-11 md:size-16"
           />
         </div>
       </div>

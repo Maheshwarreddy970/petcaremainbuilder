@@ -16,7 +16,7 @@ export default function Integrate() {
           </div>
 
           {/* Logos Section */}
-          <div className="grid grid-cols-3 items-center gap-y-3 sm:grid-cols-4">
+          <div className="grid grid-cols-2 items-center gap-y-3 sm:grid-cols-4">
             {INTEGRATE_CONTENT.logos.map((logo, index) => (
               <div 
                 key={index} 
