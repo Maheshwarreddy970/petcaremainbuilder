@@ -14,18 +14,16 @@ import {VideoPlayer} from "@/components/mainlandinpage/video-player";
 
 export default function Home() {
   return (
-    <>
-      <div className="max-w-9xl mx-auto md:px-11 px-2 pt-6">
+      <div className="max-w-9xl mx-auto md:px-11 px-2 md:pt-6">
         <Navbar></Navbar>
-        <Herosection />
+        <Herosection></Herosection>
         <Integrate></Integrate>
         <UsVsThemComparison></UsVsThemComparison>
         <Availability></Availability>
         <Pricing></Pricing>
         <Faq></Faq>
         <CallToAction></CallToAction>
-        <Footer></Footer> 
+        <Footer></Footer>
       </div>
-    </>
   );
 }
