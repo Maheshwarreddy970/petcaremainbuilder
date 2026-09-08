@@ -224,19 +224,19 @@ export const CTA_CONTENT = {
   images: {
     hero: {
       alt: "Pet groomer washing a dog",
-      src: "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?q=80&w=2340&auto=format&fit=crop", 
+      src: "/images(10).avif", 
       width: 2340,
       height: 1560,
     },
     collab: {
       alt: "Happy dog after grooming",
-      src: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?q=80&w=927&auto=format&fit=crop",
+      src: "/images(11).avif",
       width: 927,
       height: 1648,
     },
     interfaceDetail: {
       alt: "Mobile booking interface on phone",
-      src: "https://images.unsplash.com/photo-1629905679177-4c4e2623654f?q=80&w=3047&auto=format&fit=crop",
+      src: "/images(12).avif",
       width: 3047,
       height: 1868,
     },
