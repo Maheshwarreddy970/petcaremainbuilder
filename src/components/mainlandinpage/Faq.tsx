@@ -18,7 +18,7 @@ export default function Faq() {
 
   return (
     <div className="w-full flex justify-center">
-      <div className="md:w-[80%] w-full flex flex-col items-center justify-center md:mt-48 mt-0 px-4">
+      <div className="md:w-[80%] w-full flex flex-col items-center justify-center px-4">
         {/* Top Hero Icon */}
         <div className="w-full flex items-center justify-center">
           <div>

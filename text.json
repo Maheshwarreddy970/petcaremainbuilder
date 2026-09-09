@@ -205,7 +205,7 @@
     "heading": {
       "className": "",
       "color": "#1e0c05",
-      "text": "Services we provide"
+      "text": "Services We Provide"
     },
     "cardBg": "#ffffff",
     "titleColor": "#050505",
@@ -358,7 +358,7 @@
     "headingColor": "#fdfdfd",
     "heading": {
       "className": "",
-      "text": "Trusted by Pet Owners in Burlington, Oakville, Hamilton, and the Niagara Region.",
+      "text": "Trusted by Pet Owners in Burlington, Oakville, Hamilton, and the Niagara Region for all-natural care.",
       "color": "#fdfdfd"
     },
     "section": {
@@ -367,7 +367,7 @@
     },
     "experience": {
       "subtitle": "Stress-free: We can come to you!",
-      "className": "",
+      "className": "hidden",
       "iconColor": "#ffffff",
       "titleColor": "#fdfdfd",
       "title": "In-Home Service Available",
@@ -494,7 +494,7 @@
       "className": ""
     }
   },
- "footer": {
+  "footer": {
     "section": {
       "className": "",
       "bg": "#fdfdfd"
