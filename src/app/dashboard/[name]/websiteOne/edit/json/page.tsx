@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import WebsiteOne from "@/components/templates/WebsiteOne";
 
 // 🔥 1. ERROR BOUNDARY: Prevents bad JSON from crashing the whole page
-class PreviewErrorBoundary extends React.Component<{data: any, children: React.ReactNode}, {hasError: boolean, error: any}> {
+class PreviewErrorBoundary extends React.Component<{ data: any, children: React.ReactNode }, { hasError: boolean, error: any }> {
   constructor(props: any) {
     super(props);
     this.state = { hasError: false, error: null };
@@ -58,12 +58,12 @@ const SectionAccordion = ({ title, children }: { title: string, children: React.
 export default function LandingPageOneJsonEditor({ params }: { params: Promise<{ name: string }> }) {
   const { name } = use(params);
   const router = useRouter();
-  
+
   const [config, setConfig] = useState<any>(null);
   const [jsonInput, setJsonInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  
+
   // Auto-save states
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const isFirstLoad = useRef(true);
@@ -76,7 +76,7 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
         if (docSnap.exists()) {
           const data = docSnap.data();
           const templateData = data.websiteOneData || {};
-          
+
           setConfig(templateData);
           setJsonInput(JSON.stringify(templateData, null, 2));
         }
@@ -95,7 +95,7 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
       const script = document.createElement("script");
       script.id = "tailwind-cdn";
       script.src = "https://cdn.tailwindcss.com";
-      
+
       script.onload = () => {
         if (typeof window !== "undefined" && (window as any).tailwind) {
           (window as any).tailwind.config = {
@@ -115,7 +115,7 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
           };
         }
       };
-      
+
       document.head.appendChild(script);
     }
   }, []);
@@ -132,18 +132,18 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
     const timeoutId = setTimeout(async () => {
       setSaveStatus("saving");
       try {
-        await setDoc(doc(db, "websites", name), { 
-          lastUpdated: new Date().toISOString(), 
-          websiteOneData: config 
+        await setDoc(doc(db, "websites", name), {
+          lastUpdated: new Date().toISOString(),
+          websiteOneData: config
         }, { merge: true });
-        
+
         setSaveStatus("saved");
         setTimeout(() => setSaveStatus("idle"), 2000);
       } catch (err: any) {
         setError(`Auto-save failed: ${err.message}`);
         setSaveStatus("idle");
       }
-    }, 800); 
+    }, 800);
 
     return () => clearTimeout(timeoutId);
   }, [config, name]);
@@ -153,7 +153,7 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
     setJsonInput(newVal);
     try {
       const parsed = JSON.parse(newVal);
-      setConfig(parsed); 
+      setConfig(parsed);
       setError("");
     } catch (err) {
       setError("Invalid JSON format. Auto-save paused.");
@@ -162,7 +162,7 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
 
   const updateClassName = (path: string[], value: string) => {
     const newConfig = JSON.parse(JSON.stringify(config || {}));
-    
+
     let current = newConfig;
     for (let i = 0; i < path.length - 1; i++) {
       if (!current[path[i]]) current[path[i]] = {};
@@ -179,12 +179,12 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
     return (
       <div className="space-y-1.5">
         <label className="text-[11px] font-semibold text-gray-700">{label}</label>
-        <input 
-          type="text" 
-          value={val} 
-          onChange={(e) => updateClassName(path, e.target.value)} 
-          placeholder={placeholder} 
-          className="w-full p-2 text-sm border border-gray-200 rounded outline-none focus:border-black focus:ring-1 focus:ring-black bg-white" 
+        <input
+          type="text"
+          value={val}
+          onChange={(e) => updateClassName(path, e.target.value)}
+          placeholder={placeholder}
+          className="w-full p-2 text-sm border border-gray-200 rounded outline-none focus:border-black focus:ring-1 focus:ring-black bg-white"
         />
       </div>
     );
@@ -194,18 +194,18 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
 
   return (
     <div className="flex w-full h-screen bg-white font-sans text-black overflow-hidden">
-      
+
       {/* LEFT SIDE: Editor Panel */}
       <div className="w-[450px] flex flex-col shrink-0 border-r border-gray-200 bg-gray-50 z-10 shadow-xl">
-        
+
         <div className="flex flex-col gap-4 p-5 border-b border-gray-200 bg-white">
           <button onClick={() => router.push(`/dashboard/${name}`)} className="text-gray-500 hover:text-black flex items-center gap-1.5 text-sm font-medium w-fit transition-colors">
             <ArrowLeft size={16} /> Back to Dashboard
           </button>
-          
+
           <div className="flex items-center justify-between">
             <h1 className="font-bold text-sm text-gray-800">Template 1: Advanced Editor</h1>
-            
+
             <div className="flex items-center gap-2 text-xs font-medium bg-gray-50 px-3 py-1.5 rounded-full border border-gray-200">
               {saveStatus === "saving" && <><Loader2 size={14} className="animate-spin text-blue-500" /> <span className="text-blue-500">Saving...</span></>}
               {saveStatus === "saved" && <><CheckCircle2 size={14} className="text-green-500" /> <span className="text-green-500">Saved</span></>}
@@ -216,13 +216,13 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 space-y-6 pb-20">
-          
+
           <div className="space-y-2">
             <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest pl-1">Raw JSON Object</h3>
-            <textarea 
-              value={jsonInput} 
-              onChange={handleJsonChange} 
-              className="w-full h-[300px] bg-gray-900 text-green-400 p-4 font-mono text-[12px] rounded-lg shadow-inner outline-none focus:ring-2 focus:ring-blue-500 resize-y leading-relaxed" 
+            <textarea
+              value={jsonInput}
+              onChange={handleJsonChange}
+              className="w-full h-[300px] bg-gray-900 text-green-400 p-4 font-mono text-[12px] rounded-lg shadow-inner outline-none focus:ring-2 focus:ring-blue-500 resize-y leading-relaxed"
               spellCheck={false}
             />
           </div>
@@ -254,7 +254,13 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
               {renderClassInput("Rating Block Classes", ["statsBanner", "rating", "className"], "e.g. scale-110")}
               {renderClassInput("Experience Block Classes", ["statsBanner", "experience", "className"], "e.g. hidden sm:flex")}
             </SectionAccordion>
-
+            <SectionAccordion title="Meet the Founder">
+              {renderClassInput("Section Classes", ["founder", "section", "className"], "e.g. py-20")}
+              {renderClassInput("Heading Classes", ["founder", "heading", "className"], "e.g. text-5xl font-bold")}
+              {renderClassInput("Subheading Classes", ["founder", "subheading", "className"], "e.g. uppercase tracking-widest")}
+              {renderClassInput("Description Classes", ["founder", "description", "className"], "e.g. text-lg leading-relaxed")}
+              {renderClassInput("Signature Classes", ["founder", "signature", "className"], "e.g. font-['Playfair_Display'] italic")}
+            </SectionAccordion>
             <SectionAccordion title="Gallery">
               {renderClassInput("Section Classes", ["gallery", "section", "className"], "e.g. py-24")}
               {renderClassInput("Heading Classes", ["gallery", "heading", "className"], "e.g. text-5xl font-bold")}

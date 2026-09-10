@@ -17,6 +17,7 @@ import FAQSection from "@/components/landingpageone/FAQSection";
 import ContactSection from "@/components/landingpageone/ContactSection"; 
 import CTASection from "@/components/landingpageone/CTASection";
 import Footer from "@/components/landingpageone/footer";
+import FounderSection from "../landingpageone/FounderSection";
 
 // 1. The ultra-clean, modern sans-serif for main structure
 const inter = Inter({ 
@@ -114,7 +115,8 @@ export default function WebsiteOne({ data, slug }: { data: any, slug?: string })
 
       {data.navbar && <Navbar data={data.navbar} />}
       {data.hero && <Homepage data={data.hero} />}
-      {data.statsBanner && <StatsBanner data={data.statsBanner} />}      
+      {data.statsBanner && <StatsBanner data={data.statsBanner} />}    
+      {data.founder && <FounderSection data={data.founder} />}  
       {data.gallery && <GallerySection data={data.gallery} />}
       {data.about && <AboutSection data={data.about} />}
       {data.services && <ServicesSection data={data.services} />}
