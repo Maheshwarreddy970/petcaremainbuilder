@@ -225,72 +225,78 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
           {/* MEET THE FOUNDER SECTION */}
           {config.founder && (
             <Section title="Meet the Founder">
+              <ImageUploader
+                label="Signature Image (Overrides text if provided)"
+                src={config.founder?.signature?.src}
+                isUploading={uploadingImage === 'founder.signature.src'}
+                onUpload={(e: any) => handleImageUpload(e, 'founder.signature.src')}
+              />
               <ColorText label="Background Color" colorValue={config.founder?.section?.bg} onColorChange={(v: string) => updateField('founder.section.bg', v)} />
 
-            <ColorText
-              label="Subheading (e.g. Founder)"
-              textValue={config.founder?.subheading?.text}
-              colorValue={config.founder?.subheading?.color}
-              onTextChange={(v: string) => updateField('founder.subheading.text', v)}
-              onColorChange={(v: string) => updateField('founder.subheading.color', v)}
-            />
+              <ColorText
+                label="Subheading (e.g. Founder)"
+                textValue={config.founder?.subheading?.text}
+                colorValue={config.founder?.subheading?.color}
+                onTextChange={(v: string) => updateField('founder.subheading.text', v)}
+                onColorChange={(v: string) => updateField('founder.subheading.color', v)}
+              />
 
-            <ColorText
-              label="Heading (e.g. Meet Helen)"
-              textValue={config.founder?.heading?.text}
-              colorValue={config.founder?.heading?.color}
-              onTextChange={(v: string) => updateField('founder.heading.text', v)}
-              onColorChange={(v: string) => updateField('founder.heading.color', v)}
-            />
+              <ColorText
+                label="Heading (e.g. Meet Helen)"
+                textValue={config.founder?.heading?.text}
+                colorValue={config.founder?.heading?.color}
+                onTextChange={(v: string) => updateField('founder.heading.text', v)}
+                onColorChange={(v: string) => updateField('founder.heading.color', v)}
+              />
 
-            <ColorText
-              label="Biography / Description"
-              textValue={config.founder?.description?.text}
-              colorValue={config.founder?.description?.color}
-              onTextChange={(v: string) => updateField('founder.description.text', v)}
-              onColorChange={(v: string) => updateField('founder.description.color', v)}
-              isTextArea
-            />
+              <ColorText
+                label="Biography / Description"
+                textValue={config.founder?.description?.text}
+                colorValue={config.founder?.description?.color}
+                onTextChange={(v: string) => updateField('founder.description.text', v)}
+                onColorChange={(v: string) => updateField('founder.description.color', v)}
+                isTextArea
+              />
 
-            <ColorText
-              label="Signature / Name"
-              textValue={config.founder?.signature?.text}
-              colorValue={config.founder?.signature?.color}
-              onTextChange={(v: string) => updateField('founder.signature.text', v)}
-              onColorChange={(v: string) => updateField('founder.signature.color', v)}
-            />
+              <ColorText
+                label="Signature / Name"
+                textValue={config.founder?.signature?.text}
+                colorValue={config.founder?.signature?.color}
+                onTextChange={(v: string) => updateField('founder.signature.text', v)}
+                onColorChange={(v: string) => updateField('founder.signature.color', v)}
+              />
 
-            {/* 4-Image Grid Uploaders */}
-            <div className="border border-gray-200 p-4 rounded-lg bg-gray-50 mt-5 space-y-4">
-              <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Photo Grid (4 Images)</label>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <ImageUploader
-                  label="Image 1 (Top Left)"
-                  src={config.founder?.images?.[0]?.src}
-                  isUploading={uploadingImage === 'founder.images.0.src'}
-                  onUpload={(e: any) => handleImageUpload(e, 'founder.images.0.src')}
-                />
-                <ImageUploader
-                  label="Image 2 (Bottom Left)"
-                  src={config.founder?.images?.[1]?.src}
-                  isUploading={uploadingImage === 'founder.images.1.src'}
-                  onUpload={(e: any) => handleImageUpload(e, 'founder.images.1.src')}
-                />
-                <ImageUploader
-                  label="Image 3 (Top Right - Pushed Down)"
-                  src={config.founder?.images?.[2]?.src}
-                  isUploading={uploadingImage === 'founder.images.2.src'}
-                  onUpload={(e: any) => handleImageUpload(e, 'founder.images.2.src')}
-                />
-                <ImageUploader
-                  label="Image 4 (Bottom Right)"
-                  src={config.founder?.images?.[3]?.src}
-                  isUploading={uploadingImage === 'founder.images.3.src'}
-                  onUpload={(e: any) => handleImageUpload(e, 'founder.images.3.src')}
-                />
+              {/* 4-Image Grid Uploaders */}
+              <div className="border border-gray-200 p-4 rounded-lg bg-gray-50 mt-5 space-y-4">
+                <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Photo Grid (4 Images)</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <ImageUploader
+                    label="Image 1 (Top Left)"
+                    src={config.founder?.images?.[0]?.src}
+                    isUploading={uploadingImage === 'founder.images.0.src'}
+                    onUpload={(e: any) => handleImageUpload(e, 'founder.images.0.src')}
+                  />
+                  <ImageUploader
+                    label="Image 2 (Bottom Left)"
+                    src={config.founder?.images?.[1]?.src}
+                    isUploading={uploadingImage === 'founder.images.1.src'}
+                    onUpload={(e: any) => handleImageUpload(e, 'founder.images.1.src')}
+                  />
+                  <ImageUploader
+                    label="Image 3 (Top Right - Pushed Down)"
+                    src={config.founder?.images?.[2]?.src}
+                    isUploading={uploadingImage === 'founder.images.2.src'}
+                    onUpload={(e: any) => handleImageUpload(e, 'founder.images.2.src')}
+                  />
+                  <ImageUploader
+                    label="Image 4 (Bottom Right)"
+                    src={config.founder?.images?.[3]?.src}
+                    isUploading={uploadingImage === 'founder.images.3.src'}
+                    onUpload={(e: any) => handleImageUpload(e, 'founder.images.3.src')}
+                  />
+                </div>
               </div>
-            </div>
-          </Section>)}
+            </Section>)}
           {/* 🔥 IMAGE SLIDER INSTALLED HERE */}
           {config.imageSlider && (
             <Section title="Infinite Image Slider my-5">

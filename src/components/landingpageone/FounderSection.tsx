@@ -9,7 +9,10 @@ export default function FounderSection({ data }: { data: any }) {
     const headingText = data.heading?.text !== undefined ? data.heading.text : data.heading;
     const subheadingText = data.subheading?.text !== undefined ? data.subheading.text : data.subheading;
     const descText = data.description?.text !== undefined ? data.description.text : data.description;
-    const signatureText = data.signature?.text !== undefined ? data.signature.text : data.signature;
+    
+    // Safely extract signature properties (handles both text and image scenarios)
+    const signatureText = data.signature?.text !== undefined ? data.signature.text : (typeof data.signature === 'string' ? data.signature : null);
+    const signatureSrc = data.signature?.src;
 
     const images = data.images || [];
 
@@ -21,7 +24,7 @@ export default function FounderSection({ data }: { data: any }) {
                     {/* Left Column: Text & Bio */}
                     <div className="flex flex-col items-start text-left order-2 lg:order-1">
                         {subheadingText && (
-                            <h3 className={cn(" hidden md:block text-sm md:text-base font-bold uppercase tracking-widest mb-4", data.subheading?.className)} style={{ color: data.subheading?.color || '#994500' }}>
+                            <h3 className={cn("hidden md:block text-sm md:text-base font-bold uppercase tracking-widest mb-4", data.subheading?.className)} style={{ color: data.subheading?.color || '#994500' }}>
                                 {subheadingText}
                             </h3>
                         )}
@@ -40,9 +43,20 @@ export default function FounderSection({ data }: { data: any }) {
                             ))}
                         </div>
 
-                        {signatureText && (
-                            <div className={cn("mt-10 font-['Playfair_Display'] italic text-3xl", data.signature?.className)} style={{ color: data.signature?.color || '#1e0c05' }}>
-                                {signatureText}
+                        {/* 🔥 SMART SIGNATURE RENDERING */}
+                        {(signatureSrc || signatureText) && (
+                            <div className={cn("mt-10", data.signature?.className)}>
+                                {signatureSrc ? (
+                                    <img 
+                                        src={signatureSrc} 
+                                        alt={data.signature?.alt || "Helen's Signature"} 
+                                        className="h-16 md:h-20 w-auto object-contain drop-shadow-sm opacity-90"
+                                    />
+                                ) : (
+                                    <div className="font-['Playfair_Display'] italic text-3xl" style={{ color: data.signature?.color || '#1e0c05' }}>
+                                        {signatureText}
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
@@ -50,19 +64,20 @@ export default function FounderSection({ data }: { data: any }) {
                     {/* Right Column: Staggered 4-Image Grid */}
                     <div className={cn("relative w-full order-1 lg:order-2", data.imageGrid?.className)}>
                         <div>
-                                {subheadingText && (
-                                    <h3 className={cn(" block md:hidden text-center text-sm font-bold uppercase tracking-widest mb-4", data.subheading?.className)} style={{ color: data.subheading?.color || '#994500' }}>
-                                        {subheadingText}
-                                    </h3>
-                                )}
+                            {subheadingText && (
+                                <h3 className={cn("block md:hidden text-center text-sm font-bold uppercase tracking-widest mb-4", data.subheading?.className)} style={{ color: data.subheading?.color || '#994500' }}>
+                                    {subheadingText}
+                                </h3>
+                            )}
 
-                                <SmartHeading
-                                    as="h2"
-                                    text={headingText}
-                                    className={cn("block md:hidden text-center font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-6", data.heading?.className)}
-                                    style={{ color: data.heading?.color || data.headingColor || '#1e0c05' }}
-                                />
-                            </div>
+                            <SmartHeading
+                                as="h2"
+                                text={headingText}
+                                className={cn("block md:hidden text-center font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-6", data.heading?.className)}
+                                style={{ color: data.heading?.color || data.headingColor || '#1e0c05' }}
+                            />
+                        </div>
+                        
                         <div className="grid grid-cols-2 gap-4 md:gap-6 items-center">
                             
                             {/* Left Column of Images (Normal) */}
