@@ -9,7 +9,7 @@ export default function GallerySection({ data }: { data: any }) {
     return (
         <section
             id='gallery'
-            className={cn("py-20 w-full overflow-hidden", data.section?.className)}
+            className={cn("pb-20 w-full overflow-hidden", data.section?.className)}
             style={{ backgroundColor: data.section?.bg || data.bg || '#fffaf8' }}
         >
             <div className="mx-auto px-6 md:px-12 flex flex-col items-center">
