@@ -3,9 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { 
-  LayoutTemplate, Code, ExternalLink, Loader2, Globe, Calendar, Server, 
-  ShieldCheck, CheckCircle2, Lock, Link as LinkIcon, RefreshCw, Copy, 
-  Download, Settings 
+  LayoutTemplate, ExternalLink, Loader2, Globe, Server, 
+  Lock, RefreshCw, Download, Settings 
 } from "lucide-react";
 import merge from "lodash/merge";
 import WebsiteOne from "@/components/templates/WebsiteOne";
@@ -31,61 +30,11 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
   const [isDeploying, setIsDeploying] = useState(false);
   const [deployStep, setDeployStep] = useState(0);
   const [isPublishing, setIsPublishing] = useState(false);
-  
-  // 🔥 Automatically open the modal if the domain is still pending
-  const [showDnsModal, setShowDnsModal] = useState(dbData?.domainStatus === "pending");
-
-  const [customDomainInput, setCustomDomainInput] = useState(dbData?.customDomain || "");
-  const [dnsRecords, setDnsRecords] = useState<any>(dbData?.dnsRecords || null);
-  const [isConnecting, setIsConnecting] = useState(false);
-  const [domainStatus, setDomainStatus] = useState(dbData?.domainStatus || "none");
-  const [isChecking, setIsChecking] = useState(false);
-
-  // 🚀 Smart DNS Registrar Detection State
-  const [detectedRegistrar, setDetectedRegistrar] = useState<"godaddy" | "namecheap" | "ionos" | "squarespace" | "unknown" | "detecting">("detecting");
-
-// 🚀 Smart DNS Registrar Detection Effect
-  useEffect(() => {
-    const targetDomain = customDomainInput || dbData?.customDomain;
-    if (!showDnsModal || !targetDomain) return;
-
-    const detectProvider = async () => {
-      setDetectedRegistrar("detecting");
-      try {
-        const cleanDomain = targetDomain.replace(/^https?:\/\//, "").replace(/\/$/, "").replace(/^www\./, '');
-        if (!cleanDomain || !cleanDomain.includes('.')) return;
-
-        const res = await fetch(`https://cloudflare-dns.com/dns-query?name=${cleanDomain}&type=NS`, {
-          headers: { 'Accept': 'application/dns-json' }
-        });
-        
-        const data = await res.json();
-        const nsString = (data.Answer || []).map((a: any) => a.data.toLowerCase()).join(' ');
-
-        // 🔥 Expanded matching patterns to guarantee correct provider detection
-        if (nsString.includes('domaincontrol')) {
-          setDetectedRegistrar('godaddy');
-        } else if (nsString.includes('registrar-servers') || nsString.includes('namecheap')) {
-          setDetectedRegistrar('namecheap');
-        } else if (nsString.includes('ui-dns') || nsString.includes('1and1') || nsString.includes('ionos')) {
-          setDetectedRegistrar('ionos');
-        } else if (nsString.includes('squarespacedns') || nsString.includes('googledomains') || nsString.includes('nsone.net')) {
-          setDetectedRegistrar('squarespace');
-        } else {
-          setDetectedRegistrar('unknown');
-        }
-      } catch (e) {
-        setDetectedRegistrar('unknown');
-      }
-    };
-
-    const timeoutId = setTimeout(detectProvider, 800);
-    return () => clearTimeout(timeoutId);
-  }, [showDnsModal, customDomainInput, dbData?.customDomain]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
 
+  // Auto-scroll effect for the preview window
   useEffect(() => {
     let animationFrameId: number;
     const scrollContainer = scrollRef.current;
@@ -104,6 +53,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
     return () => cancelAnimationFrame(animationFrameId);
   }, [isHovering]);
 
+  // If you manually add a domain to Firebase later, it will show up here
   const activeDisplayUrl = dbData?.customDomain ? dbData.customDomain : `${name}.nexpetcare.online`;
   const liveHref = dbData?.customDomain ? `https://${dbData.customDomain}` : `https://${name}.nexpetcare.online`;
   const activeData = merge({}, dbData?.websiteOneData || {});
@@ -134,8 +84,6 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
     }
     setIsDeploying(false);
   };
-
-
 
   const handleDownload = async () => {
     setDownloading(true);
@@ -173,7 +121,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
     <div className="min-h-screen bg-[#f8f9fa] text-black p-6 md:p-10 font-sans flex flex-col items-center" suppressHydrationWarning>
 
       {/* Dashboard Header */}
-      <div className="w-full  mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+      <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
         <div>
           <h1 className="text-2xl font-bold tracking-tight capitalize text-gray-900">
             {dbData?.clientName || name}
@@ -230,7 +178,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
 
       {/* Deploy Banner */}
       {!isDeployed && (
-        <div className="w-full  mx-auto mt-6 bg-white p-8 rounded-2xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="w-full max-w-7xl mx-auto mt-6 bg-white p-8 rounded-2xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center shrink-0">
               <Server className="w-7 h-7 text-blue-600" />
@@ -238,7 +186,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
             <div>
               <h2 className="text-xl font-bold text-gray-900">Deploy app for free</h2>
               <p className="text-gray-500 text-sm mt-1">
-                Make your template live on <span className="font-mono bg-gray-100 px-1 rounded text-gray-700">{name}.nexpetcare.online</span> and unlock custom domains.
+                Make your template live on <span className="font-mono bg-gray-100 px-1 rounded text-gray-700">{name}.nexpetcare.online</span>.
               </p>
             </div>
           </div>
@@ -261,9 +209,8 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
         </div>
       )}
 
-
       {/* Auto-scrolling Template Preview - ALWAYS VISIBLE */}
-      <div className="w-full  mx-auto mt-10 flex flex-col bg-white rounded-2xl border border-gray-300 overflow-hidden ring-1 ring-black/5">
+      <div className="w-full max-w-7xl mx-auto mt-10 flex flex-col bg-white rounded-2xl border border-gray-300 overflow-hidden ring-1 ring-black/5">
         <div className="h-14 bg-gray-100/80 border-b border-gray-200 flex items-center px-4 justify-between select-none shrink-0 z-10 relative">
           <div className="flex gap-2 w-20">
             <div className="w-3 h-3 rounded-full bg-[#ff5f56] border border-[#e0443e]" />
@@ -273,7 +220,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
 
           <div className="flex-1 flex justify-center">
             <div className="bg-white px-8 py-1.5 text-xs text-gray-500 font-medium rounded-md border border-gray-200 shadow-sm flex items-center gap-2 min-w-[250px] justify-center">
-              <Lock size={12} className={domainStatus === "active" ? "text-green-500" : "text-gray-400"} />
+              <Lock size={12} className={dbData?.customDomain ? "text-green-500" : "text-gray-400"} />
               <span className="ml-2">{activeDisplayUrl}</span>
             </div>
           </div>
