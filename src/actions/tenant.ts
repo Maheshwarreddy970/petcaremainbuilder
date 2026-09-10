@@ -4,37 +4,55 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { revalidateTag, revalidatePath } from "next/cache";
 
+// 🔥 SMART AUTH HELPER: Automatically formats headers for Tokens OR Global Keys
+// 🔥 SMART AUTH HELPER: Automatically formats headers for Tokens OR Global Keys
+function getCloudflareHeaders(): Record<string, string> {
+  const email = process.env.CLOUDFLARE_EMAIL?.trim();
+  const apiKey = (process.env.CLOUDFLARE_GLOBAL_API_KEY || process.env.CLOUDFLARE_API_TOKEN)?.trim();
+
+  if (!apiKey) throw new Error("Missing Cloudflare API Key in .env.local");
+
+  // Start with the base headers
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json"
+  };
+
+  // If the key starts with 'cfk_' or is very long, it is a Bearer Token.
+  if (apiKey.startsWith("cfk_") || apiKey.length > 38) {
+    headers["Authorization"] = `Bearer ${apiKey}`;
+  } else {
+    // Otherwise, it is a traditional Global API Key
+    headers["X-Auth-Email"] = email || "";
+    headers["X-Auth-Key"] = apiKey;
+  }
+
+  return headers;
+}
+
 export async function connectCustomDomainAction(slug: string, customDomain: string) {
   try {
     const cleanDomain = customDomain.replace(/^https?:\/\//, "").replace(/\/$/, "").toLowerCase();
-    
-    const zoneId = process.env.CLOUDFLARE_ZONE_ID;
-    const globalApiKey = process.env.CLOUDFLARE_GLOBAL_API_KEY;
-    const email = process.env.CLOUDFLARE_EMAIL; 
+    const zoneId = process.env.CLOUDFLARE_ZONE_ID?.trim();
     const fallbackDomain = process.env.NEXT_PUBLIC_FALLBACK_DOMAIN || "cname.nexpetcare.online";
 
-    if (!zoneId || !globalApiKey || !email) {
-      return { success: false, error: "Missing Cloudflare GLOBAL API KEY or Email in .env.local" };
-    }
+    if (!zoneId) return { success: false, error: "Missing Cloudflare ZONE_ID in .env.local" };
 
-    const headers: any = { 
-      "Content-Type": "application/json",
-      "X-Auth-Email": email.trim(),
-      "X-Auth-Key": globalApiKey.trim()
-    };
+    const headers = getCloudflareHeaders();
 
-    // 🔥 1. SMART CHECK: Look to see if the domain is already in Cloudflare
-    const checkResponse = await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId.trim()}/custom_hostnames?hostname=${cleanDomain}`, {
+    // 1. SMART CHECK
+    const checkResponse = await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId}/custom_hostnames?hostname=${cleanDomain}`, {
       method: "GET",
       headers,
     });
     
     const checkData = await checkResponse.json();
-    let domainData = checkData.result?.[0]; // Will be undefined if it doesn't exist
+    if (!checkResponse.ok) throw new Error(checkData.errors?.[0]?.message || "Cloudflare Auth Error");
+    
+    let domainData = (checkData.result || []).find((item: any) => item.hostname.toLowerCase() === cleanDomain);
 
-    // 🔥 2. CREATE IF MISSING: If it doesn't exist, create it normally
+    // 2. CREATE IF MISSING
     if (!domainData) {
-      const createResponse = await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId.trim()}/custom_hostnames`, {
+      const createResponse = await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId}/custom_hostnames`, {
         method: "POST",
         headers,
         body: JSON.stringify({
@@ -44,17 +62,11 @@ export async function connectCustomDomainAction(slug: string, customDomain: stri
       });
       
       const createData = await createResponse.json();
-
-      if (!createResponse.ok) {
-        throw new Error(createData.errors?.[0]?.message || "Cloudflare API Failed");
-      }
+      if (!createResponse.ok) throw new Error(createData.errors?.[0]?.message || "Cloudflare Create Error");
       domainData = createData.result;
     }
 
-    // 3. EXTRACT RECORDS: Grab the ownership and SSL TXT records
-  // ... inside connectCustomDomainAction ...
-    
-    // 3. EXTRACT RECORDS: Grab the ownership and SSL TXT records
+    // 3. EXTRACT RECORDS
     const ownershipTxt = domainData.ownership_verification;
     const sslTxt = domainData.ssl?.validation_records?.[0];
 
@@ -62,20 +74,16 @@ export async function connectCustomDomainAction(slug: string, customDomain: stri
     if (ownershipTxt) dnsRecords.push({ type: "TXT", name: ownershipTxt.name, value: ownershipTxt.value });
     if (sslTxt) dnsRecords.push({ type: "TXT", name: sslTxt.txt_name, value: sslTxt.txt_value });
 
-    // 🔥 4. UPDATE FIREBASE: Now saving the `dnsRecords` array to the database!
+    // 4. UPDATE FIREBASE
     const websiteRef = doc(db, "websites", slug);
     await updateDoc(websiteRef, {
       customDomain: cleanDomain,
       cloudflareId: domainData.id,
       domainStatus: domainData.status === "active" ? "active" : "pending",
-      dnsRecords: dnsRecords, // <-- Added this line!
+      dnsRecords: dnsRecords,
       lastUpdated: new Date().toISOString()
     });
 
-    // Return the records to the frontend so the UI table renders
-    return { success: true, dnsRecords };
-
-    // Return the records to the frontend so the UI table renders
     return { success: true, dnsRecords };
 
   } catch (error: any) {
@@ -85,32 +93,34 @@ export async function connectCustomDomainAction(slug: string, customDomain: stri
 
 export async function checkDomainStatusAction(slug: string, customDomain: string) {
   try {
-    const zoneId = process.env.CLOUDFLARE_ZONE_ID;
-    const token = process.env.CLOUDFLARE_API_TOKEN;
-    const email = process.env.CLOUDFLARE_EMAIL;
+    const cleanDomain = customDomain.replace(/^https?:\/\//, "").replace(/\/$/, "").toLowerCase();
+    const zoneId = process.env.CLOUDFLARE_ZONE_ID?.trim();
 
-    if (!zoneId || !token || !email) return { success: false, error: "Missing Credentials" };
+    if (!zoneId) return { success: false, error: "Missing Credentials" };
 
-    // 🔥 HARDCODED TO MATCH THE WORKING TEST SCRIPT
-    const headers: any = { 
-      "Content-Type": "application/json",
-      "X-Auth-Email": email.trim(),
-      "X-Auth-Key": token.trim()
-    };
+    const headers = getCloudflareHeaders();
 
-    const response = await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId.trim()}/custom_hostnames?hostname=${customDomain}`, {
+    const response = await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId}/custom_hostnames?hostname=${cleanDomain}`, {
       method: "GET",
       headers,
     });
 
     const data = await response.json();
-    const domainData = data.result?.[0];
+    
+    // 🔥 If auth fails, it will now throw the exact Cloudflare error instead of "Not found"
+    if (!response.ok) {
+      throw new Error(data.errors?.[0]?.message || "Authentication failed with Cloudflare API");
+    }
 
-    if (!domainData) throw new Error("Domain not found");
+    // Safely find the exact domain
+    const domainData = (data.result || []).find((item: any) => item.hostname.toLowerCase() === cleanDomain);
 
+    if (!domainData) throw new Error(`Domain '${cleanDomain}' not found in your Cloudflare zone.`);
+
+    // Update Firebase if it is officially active!
     if (domainData.status === "active") {
       const websiteRef = doc(db, "websites", slug);
-      await updateDoc(websiteRef, { domainStatus: "active" });
+      await updateDoc(websiteRef, { domainStatus: "active", dnsRecords: null });
     }
 
     return { success: true, status: domainData.status };
@@ -119,6 +129,7 @@ export async function checkDomainStatusAction(slug: string, customDomain: string
   }
 }
 
+// Keep your discoverDomainConnectAction here at the bottom if you have it!
 
 
 export async function deployWebsiteAction(slug: string) {
