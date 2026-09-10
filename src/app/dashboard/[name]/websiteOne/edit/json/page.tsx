@@ -254,6 +254,7 @@ export default function LandingPageOneJsonEditor({ params }: { params: Promise<{
               {renderClassInput("Rating Block Classes", ["statsBanner", "rating", "className"], "e.g. scale-110")}
               {renderClassInput("Experience Block Classes", ["statsBanner", "experience", "className"], "e.g. hidden sm:flex")}
             </SectionAccordion>
+            
             <SectionAccordion title="Meet the Founder">
               {renderClassInput("Section Classes", ["founder", "section", "className"], "e.g. py-20")}
               {renderClassInput("Heading Classes", ["founder", "heading", "className"], "e.g. text-5xl font-bold")}

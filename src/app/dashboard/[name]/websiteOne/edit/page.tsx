@@ -182,12 +182,12 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
             <ButtonConfig label="CTA Button" textVal={config.navbar?.cta?.label} hrefVal={config.navbar?.cta?.href} bgCol={config.navbar?.cta?.bg} textCol={config.navbar?.cta?.text} onText={(v: string) => updateField('navbar.cta.label', v)} onHref={(v: string) => updateField('navbar.cta.href', v)} onBg={(v: string) => updateField('navbar.cta.bg', v)} onCol={(v: string) => updateField('navbar.cta.text', v)} />
           </Section>
 
-         {/* HERO SECTION */}
+          {/* HERO SECTION */}
           <Section title="Hero Section">
             <ColorText label="Background Color" colorValue={config.hero?.section?.bg} onColorChange={(v: string) => updateField('hero.section.bg', v)} />
             <ColorText label="Heading" textValue={config.hero?.heading?.text} colorValue={config.hero?.heading?.color} onTextChange={(v: string) => updateField('hero.heading.text', v)} onColorChange={(v: string) => updateField('hero.heading.color', v)} />
             <ColorText label="Description" textValue={config.hero?.description?.text} colorValue={config.hero?.description?.color} onTextChange={(v: string) => updateField('hero.description.text', v)} onColorChange={(v: string) => updateField('hero.description.color', v)} isTextArea />
-            
+
             {/* 🔥 Added Dedicated Mobile Image Uploader */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <ImageUploader label="Desktop Background Image" src={config.hero?.image?.src} isUploading={uploadingImage === 'hero.image.src'} onUpload={(e: any) => handleImageUpload(e, 'hero.image.src')} />
@@ -222,7 +222,75 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
               <ColorText label="Icon Color" colorValue={config.statsBanner?.experience?.iconColor} onColorChange={(v: string) => updateField('statsBanner.experience.iconColor', v)} />
             </div>
           </Section>
+          {/* MEET THE FOUNDER SECTION */}
+          {config.founder && (
+            <Section title="Meet the Founder">
+              <ColorText label="Background Color" colorValue={config.founder?.section?.bg} onColorChange={(v: string) => updateField('founder.section.bg', v)} />
 
+            <ColorText
+              label="Subheading (e.g. Founder)"
+              textValue={config.founder?.subheading?.text}
+              colorValue={config.founder?.subheading?.color}
+              onTextChange={(v: string) => updateField('founder.subheading.text', v)}
+              onColorChange={(v: string) => updateField('founder.subheading.color', v)}
+            />
+
+            <ColorText
+              label="Heading (e.g. Meet Helen)"
+              textValue={config.founder?.heading?.text}
+              colorValue={config.founder?.heading?.color}
+              onTextChange={(v: string) => updateField('founder.heading.text', v)}
+              onColorChange={(v: string) => updateField('founder.heading.color', v)}
+            />
+
+            <ColorText
+              label="Biography / Description"
+              textValue={config.founder?.description?.text}
+              colorValue={config.founder?.description?.color}
+              onTextChange={(v: string) => updateField('founder.description.text', v)}
+              onColorChange={(v: string) => updateField('founder.description.color', v)}
+              isTextArea
+            />
+
+            <ColorText
+              label="Signature / Name"
+              textValue={config.founder?.signature?.text}
+              colorValue={config.founder?.signature?.color}
+              onTextChange={(v: string) => updateField('founder.signature.text', v)}
+              onColorChange={(v: string) => updateField('founder.signature.color', v)}
+            />
+
+            {/* 4-Image Grid Uploaders */}
+            <div className="border border-gray-200 p-4 rounded-lg bg-gray-50 mt-5 space-y-4">
+              <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Photo Grid (4 Images)</label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <ImageUploader
+                  label="Image 1 (Top Left)"
+                  src={config.founder?.images?.[0]?.src}
+                  isUploading={uploadingImage === 'founder.images.0.src'}
+                  onUpload={(e: any) => handleImageUpload(e, 'founder.images.0.src')}
+                />
+                <ImageUploader
+                  label="Image 2 (Bottom Left)"
+                  src={config.founder?.images?.[1]?.src}
+                  isUploading={uploadingImage === 'founder.images.1.src'}
+                  onUpload={(e: any) => handleImageUpload(e, 'founder.images.1.src')}
+                />
+                <ImageUploader
+                  label="Image 3 (Top Right - Pushed Down)"
+                  src={config.founder?.images?.[2]?.src}
+                  isUploading={uploadingImage === 'founder.images.2.src'}
+                  onUpload={(e: any) => handleImageUpload(e, 'founder.images.2.src')}
+                />
+                <ImageUploader
+                  label="Image 4 (Bottom Right)"
+                  src={config.founder?.images?.[3]?.src}
+                  isUploading={uploadingImage === 'founder.images.3.src'}
+                  onUpload={(e: any) => handleImageUpload(e, 'founder.images.3.src')}
+                />
+              </div>
+            </div>
+          </Section>)}
           {/* 🔥 IMAGE SLIDER INSTALLED HERE */}
           {config.imageSlider && (
             <Section title="Infinite Image Slider my-5">
@@ -287,12 +355,12 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
               <ColorText label="Before/After Badge Text" colorValue={config.gallery?.styling?.badgeText} onColorChange={(v: string) => updateField('gallery.styling.badgeText', v)} />
 
               <div className="my-4 space-y-3">
-                  <button onClick={() => addArrayItem('gallery.items', { before: "", after: "", alt: "New Image", className: "" })} className="text-blue-600 hover:text-blue-700 flex items-center gap-1">
-                <label className="text-xs font-bold text-gray-500 flex justify-between items-center">
-                  Gallery Images
+                <button onClick={() => addArrayItem('gallery.items', { before: "", after: "", alt: "New Image", className: "" })} className="text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                  <label className="text-xs font-bold text-gray-500 flex justify-between items-center">
+                    Gallery Images
                     <Plus size={14} /> Add Image
-                </label>
-                  </button>
+                  </label>
+                </button>
                 {config.gallery.items.map((item: any, i: number) => (
                   <div key={item.id || i} className="border border-gray-200 p-4 rounded-lg bg-gray-50 space-y-3 relative group">
                     <button onClick={() => removeArrayItem('gallery.items', i)} className="p-2 text-red-400 hover:text-red-600 absolute -right-3 -top-3 bg-white border border-gray-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"><Trash2 size={12} /></button>
