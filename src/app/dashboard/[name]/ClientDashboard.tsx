@@ -301,51 +301,6 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
         </div>
       )}
 
-      {/* Custom Domain Management Card */}
-      {isDeployed && (
-        <div className="w-full  mx-auto mt-6 bg-gradient-to-r from-blue-900 to-slate-900 rounded-2xl p-8 text-white flex flex-col md:flex-row items-center justify-between shadow-lg">
-          <div className="flex-1 pr-8">
-            <div className="flex items-center gap-2 text-blue-300 mb-2">
-              <ShieldCheck size={18} />
-              <span className="text-sm font-bold uppercase tracking-wider">Cloudflare Network</span>
-            </div>
-            <h3 className="text-2xl font-bold mb-2">
-              {domainStatus === "active" ? "Custom Domain Connected" : "Connect Your Own Domain"}
-            </h3>
-
-            {domainStatus === "active" ? (
-              <p className="text-blue-100/80 mb-6 text-sm max-w-2xl">
-                Your site is officially live at <span className="font-mono bg-green-500/20 text-green-300 px-1.5 py-0.5 rounded border border-green-500/30">{activeDisplayUrl}</span>.
-              </p>
-            ) : (
-              <p className="text-blue-100/80 mb-6 text-sm max-w-2xl">
-                Your site is currently live at <span className="font-mono bg-black/30 px-1.5 py-0.5 rounded text-white">{name}.nexpetcare.online</span>. Want to use a custom domain like <span className="font-mono bg-black/30 px-1.5 py-0.5 rounded text-white">www.yourpetsalon.com</span>? Connect it instantly.
-              </p>
-            )}
-
-            <div className="flex flex-wrap items-center gap-4">
-              <button
-                onClick={() => setShowDnsModal(!showDnsModal)}
-                className="bg-white text-black px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors flex items-center gap-2"
-              >
-                <LinkIcon size={16} />
-                {dbData?.customDomain ? "View Domain Settings" : "Setup Custom Domain"}
-              </button>
-
-              <a
-                href="https://cal.com/maheshwar-reddy-20/nexpetcare-demo"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-blue-800/50 border border-blue-400/50 text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-blue-700 transition-colors flex items-center gap-2"
-              >
-                <Calendar size={16} />
-                Book Free 1-on-1 Setup Call
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* DNS Setup Modal / Panel */}
       {showDnsModal && (
         <div className="w-full  mx-auto mt-4 bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm animate-in fade-in slide-in-from-top-4 duration-300">
