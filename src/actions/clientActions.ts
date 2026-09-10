@@ -160,7 +160,6 @@ const defaultWebsiteOneData = {
       phone: { label: "+1-587-302-7481", href: "tel:+15873027481" }, 
       email: { label: "hello@Petocare.com", href: "mailto:hello@Petocare.com" },
       mapEmbedUrl: "",
-      storefrontImage: { src: "", className: "" }
     },
     copyright: "Copyright © 2026 Petocare. All rights reserved.",
     socials: { facebook: "#", instagram: "#" }

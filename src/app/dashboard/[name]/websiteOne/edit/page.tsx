@@ -735,7 +735,10 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
             {/* Maps & Storefront Details */}
             <div className="mt-4 space-y-4 border-t border-gray-100 pt-4">
               <div className="space-y-1.5">
-                <label className="text-[11px] font-semibold text-gray-700">Google Maps Embed URL</label>
+                <div className="flex justify-between items-center">
+                  <label className="text-[11px] font-semibold text-gray-700">Google Maps Embed URL</label>
+                  <span className="text-[9px] text-gray-400 uppercase">Leave empty to hide</span>
+                </div>
                 <input
                   type="text"
                   value={config.footer?.info?.mapEmbedUrl || ""}
@@ -746,12 +749,33 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
                 <p className="text-[10px] text-gray-400 mt-1">Go to Google Maps → Share → Embed a map → Copy link inside src="..."</p>
               </div>
 
-              <ImageUploader
-                label="Storefront Image (Next to Map)"
-                src={config.footer?.info?.storefrontImage?.src}
-                isUploading={uploadingImage === 'footer.info.storefrontImage.src'}
-                onUpload={(e: any) => handleImageUpload(e, 'footer.info.storefrontImage.src')}
-              />
+              <div className="flex flex-col gap-1">
+                <div className="flex justify-between items-center mb-1">
+                  <label className="text-[11px] font-semibold text-gray-700">Storefront Image (Next to Map)</label>
+                  <span className="text-[9px] text-gray-400 uppercase">Leave empty to hide</span>
+                </div>
+                <ImageUploader
+                  label="Upload Storefront Image"
+                  src={config.footer?.info?.storefrontImage?.src}
+                  isUploading={uploadingImage === 'footer.info.storefrontImage.src'}
+                  onUpload={(e: any) => handleImageUpload(e, 'footer.info.storefrontImage.src')}
+                />
+                
+                {/* 🔥 The Remove Button: Appears only when an image exists */}
+                {config.footer?.info?.storefrontImage?.src && (
+                  <button 
+                    onClick={() => updateField('footer.info.storefrontImage.src', '')}
+                    className="text-[11px] text-red-500 font-semibold hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded w-fit mt-1 flex items-center gap-1.5 transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M3 6h18"></path>
+                      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                    </svg>
+                    Remove Image
+                  </button>
+                )}
+              </div>
             </div>
 
             <ColorText label="Copyright Text" textValue={config.footer?.copyright} onTextChange={(v: string) => updateField('footer.copyright', v)} />
