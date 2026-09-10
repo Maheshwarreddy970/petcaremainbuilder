@@ -45,13 +45,13 @@ export default function HeroSection({ data }: { data: any }) {
             )}
             
             {/* Guaranteed White Shadow Overlay using mask-image inline styles */}
-            {/* <div 
+           <div 
                 className="absolute inset-0 z-[5] bg-white/80 md:hidden pointer-events-none" 
                 style={{
                     WebkitMaskImage: 'linear-gradient(to top, black 20%, transparent 70%)',
                     maskImage: 'linear-gradient(to top, black 20%, transparent 70%)'
                 }}
-            /> */}
+            /> 
 
             <div className="relative z-10 w-full mx-auto px-6 md:px-12 lg:px-0 lg:ml-[10%]">
                 <div className="flex flex-col max-w-[620px] py-20 md:py-0 pb-12">
