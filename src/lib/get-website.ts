@@ -1,18 +1,24 @@
 import { db } from "@/lib/firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, or } from "firebase/firestore"; // 🔥 Added "or"
 import { unstable_cache } from "next/cache";
 
-export const getWebsiteData = async (slug: string) => {
-  if (!slug || typeof slug !== "string") {
+export const getWebsiteData = async (slugOrDomain: string) => {
+  if (!slugOrDomain || typeof slugOrDomain !== "string") {
     return null;
   }
 
-  // 🔥 This caches the result FOREVER. 
-  // It will NEVER hit Firebase again until revalidateTag() is called.
   const fetchCachedWebsite = unstable_cache(
     async () => {
       try {
-        const q = query(collection(db, "websites"), where("slug", "==", slug));
+        // 🔥 FIX: Search Firebase for EITHER the slug OR the customDomain!
+        const q = query(
+          collection(db, "websites"), 
+          or(
+            where("slug", "==", slugOrDomain),
+            where("customDomain", "==", slugOrDomain)
+          )
+        );
+        
         const snapshot = await getDocs(q);
 
         if (snapshot.empty) return null;
@@ -22,9 +28,9 @@ export const getWebsiteData = async (slug: string) => {
         return null;
       }
     },
-    [`website-cache-key-${slug}`], // Unique key for the Edge Network
+    [`website-cache-key-${slugOrDomain}`],
     {
-      tags: [`website-${slug}`] // The exact tag we will target on "Save"
+      tags: [`website-${slugOrDomain}`]
     }
   );
 
