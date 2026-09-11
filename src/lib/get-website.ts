@@ -25,7 +25,7 @@ export const getWebsiteData = async (slug: string) => {
         return null;
       }
     },
-    [`website-cache-key-${slug}`], 
+    [`website-cache-key-${slug}-v2`], 
     {
       tags: [`website-${slug}`] 
     }
