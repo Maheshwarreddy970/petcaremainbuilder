@@ -1,6 +1,6 @@
 "use server";
 
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { revalidateTag, revalidatePath } from "next/cache";
 
@@ -190,17 +190,29 @@ export async function saveWebsiteContentAction(slug: string, websiteOneData: any
 
 export async function publishWebsiteUpdatesAction(slug: string) {
   try {
-    // 1. Force clear the unstable_cache (Firebase Data)
+    // 1. Fetch the document to check for a custom domain
+    const websiteRef = doc(db, "websites", slug);
+    const websiteSnap = await getDoc(websiteRef);
+    const websiteData = websiteSnap.data();
+
+    // 2. Clear the standard slug tags
     // @ts-ignore
     revalidateTag(`website-${slug}`);
     // @ts-ignore
     revalidateTag("website");
     
-    // 2. Force clear the Next.js static HTML for the live wildcard domain
+    // 🔥 3. Explicitly clear the custom domain cache if it exists
+    if (websiteData?.customDomain) {
+      // @ts-ignore
+      revalidateTag(`website-${websiteData.customDomain}`);
+      revalidatePath(`/${websiteData.customDomain}`, 'page');
+    }
+    
+    // 4. Force clear the Next.js static HTML for the normal routes
     revalidatePath(`/${slug}`, 'page');
     revalidatePath(`/${slug}`, 'layout');
     
-    // 3. Force clear the Dashboard/Editor so the client sees the fresh version
+    // 5. Force clear the Dashboard/Editor
     revalidatePath(`/dashboard/${slug}`);
     revalidatePath(`/dashboard/${slug}/edit`);
     revalidatePath(`/dashboard/${slug}/settings`);

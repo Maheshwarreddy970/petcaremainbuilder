@@ -10,11 +10,9 @@ export const getWebsiteData = async (slug: string) => {
   const fetchCachedWebsite = unstable_cache(
     async () => {
       try {
-        // 🔥 Detect if 'slug' is actually a custom domain (e.g., contains a dot)
         const isCustomDomain = slug.includes(".");
         const searchField = isCustomDomain ? "customDomain" : "slug";
 
-        // Query by either 'customDomain' OR 'slug' dynamically
         const q = query(collection(db, "websites"), where(searchField, "==", slug));
         const snapshot = await getDocs(q);
 
@@ -25,9 +23,9 @@ export const getWebsiteData = async (slug: string) => {
         return null;
       }
     },
-    [`website-cache-key-${slug}-v2`], 
+    [`website-cache-key-${slug}-v3`], // 🔥 Bumped to v3 to instantly bust the stuck cache
     {
-      tags: [`website-${slug}`] 
+      tags: [`website-${slug}`, "website"] // 🔥 Added global "website" tag
     }
   );
 
