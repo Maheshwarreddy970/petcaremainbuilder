@@ -141,10 +141,6 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
           >
             <LayoutTemplate size={16} /> Visual Editor
           </Link>
-
-          <Link className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors shadow-sm" href={`/dashboard/${name}/settings`}>
-            <Settings size={16} /> Settings
-          </Link>
           
           {isDeployed && (
             <button
