@@ -12,7 +12,8 @@ import {
   Image as GalleryIcon, 
   Star, 
   MessageSquare,
-  Sparkles
+  Sparkles,
+  ShieldCheck
 } from "lucide-react";
 import PawIcon from "@/icons/icon1"; 
 import { cn } from "@/lib/utils";
@@ -30,6 +31,7 @@ const ICON_MAP: Record<string, any> = {
   Star: Star,
   MessageSquare: MessageSquare,
   Sparkles: Sparkles,
+  ShieldCheck: ShieldCheck
 };
 
 export default function Navbar({ data }: { data: any }) {
@@ -110,12 +112,12 @@ export default function Navbar({ data }: { data: any }) {
         <div className="px-6 md:px-12 lg:px-24 xl:px-40 py-3 flex items-center justify-between relative">
           
           {/* LOGO */}
-          <a href={"/"} className={cn("relative flex items-center justify-start w-40 h-12", logo.className)}>
+          <a href={"/"} className={cn("relative flex items-center justify-start ", logo.className)}>
             {logo.src ? (
               <img
                 src={logo.src}
                 alt={logo.alt || "Business Logo"}
-                className="h-full w-auto max-w-full object-contain object-left transition-all" 
+                className="w-40 h-12 max-w-full object-contain object-left transition-all" 
               />
             ) : (
               <PawIcon className="h-11 w-11" style={{ color: data.cta?.bg }} />
@@ -184,9 +186,9 @@ export default function Navbar({ data }: { data: any }) {
           backdropFilter: isScrolled ? 'blur(16px)' : 'none'
         }}
       >
-        <a href="/" className={cn("relative flex items-center w-32 h-14", logo.className)}>
+        <a href="/" className={cn("relative flex items-center ", logo.className)}>
           {logo.src ? (
-            <img src={logo.src} alt={logo.alt || "Business Logo"} className="h-full w-auto max-w-full object-contain object-left transition-all" />
+            <img src={logo.src} alt={logo.alt || "Business Logo"} className="w-32 h-14 max-w-full object-contain object-left transition-all" />
           ) : (
             <PawIcon className="h-10 w-10" style={{ color: data.cta?.bg }} />
           )}
@@ -198,7 +200,7 @@ export default function Navbar({ data }: { data: any }) {
         className="md:hidden fixed inset-x-0 bg-white bottom-4 mx-auto z-50 w-fit max-w-[95vw] border rounded-full flex items-center p-1.5 shadow-xl space-x-1"
         style={{ backgroundColor: navBg, borderColor: hoverColor + '20' }}
       >
-        {links.slice(0, 5).map((link: any, index: number) => {
+        {links.slice(0, 7).map((link: any, index: number) => {
           const cleanHref = (link.href || "").trim();
           const Icon = getIcon(link.icon, index);
 

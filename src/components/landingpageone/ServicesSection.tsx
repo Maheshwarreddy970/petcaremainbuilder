@@ -61,6 +61,16 @@ export default function ServicesSection({ data }: { data: any }) {
                     <p className={cn("text-base md:text-[18px] leading-[1.6]", data.description?.className)} style={{ color: data.description?.color || data.descColor }}>
                         {data.description?.text || data.description || ""}
                     </p>
+                    {/* 🔥 THE NEW GUARANTEE STAMP */}
+                    {data.guaranteeBadge?.src && (
+                        <div className="shrink-0">
+                            <img
+                                src={data.guaranteeBadge.src}
+                                alt={data.guaranteeBadge.alt}
+                                className="w-24 h-24 md:w-32 md:h-32 object-contain mt-4 drop-shadow-xl animate-pulse-slow"
+                            />
+                        </div>
+                    )}
                 </div>
 
                 <div className={cn("grid gap-6 w-full mb-12", getGridClasses(services.length))}>

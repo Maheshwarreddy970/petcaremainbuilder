@@ -1,6 +1,21 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
+// Helper function to turn `text` into <strong>text</strong>
+const renderWithBold = (text: string) => {
+    if (!text || typeof text !== 'string') return text;
+    
+    // Split by backticks. Every odd index will be the text inside the backticks.
+    const parts = text.split('`');
+    
+    return parts.map((part, index) => {
+        if (index % 2 === 1) {
+            return <strong key={index} className="font-bold">{part}</strong>;
+        }
+        return <React.Fragment key={index}>{part}</React.Fragment>;
+    });
+};
+
 export default function Footer({ data }: { data: any }) {
     if (!data) return null;
 
@@ -17,13 +32,26 @@ export default function Footer({ data }: { data: any }) {
     // Check if map URL exists
     const hasMap = !!info.mapEmbedUrl;
 
+    // Safely check if disclaimer exists and is not empty
+    const hasDisclaimer = typeof data.disclaimer === 'string' && data.disclaimer.trim().length > 0;
+
     return (
         <footer
             id='footer'
-            className={cn("px-6 pt-28 pb-16 font-sans overflow-hidden", data.section?.className)}
+            className={cn("px-6 pt-16 pb-16 font-sans overflow-hidden", data.section?.className)}
             style={{ backgroundColor: data.section?.bg || data.bg }}
         >
-            <div className="max-w-7xl mx-auto flex flex-col gap-16">
+            <div className="max-w-7xl mx-auto flex flex-col gap-12">
+
+                {/* 🔥 Legal Disclaimer Block - MOVED TO TOP */}
+                {hasDisclaimer && (
+                    <div className="pb-8 border-b border-black/10">
+                        <p className=" text-justify" style={{ color: styling.mutedColor }}>
+                            {/* Run the text through our bolding helper */}
+                            {renderWithBold(data.disclaimer)}
+                        </p>
+                    </div>
+                )}
 
                 {/* Grid layout */}
                 <div className={cn(
@@ -44,7 +72,7 @@ export default function Footer({ data }: { data: any }) {
                         </div>
                     </div>
 
-                    {/* 🔥 DYNAMIC Quick Links (Only renders if added to JSON) */}
+                    {/* 🔥 DYNAMIC Quick Links */}
                     {quickLinks.length > 0 && (
                         <div className={cn(hasMap && "lg:col-span-2")}>
                             <nav aria-label="Quick links">
@@ -66,7 +94,7 @@ export default function Footer({ data }: { data: any }) {
                         </div>
                     )}
 
-                    {/* 🔥 DYNAMIC Legal Links (Only renders if added to JSON) */}
+                    {/* 🔥 DYNAMIC Legal Links */}
                     {legalLinks.length > 0 && (
                         <div className={cn(hasMap && "lg:col-span-2")}>
                             <nav aria-label="Legal documents">
@@ -95,7 +123,10 @@ export default function Footer({ data }: { data: any }) {
                                 {info.heading || "Locations"}
                             </h4>
                             <address className="not-italic space-y-4 text-base font-normal leading-relaxed" style={{ color: styling.textColor }}>
-                                <p className="whitespace-pre-line">{info.address}</p>
+                                
+                                {/* 🔥 APPLIED renderWithBold TO ADDRESS SO BACKTICKS WORK HERE! */}
+                                <p className="whitespace-pre-line">{renderWithBold(info.address)}</p>
+                                
                                 {info.phone?.label && (
                                     <p>
                                         <a href={info.phone.href} className="hover:opacity-75 transition-opacity">
@@ -156,19 +187,10 @@ export default function Footer({ data }: { data: any }) {
                     </div>
                 )}
 
-                {/* 🔥 Legal Disclaimer Block */}
-                {data.disclaimer && (
-                    <div className="pt-8 border-t border-gray-200 mt-4">
-                        <p className="text-[13px] leading-relaxed text-justify" style={{ color: styling.mutedColor }}>
-                            {data.disclaimer}
-                        </p>
-                    </div>
-                )}
-
                 {/* Bottom Footer Section */}
-                <div className="pt-8 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="pt-8 border-t border-black/10 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <p className="text-sm text-center sm:text-left" style={{ color: styling.mutedColor }}>
-                        {data.copyright}
+                        {renderWithBold(data.copyright)}
                     </p>
 
                     <div className="flex items-center gap-2.5">

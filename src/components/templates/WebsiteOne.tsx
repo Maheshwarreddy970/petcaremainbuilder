@@ -18,6 +18,7 @@ import ContactSection from "@/components/landingpageone/ContactSection";
 import CTASection from "@/components/landingpageone/CTASection";
 import Footer from "@/components/landingpageone/footer";
 import FounderSection from "../landingpageone/FounderSection";
+import SterilizationSection from "../landingpageone/SterilizationSection";
 
 // 1. The ultra-clean, modern sans-serif for main structure
 const inter = Inter({ 
@@ -127,6 +128,7 @@ export default function WebsiteOne({ data, slug }: { data: any, slug?: string })
       {data.insights && <InsightsSection data={data.insights} />}
       {data.faq && <FAQSection data={data.faq} />}
       {data.contactSection && <ContactSection data={data.contactSection} slug={slug} />}
+      {data.sterilization && <SterilizationSection data={data.sterilization} />}
       {data.ctaSection && <CTASection data={data.ctaSection} />}
       {data.footer && <Footer data={data.footer} />}
     </div>
