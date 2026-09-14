@@ -67,7 +67,7 @@ export default function ServicesSection({ data }: { data: any }) {
                             <img
                                 src={data.guaranteeBadge.src}
                                 alt={data.guaranteeBadge.alt}
-                                className="w-24 h-24 md:w-32 md:h-32 object-contain mt-4 drop-shadow-xl animate-pulse-slow"
+                                className="w-32 h-32 md:w-40 md:h-40 object-contain mt-4 drop-shadow-xl animate-pulse-slow"
                             />
                         </div>
                     )}
