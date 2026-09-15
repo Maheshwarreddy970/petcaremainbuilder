@@ -14,21 +14,28 @@ export default async function middleware(req: NextRequest) {
   let hostname = req.headers.get("X-Subdomain-Host") || req.headers.get("host") || "";
   hostname = hostname.replace("www.", ""); 
 
-  const mainDomains = ["localhost:3000", "nexpetcare.online"];
+  // 🔥 ADDED nexpetcare.com to your core platform domains
+  const mainDomains = ["localhost:3000", "nexpetcare.online", "nexpetcare.com"];
 
-  // 2. SUBDOMAIN ROUTING (e.g., m.nexpetcare.online)
-  if (hostname.endsWith(".nexpetcare.online") && !mainDomains.includes(hostname)) {
-    const subdomain = hostname.replace(".nexpetcare.online", "");
+  const isOnlineSubdomain = hostname.endsWith(".nexpetcare.online");
+  const isComSubdomain = hostname.endsWith(".nexpetcare.com");
+
+  // 1. SUBDOMAIN ROUTING (e.g., m.nexpetcare.online OR m.nexpetcare.com)
+  if ((isOnlineSubdomain || isComSubdomain) && !mainDomains.includes(hostname)) {
+    
+    let subdomain = hostname;
+    if (isOnlineSubdomain) subdomain = hostname.replace(".nexpetcare.online", "");
+    if (isComSubdomain) subdomain = hostname.replace(".nexpetcare.com", "");
+    
     return NextResponse.rewrite(new URL(`/${subdomain}${url.pathname}`, req.url));
   }
 
-  // 3. CUSTOM DOMAIN ROUTING (e.g., nexpetcare.store)
+  // 2. CUSTOM DOMAIN ROUTING (e.g., nexpetcare.store)
   if (!mainDomains.includes(hostname)) {
-    // ❌ OLD: return NextResponse.rewrite(new URL(`/live/domain/${hostname}${url.pathname}`, req.url));
-    // ✅ NEW: Rewrite directly to the /[slug] route, passing the domain name as the slug
+    // Rewrite directly to the /[slug] route, passing the domain name as the slug
     return NextResponse.rewrite(new URL(`/${hostname}${url.pathname}`, req.url));
   }
 
-  // 4. MAIN DOMAIN FALLBACK
+  // 3. MAIN DOMAIN FALLBACK (nexpetcare.online OR nexpetcare.com)
   return NextResponse.next();
 }
