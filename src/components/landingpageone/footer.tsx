@@ -53,6 +53,18 @@ export default function Footer({ data }: { data: any }) {
                     </div>
                 )}
 
+{/* 🔥 NEW: Local SEO / Service Areas Block */}
+                {data.seoText && (
+                    <div className="pt-8 border-t border-gray-200 mt-4">
+                        <h4 className="text-sm font-bold mb-2 tracking-wide uppercase" style={{ color: styling.mutedColor }}>
+                            {data.seoText.title}
+                        </h4>
+                        <p className="text-[13px] leading-relaxed text-justify" style={{ color: styling.mutedColor }}>
+                            {data.seoText.description}
+                        </p>
+                    </div>
+                )}
+                
                 {/* Grid layout */}
                 <div className={cn(
                     "grid grid-cols-1 sm:grid-cols-2 gap-10 items-start",
