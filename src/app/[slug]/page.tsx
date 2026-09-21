@@ -17,32 +17,42 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   // Build canonical URL for SEO
   const domain = data?.customDomain ? `https://${data.customDomain}` : `https://${slug}.nexpetcare.online`;
 
+  // Grab the template data to find the user's logo
+  const templateId = data?.template || "websiteOne";
+  const templateData = templateId === "websiteOne" ? data?.websiteOneData : data?.websiteTwoData;
+
+  // 🔥 SMART FAVICON LOGIC:
+  // 1. Use the favicon from Settings.
+  // 2. If empty, fallback to the Navbar Logo.
+  // 3. If that's empty, use your default Petocare Logo (NEVER use /favicon.ico)
+  const defaultLogo = templateData?.navbar?.logo?.src || "https://res.cloudinary.com/doscyny4j/image/upload/0cGSckUnYfQekLfhg0llimhDCf4_bdsxhs.png";
+  const faviconUrl = settings.faviconLight || settings.favicon || defaultLogo;
+
+  // 🔥 CACHE BUSTER: Forces the browser to immediately drop the Vercel icon and load this one
+  const cacheBusterUrl = `${faviconUrl}?v=${new Date().getTime()}`;
+
   return {
-    title: settings.seoTitle || `${slug} | NexPet Care`,
+    title: settings.seoTitle || `${data?.clientName || slug} | NexPet Care`,
     description: settings.seoDescription || "Expert pet care and grooming services.",
     keywords: settings.keywords || "pet care, grooming, local business",
     metadataBase: new URL(domain),
     alternates: {
       canonical: '/',
     },
-    // 🔥 Apple Touch Icons & Multiple Favicons
+    // 🔥 FORCED ICONS
     icons: {
-      icon: [
-        { url: settings.faviconLight || "/favicon.ico", media: "(prefers-color-scheme: light)" },
-        { url: settings.faviconDark || settings.faviconLight || "/favicon.ico", media: "(prefers-color-scheme: dark)" },
-      ],
-      apple: [
-        { url: settings.appleTouchIcon || settings.faviconLight || "/apple-icon.png", sizes: "180x180", type: "image/png" },
-      ],
+      icon: cacheBusterUrl,
+      shortcut: cacheBusterUrl,
+      apple: cacheBusterUrl,
     },
     openGraph: {
-      title: settings.seoTitle || `${slug} | NexPet Care`,
+      title: settings.seoTitle || `${data?.clientName || slug} | NexPet Care`,
       description: settings.seoDescription || "Expert pet care and grooming services.",
       url: domain,
       siteName: data?.clientName || slug,
       images: [
         {
-          url: settings.ogImage || settings.faviconLight || "https://nexpetcare.online/default-og.jpg",
+          url: settings.ogImage || faviconUrl,
           width: 1200,
           height: 630,
         },
