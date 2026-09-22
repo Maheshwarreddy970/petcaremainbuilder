@@ -4,7 +4,9 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { 
   LayoutTemplate, ExternalLink, Loader2, Globe, Server, 
-  Lock, RefreshCw, Download, Settings 
+  Lock, RefreshCw, Download, Settings, 
+  Settings2,
+  SettingsIcon
 } from "lucide-react";
 import merge from "lodash/merge";
 import WebsiteOne from "@/components/templates/WebsiteOne";
@@ -140,6 +142,13 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
             href={`/dashboard/${name}/${dbData?.template === 'websiteOne' ? 'websiteOne' : 'websiteOne'}/edit`}
           >
             <LayoutTemplate size={16} /> Visual Editor
+          </Link>
+          
+          <Link 
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-blue-600 transition-colors shadow-sm"
+            href={`/dashboard/${name}/settings`}
+          >
+            <SettingsIcon size={16} /> Settings
           </Link>
           
           {isDeployed && (
