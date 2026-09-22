@@ -6,7 +6,9 @@ import {
   LayoutTemplate, ExternalLink, Loader2, Globe, Server, 
   Lock, RefreshCw, Download, Settings, 
   Settings2,
-  SettingsIcon
+  SettingsIcon,
+  KeyRound,
+  ArrowRight
 } from "lucide-react";
 import merge from "lodash/merge";
 import WebsiteOne from "@/components/templates/WebsiteOne";
@@ -26,6 +28,13 @@ const DEPLOY_STEPS = [
 ];
 
 export default function ClientDashboard({ name, dbData }: DashboardProps) {
+  // 🔥 AUTHENTICATION STATE
+  const requiredPassword = dbData?.password;
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
   const paid = dbData?.paid;
   const [downloading, setDownloading] = useState(false);
   const [isDeployed, setIsDeployed] = useState(dbData?.isDeployed || false);
@@ -36,8 +45,29 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
 
+  // 🔥 AUTHENTICATION CHECK ON LOAD
+  useEffect(() => {
+    // If no password is required in the database, let them straight in!
+    if (!requiredPassword) {
+      setIsAuthenticated(true);
+      setIsCheckingAuth(false);
+      return;
+    }
+
+    // Check local storage for this specific client's saved password
+    const savedPassword = localStorage.getItem(`auth_${name}`);
+    if (savedPassword === requiredPassword) {
+      setIsAuthenticated(true);
+    }
+    
+    setIsCheckingAuth(false);
+  }, [name, requiredPassword]);
+
   // Auto-scroll effect for the preview window
   useEffect(() => {
+    // Prevent auto-scroll from running if they aren't authenticated yet
+    if (!isAuthenticated) return;
+
     let animationFrameId: number;
     const scrollContainer = scrollRef.current;
 
@@ -53,13 +83,25 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
 
     animationFrameId = requestAnimationFrame(autoScroll);
     return () => cancelAnimationFrame(animationFrameId);
-  }, [isHovering]);
+  }, [isHovering, isAuthenticated]);
 
-  // If you manually add a domain to Firebase later, it will show up here
   const activeDisplayUrl = dbData?.customDomain ? dbData.customDomain : `${name}.nexpetcare.online`;
   const liveHref = dbData?.customDomain ? `https://${dbData.customDomain}` : `https://${name}.nexpetcare.online`;
   const activeData = merge({}, dbData?.websiteOneData || {});
   
+  // 🔥 LOGIN HANDLER
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passwordInput === requiredPassword) {
+      // Save to device local storage so they don't have to enter it again here
+      localStorage.setItem(`auth_${name}`, passwordInput);
+      setIsAuthenticated(true);
+      setPasswordError("");
+    } else {
+      setPasswordError("Incorrect password. Please try again.");
+    }
+  };
+
   const handlePublish = async () => {
     setIsPublishing(true);
     const res = await publishWebsiteUpdatesAction(name);
@@ -119,6 +161,57 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
     setDownloading(false);
   };
 
+  // 🔥 RENDER LOADING STATE
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f8f9fa]">
+        <Loader2 className="animate-spin text-blue-600" size={32} />
+      </div>
+    );
+  }
+
+  // 🔥 RENDER PASSWORD LOCK SCREEN
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f8f9fa] p-6 font-sans">
+        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 w-full max-w-md flex flex-col items-center text-center">
+          <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-6">
+            <Lock size={28} className="text-blue-600" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2 capitalize">{dbData?.clientName || name}</h1>
+          <p className="text-gray-500 text-sm mb-8">Please enter the administrative password to access this dashboard.</p>
+          
+          <form onSubmit={handleLogin} className="w-full flex flex-col gap-4">
+            <div>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                  <KeyRound size={18} className="text-gray-400" />
+                </div>
+                <input
+                  type="password"
+                  required
+                  value={passwordInput}
+                  onChange={(e) => {
+                    setPasswordInput(e.target.value);
+                    setPasswordError("");
+                  }}
+                  className={`w-full pl-10 pr-4 py-3 rounded-xl border ${passwordError ? "border-red-300 focus:border-red-500 focus:ring-red-500" : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"} outline-none bg-gray-50 focus:bg-white transition-all`}
+                  placeholder="Enter Password"
+                />
+              </div>
+              {passwordError && <p className="text-red-500 text-xs font-medium mt-2 text-left">{passwordError}</p>}
+            </div>
+
+            <button type="submit" className="w-full flex items-center justify-center gap-2 bg-black text-white font-semibold py-3 rounded-xl hover:bg-gray-800 transition-colors shadow-md mt-2">
+              Unlock Dashboard <ArrowRight size={16} />
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  // 🔥 RENDER NORMAL DASHBOARD (Unchanged)
   return (
     <div className="min-h-screen bg-[#f8f9fa] text-black p-6 md:p-10 font-sans flex flex-col items-center" suppressHydrationWarning>
 
