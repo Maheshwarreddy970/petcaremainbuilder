@@ -14,5 +14,6 @@ export default async function SettingsPage({
     return notFound();
   }
 
-  return <ClientSettings slug={name} initialData={data.websiteOneData} />;
+  // 🔥 FIX: Pass data.settings, not websiteOneData!
+  return <ClientSettings slug={name} settingsData={data.settings || {}} clientName={data.clientName || name} />;
 }
