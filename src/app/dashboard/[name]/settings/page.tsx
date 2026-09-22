@@ -10,10 +10,17 @@ export default async function SettingsPage({
   const { name } = await params;
   const data = await getWebsiteData(name);
 
-  if (!data) {
-    return notFound();
-  }
+  if (!data) return notFound();
 
-  // 🔥 FIX: Pass data.settings, not websiteOneData!
-  return <ClientSettings slug={name} settingsData={data.settings || {}} clientName={data.clientName || name} />;
+  // 🔥 Pass template data so we can extract Navbar links for the Google Sitelinks Preview
+  const templateData = data.template === "websiteOne" ? data.websiteOneData : data.websiteTwoData;
+
+  return (
+    <ClientSettings 
+      slug={name} 
+      settingsData={data.settings || {}} 
+      clientName={data.clientName || name} 
+      websiteData={templateData || {}} 
+    />
+  );
 }

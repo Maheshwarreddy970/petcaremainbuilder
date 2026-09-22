@@ -147,18 +147,18 @@ export async function deployWebsiteAction(slug: string) {
 export async function saveWebsiteSettingsAction(slug: string, settings: any) {
   try {
     const websiteRef = doc(db, "websites", slug);
+    
+    // 🔥 THE FIX: This strips out all 'undefined' values that cause Firebase to crash!
+    const cleanSettings = JSON.parse(JSON.stringify(settings));
+
     await updateDoc(websiteRef, {
-      settings,
+      settings: cleanSettings,
       lastUpdated: new Date().toISOString()
     });
 
-    // @ts-ignore - Bypasses Next.js 15 TS bug requiring 2 arguments
-    revalidateTag(`website-${slug}`);
-    // @ts-ignore
-    revalidateTag("website");
-
-    // 🔥 Bulletproof fallback: natively clear the URL route
+    // Clear caches
     revalidatePath(`/${slug}`);
+    revalidatePath(`/dashboard/${slug}/settings`);
 
     return { success: true };
   } catch (error: any) {
