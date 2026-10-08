@@ -1,7 +1,40 @@
 "use server";
-
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, collection, query, where, getDocs, limit } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+
+async function findWebsite(slugOrDomain: string) {
+  const value = slugOrDomain.trim().toLowerCase();
+
+  // Custom domain (contains a dot): match with or without "www."
+  if (value.includes(".")) {
+    const bare = value.replace(/^www\./, "");
+    const q = query(
+      collection(db, "websites"),
+      where("customDomain", "in", [bare, `www.${bare}`]),
+      limit(1)
+    );
+    const snap = await getDocs(q);
+    return snap.empty ? null : snap.docs[0].data();
+  }
+
+  // Subdomain slug: try document ID first, then a "slug" field
+  const byId = await getDoc(doc(db, "websites", value));
+  if (byId.exists()) return byId.data();
+
+  const snap = await getDocs(
+    query(collection(db, "websites"), where("slug", "==", value), limit(1))
+  );
+  return snap.empty ? null : snap.docs[0].data();
+}
+
+function esc(value: string | null | undefined) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
 export async function submitContactFormAction(formData: FormData) {
   const name = formData.get("name") as string;
@@ -10,81 +43,58 @@ export async function submitContactFormAction(formData: FormData) {
   const message = formData.get("message") as string;
   const slug = formData.get("slug") as string;
 
-  // Debugging log
-  console.log("Contact form submission received:", { name, email, phone, message, slug });
-
   if (!name || !email || !phone || !message || !slug || slug === "undefined") {
     return { success: false, error: "Missing required fields. Please refresh and try again." };
   }
 
   try {
-    // 1. Securely fetch the target email & paid status from the database
-    const docRef = doc(db, "websites", slug);
-    const docSnap = await getDoc(docRef);
+    const dbData = await findWebsite(slug);
+    if (!dbData) return { success: false, error: "Website configuration not found." };
 
-    if (!docSnap.exists()) {
-      return { success: false, error: "Website configuration not found." };
-    }
-
-    const dbData = docSnap.data();
-
-    // 🔥 2. SUBSCRIPTION CHECK: Block form if account is unpaid
     if (dbData.paid !== true) {
-      return { 
-        success: false, 
-        error: "Form submissions are temporarily disabled for this website. Please contact the business directly." 
-      };
-    }
-    
-    // 3. Get Target Email
-    let targetEmail = dbData.ownerEmail;
-    if (!targetEmail && dbData.websiteOneData?.footer?.info?.email?.href) {
-        targetEmail = dbData.websiteOneData.footer.info.email.href.replace("mailto:", "");
+      return { success: false, error: "Form submissions are temporarily disabled for this website. Please contact the business directly." };
     }
 
+
+    const targetEmail =
+      dbData.ownerEmail ||
+      dbData.websiteOneData?.footer?.info?.email?.href?.replace("mailto:", "");
     if (!targetEmail) {
-        return { success: false, error: "This website has not configured a receiving email address yet." };
+      return { success: false, error: "This website has not configured a receiving email address yet." };
     }
 
-    const cleanTargetEmail = targetEmail.replace("mailto:", "").trim();
-
-    // 4. Send the email via Resend
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.RESEND_API_KEY}`,
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "NexPet Care <noreply@nexpetcare.com>", 
-        to: cleanTargetEmail,
-        reply_to: email, 
-        subject: `New Website Lead: ${name}`,
+        from: "NexPet Care <noreply@nexpetcare.com>",
+        to: targetEmail.replace("mailto:", "").trim(),
+        reply_to: email,
+        subject: `New Website Lead: ${name}`.slice(0, 150),
         html: `
-          <div style="font-family: sans-serif; color: #333; max-width: 600px; line-height: 1.6;">
-            <h2 style="color: #1e0c05;">New message from your website!</h2>
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Phone:</strong> ${phone}</p>
+          <div style="font-family:sans-serif;color:#333;max-width:600px;line-height:1.6;">
+            <h2 style="color:#1e0c05;">New message from your website!</h2>
+            <p><strong>Name:</strong> ${esc(name)}</p>
+            <p><strong>Email:</strong> ${esc(email)}</p>
+            <p><strong>Phone:</strong> ${esc(phone)}</p>
             <p><strong>Message:</strong></p>
-            <blockquote style="border-left: 4px solid #a35c38; padding-left: 14px; color: #555; background: #f9f9f9; padding: 14px; border-radius: 4px;">
-              ${message.replace(/\n/g, '<br>')}
+            <blockquote style="border-left:4px solid #a35c38;padding:14px;background:#f9f9f9;border-radius:4px;">
+              ${esc(message).replace(/\n/g, "<br>")}
             </blockquote>
-            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
-            <p><small style="color: #888;"><em>Simply click <strong>Reply</strong> in your email client to respond directly to ${name}.</em></small></p>
-          </div>
-        `,
+          </div>`,
       }),
     });
 
     if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.message || "Failed to send email API.");
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData.message || "Failed to send email.");
     }
-
     return { success: true };
   } catch (error: any) {
     console.error("Server Error:", error);
-    return { success: false, error: error.message };
+    return { success: false, error: "Something went wrong. Please try again." };
   }
 }
