@@ -56,7 +56,7 @@ export async function submitContactFormAction(formData: FormData) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "NexPet Care <noreply@nexpetcare.online>", 
+        from: "NexPet Care <noreply@nexpetcare.com>", 
         to: cleanTargetEmail,
         reply_to: email, 
         subject: `New Website Lead: ${name}`,
