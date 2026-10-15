@@ -255,7 +255,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
             </button>
           )}
           
-          {paid ? (
+          {/* {paid ? (
             <button onClick={handleDownload} disabled={downloading} className="flex items-center gap-2 px-5 py-2 text-sm font-semibold bg-black text-white rounded-lg hover:bg-gray-800 transition-colors shadow-md disabled:opacity-70">
               {downloading ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
               {downloading ? "Packaging..." : "Export ZIP"}
@@ -264,7 +264,7 @@ export default function ClientDashboard({ name, dbData }: DashboardProps) {
             <button disabled className="flex items-center gap-2 px-5 py-2 text-sm font-semibold bg-gray-200 text-gray-500 rounded-lg cursor-not-allowed border border-gray-300">
               <Lock size={16} /> Export ZIP (Pro)
             </button>
-          )}
+          )} */}
 
           {isDeployed && (
             <a href={liveHref} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-blue-50 border border-blue-200 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors shadow-sm">
