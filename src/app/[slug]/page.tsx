@@ -1,6 +1,5 @@
 import { notFound, permanentRedirect } from "next/navigation";
 import { getWebsiteData } from "@/lib/get-website";
-import { headers } from "next/headers";
 import WebsiteOne from "@/components/templates/WebsiteOne";
 
 const TEMPLATES: Record<string, React.FC<any>> = {
@@ -104,7 +103,7 @@ if (settings.redirects && settings.redirects.length > 0) {
       const match = settings.redirects.find((r: any) => r.oldPath === currentPath);
       if (match) permanentRedirect(match.newPath); 
   }
-  
+
   const domain = data.customDomain ? `https://${data.customDomain}` : `https://${slug}.nexpetcare.online`;
   
   // Extract social links from the footer to add to Google's Knowledge Graph
