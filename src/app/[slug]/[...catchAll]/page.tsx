@@ -1,7 +1,7 @@
-import { redirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 
 export default function CatchAllRoutes() {
-  // 🔥 Automatically catches broken Shopify/WordPress links (e.g., /products, /cart)
-  // and issues a 301 Permanent Redirect to the client's new homepage.
-  redirect("/");
+  // 🔥 permanentRedirect issues a 308 Permanent Redirect 
+  // (The modern, stricter version of a 301 that Google prefers for SEO)
+  permanentRedirect("/");
 }
