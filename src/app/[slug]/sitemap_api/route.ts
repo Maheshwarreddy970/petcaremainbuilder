@@ -4,6 +4,10 @@ import { getWebsiteData } from "@/lib/get-website";
 // 🔥 CRITICAL FIX: Match the 1-year cache rule used in your page.tsx. 
 // Vercel will cache this XML file on the Edge Network instantly.
 export const revalidate = 31536000; 
+export const dynamicParams = true;
+export async function generateStaticParams() {
+  return [];
+}
 
 export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
