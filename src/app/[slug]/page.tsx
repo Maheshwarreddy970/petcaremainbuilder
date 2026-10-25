@@ -2,6 +2,10 @@ import { notFound, permanentRedirect } from "next/navigation";
 import { getWebsiteData } from "@/lib/get-website";
 import WebsiteOne from "@/components/templates/WebsiteOne";
 
+// 🔥 CRITICAL FIX 1: Tell Next.js to cache the HTML of this dynamic route on the Edge CDN for 1 year!
+// (Your Publish button's 'revalidatePath' will instantly break this cache when needed).
+export const revalidate = 31536000; 
+
 const TEMPLATES: Record<string, React.FC<any>> = {
   websiteOne: WebsiteOne,
 };
@@ -15,16 +19,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const templateId = data.template || "websiteOne";
   const templateData = templateId === "websiteOne" ? data.websiteOneData : data.websiteTwoData;
 
-  // Domain & URL Resolution
   const domain = data.customDomain ? `https://${data.customDomain}` : `https://${slug}.nexpetcare.online`;
 
-  // Visual Assets
   const defaultLogo = templateData?.navbar?.logo?.src || "";
   const faviconUrl = settings.faviconLight || settings.favicon || defaultLogo;
   const cacheBusterUrl = faviconUrl ? `${faviconUrl}?v=${new Date().getTime()}` : "/favicon.ico";
   const ogImage = settings.ogImage || defaultLogo;
 
-  // Core Metadata Strings
   const siteTitle = settings.seoTitle || settings.businessName || data.clientName || slug;
   const siteDescription = settings.seoDescription || "Expert local pet care and grooming services.";
   const businessName = settings.businessName || data.clientName || slug;
@@ -36,14 +37,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     metadataBase: new URL(domain),
     alternates: { canonical: '/' },
     
-    // Favicons & Apple Touch Icons
     icons: {
       icon: cacheBusterUrl,
       shortcut: cacheBusterUrl,
       apple: settings.appleTouchIcon || cacheBusterUrl,
     },
     
-    // Search Engine Crawling Rules
     robots: {
       index: true,
       follow: true,
@@ -56,7 +55,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       },
     },
 
-    // Rich OpenGraph (Facebook, LinkedIn, iMessage)
     openGraph: {
       title: siteTitle,
       description: siteDescription,
@@ -69,7 +67,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       phoneNumbers: settings.businessPhone ? [settings.businessPhone] : [],
     },
 
-    // Rich Twitter Cards
     twitter: {
       card: "summary_large_image",
       title: siteTitle,
@@ -97,16 +94,15 @@ export default async function LiveTenantPage({ params }: { params: Promise<{ slu
   // ==========================================
   // 🔥 301 REDIRECTS 
   // ==========================================
-const currentPath = '/';
+  const currentPath = '/';
 
-if (settings.redirects && settings.redirects.length > 0) {
+  if (settings.redirects && settings.redirects.length > 0) {
       const match = settings.redirects.find((r: any) => r.oldPath === currentPath);
       if (match) permanentRedirect(match.newPath); 
   }
 
   const domain = data.customDomain ? `https://${data.customDomain}` : `https://${slug}.nexpetcare.online`;
   
-  // Extract social links from the footer to add to Google's Knowledge Graph
   const socialsObj = templateData?.footer?.socials || {};
   const sameAsLinks = Object.values(socialsObj).filter((url: any) => url && url !== "#");
 
@@ -123,7 +119,6 @@ if (settings.redirects && settings.redirects.length > 0) {
       "@type": "PostalAddress",
       "streetAddress": settings.businessAddress || "",
     },
-    // Dynamically uses your format: "Mo-Su 09:00-17:00"
     "openingHours": settings.businessHours || "",
     "priceRange": "$$",
     "sameAs": sameAsLinks
@@ -136,7 +131,6 @@ if (settings.redirects && settings.redirects.length > 0) {
     <div id="tenant-wrapper" lang={settings.language || "en"} dir={settings.rtlLayout ? "rtl" : "ltr"} className={htmlClasses.join(" ")}>
       <main className="w-full min-h-screen">
         
-        {/* 🔥 Invisible SEO Injection */}
         <script 
           type="application/ld+json" 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} 
@@ -144,7 +138,6 @@ if (settings.redirects && settings.redirects.length > 0) {
 
         <TemplateComponent data={templateData} slug={slug} />
         
-        {/* Third Party Integrations */}
         {settings.googleAnalyticsId && (
           <script async src={`https://www.googletagmanager.com/gtag/js?id=${settings.googleAnalyticsId}`}></script>
         )}
