@@ -98,17 +98,13 @@ export default async function LiveTenantPage({ params }: { params: Promise<{ slu
   // ==========================================
   // 🔥 301 REDIRECTS 
   // ==========================================
-  const headersList = await headers();
-  const currentPath = headersList.get('x-invoke-path') || '/';
-  
-  if (settings.redirects && settings.redirects.length > 0) {
-      const match = settings.redirects.find((r: any) => r.oldPath === currentPath);
-      if (match) redirect(match.newPath); 
-  }
+const currentPath = '/';
 
-  // ==========================================
-  // 🔥 ADVANCED LOCAL BUSINESS SCHEMA (JSON-LD)
-  // ==========================================
+if (settings.redirects && settings.redirects.length > 0) {
+    const match = settings.redirects.find((r: any) => r.oldPath === currentPath);
+    if (match) redirect(match.newPath); 
+}
+
   const domain = data.customDomain ? `https://${data.customDomain}` : `https://${slug}.nexpetcare.online`;
   
   // Extract social links from the footer to add to Google's Knowledge Graph

@@ -23,9 +23,10 @@ export const getWebsiteData = async (slug: string) => {
         return null;
       }
     },
-    [`website-cache-key-${slug}-v3`], // 🔥 Bumped to v3 to instantly bust the stuck cache
+    [`website-cache-key-${slug}-v3`], 
     {
-      tags: [`website-${slug}`, "website"] // 🔥 Added global "website" tag
+      tags: [`website-${slug}`, "website"],
+      revalidate: false // 🔥 CRITICAL FIX: Tells Vercel to cache this FOREVER until you click Publish
     }
   );
 

@@ -119,8 +119,6 @@ export async function checkDomainStatusAction(slug: string, customDomain: string
   }
 }
 
-
-
 export async function deployWebsiteAction(slug: string) {
   try {
     const websiteRef = doc(db, "websites", slug);
