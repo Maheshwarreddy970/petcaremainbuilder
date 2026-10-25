@@ -4,7 +4,17 @@ import WebsiteOne from "@/components/templates/WebsiteOne";
 
 // 🔥 CRITICAL FIX 1: Tell Next.js to cache the HTML of this dynamic route on the Edge CDN for 1 year!
 // (Your Publish button's 'revalidatePath' will instantly break this cache when needed).
-export const revalidate = 31536000; 
+// =======================================================================
+// 🔥 THE ULTIMATE MULTI-TENANT CACHE FIX
+// =======================================================================
+export const revalidate = 31536000; // Cache for 1 year
+export const dynamicParams = true;  // Allow new clients to be generated on the fly
+
+export async function generateStaticParams() {
+  // Returning an empty array forces Next.js to treat /[slug] as a STATIC route (ISR) 
+  // instead of a DYNAMIC server route. This is the secret to 0 CPU usage!
+  return [];
+}
 
 const TEMPLATES: Record<string, React.FC<any>> = {
   websiteOne: WebsiteOne,

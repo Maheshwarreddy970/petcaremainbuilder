@@ -1,7 +1,13 @@
 import { permanentRedirect } from "next/navigation";
 
+// 🔥 Cache the redirects permanently too!
+export const revalidate = 31536000;
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  return [];
+}
+
 export default function CatchAllRoutes() {
-  // 🔥 permanentRedirect issues a 308 Permanent Redirect 
-  // (The modern, stricter version of a 301 that Google prefers for SEO)
   permanentRedirect("/");
 }
