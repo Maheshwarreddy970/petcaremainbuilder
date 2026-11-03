@@ -83,7 +83,7 @@ const CardRenderer = ({ card }: { card: any }) => {
                     </div>
                 )}
                 <div>
-                    <h4 className="font-medium text-[16px]" style={{ color: card.titleColor || '#1e0c05' }}>{card.name || 'Anonymous Client'}</h4>
+                    <h3 className="font-medium text-[16px]" style={{ color: card.titleColor || '#1e0c05' }}>{card.name || 'Anonymous Client'}</h3>
                     <p className="text-[14px]" style={{ color: card.textColor || '#625b5b' }}>{card.role || 'Pet Parent'}</p>
                 </div>
             </div>
