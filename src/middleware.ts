@@ -11,9 +11,9 @@ export const config = {
 
 export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
-  
+
   let hostname = req.headers.get("X-Subdomain-Host") || req.headers.get("host") || "";
-  hostname = hostname.replace("www.", ""); 
+  hostname = hostname.replace("www.", "");
 
   // Make sure to include both your domains
   const mainDomains = ["localhost:3000", "nexpetcare.online", "nexpetcare.com"];
@@ -22,18 +22,22 @@ export default async function middleware(req: NextRequest) {
   // 1. LOCALHOST ROUTING
   if (hostname.includes(".localhost:3000") || hostname.includes(".localhost")) {
     const subdomain = hostname.split(".")[0];
-    
+
     // 🔥 Explicitly route sitemap.xml to our generator API
     if (url.pathname === '/sitemap.xml') return NextResponse.rewrite(new URL(`/${subdomain}/sitemap_api`, req.url));
-    
+
     return NextResponse.rewrite(new URL(`/${subdomain}${url.pathname}`, req.url));
   }
 
   // 2. SUBDOMAIN ROUTING (e.g., m.nexpetcare.online)
-  if (hostname.endsWith(".nexpetcare.online") && !mainDomains.includes(hostname)) {
+ if (hostname.endsWith(".nexpetcare.online") && !mainDomains.includes(hostname)) {
     const subdomain = hostname.replace(".nexpetcare.online", "");
     
     if (url.pathname === '/sitemap.xml') return NextResponse.rewrite(new URL(`/${subdomain}/sitemap_api`, req.url));
+    if (url.pathname === '/robots.txt') return NextResponse.rewrite(new URL(`/${subdomain}/robots.txt`, req.url));
+    if (url.pathname === '/llms.txt') return NextResponse.rewrite(new URL(`/${subdomain}/llms.txt`, req.url));
+    if (url.pathname === '/.well-known/ard.json') return NextResponse.rewrite(new URL(`/${subdomain}/ard_api`, req.url));
+    
     return NextResponse.rewrite(new URL(`/${subdomain}${url.pathname}`, req.url));
   }
 
@@ -41,6 +45,10 @@ export default async function middleware(req: NextRequest) {
   if (!mainDomains.includes(hostname) && !isVercel) {
     
     if (url.pathname === '/sitemap.xml') return NextResponse.rewrite(new URL(`/${hostname}/sitemap_api`, req.url));
+    if (url.pathname === '/robots.txt') return NextResponse.rewrite(new URL(`/${hostname}/robots.txt`, req.url));
+    if (url.pathname === '/llms.txt') return NextResponse.rewrite(new URL(`/${hostname}/llms.txt`, req.url));
+    if (url.pathname === '/.well-known/ard.json') return NextResponse.rewrite(new URL(`/${hostname}/ard_api`, req.url));
+    
     return NextResponse.rewrite(new URL(`/${hostname}${url.pathname}`, req.url));
   }
 
