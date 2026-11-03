@@ -20,20 +20,18 @@ import Footer from "@/components/landingpageone/footer";
 import FounderSection from "../landingpageone/FounderSection";
 import SterilizationSection from "../landingpageone/SterilizationSection";
 
-// 1. The ultra-clean, modern sans-serif for main structure
 const inter = Inter({ 
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
+  display: "swap", // 🔥 Ensure this is here
   variable: "--font-main",
 });
 
-// 2. The luxurious, elegant serif for accents and italics
 const playfair = Playfair_Display({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   style: ["normal", "italic"],
-  display: "swap",
+  display: "swap", // 🔥 Ensure this is here
   variable: "--font-accent",
 });
 

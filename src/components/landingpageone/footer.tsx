@@ -120,9 +120,9 @@ export default function Footer({ data }: { data: any }) {
 
                     <div className={cn(hasMap && "lg:col-span-2")}>
                         <div>
-                            <h4 className="text-sm font-normal mb-5 tracking-wide uppercase" style={{ color: styling.mutedColor }}>
+                            <h3 className="text-sm font-normal mb-5 tracking-wide uppercase" style={{ color: styling.mutedColor }}>
                                 {info.heading || "Locations"}
-                            </h4>
+                            </h3>
                             <address className="not-italic space-y-4 text-base font-normal leading-relaxed" style={{ color: styling.textColor }}>
                                 <p className="whitespace-pre-line">{renderWithBold(info.address)}</p>
                                 {info.phone?.label && (
@@ -192,6 +192,7 @@ export default function Footer({ data }: { data: any }) {
                         {socials.facebook && (
                             <a
                                 href={socials.facebook}
+                                aria-label="Visit our Facebook page" // 🔥 ADD THIS
                                 className="w-[26px] h-[26px] rounded-full flex items-center justify-center transition-transform hover:scale-105"
                                 style={{ backgroundColor: styling.iconBg, color: styling.iconText }}
                             >
@@ -201,6 +202,7 @@ export default function Footer({ data }: { data: any }) {
                         {socials.instagram && (
                             <a
                                 href={socials.instagram}
+                                aria-label="Visit our Instagram profile" // 🔥 ADD THIS
                                 className="w-[26px] h-[26px] rounded-full flex items-center justify-center transition-transform hover:scale-105"
                                 style={{ backgroundColor: styling.iconBg, color: styling.iconText }}
                             >
