@@ -113,7 +113,7 @@ export default function Navbar({ data }: { data: any }) {
         <div className="px-6 md:px-12 lg:px-24 xl:px-40 py-3 flex items-center justify-between relative">
 
           {/* LOGO */}
-          <a href={"/"} className={cn("relative flex items-center justify-start ", logo.className)}>
+          <a href={"/"} aria-label="navlogo" className={cn("relative flex items-center justify-start ", logo.className)}>
             {logo.src ? (
               <img
                 src={optimizeCloudinaryImage(logo.src, 400)}
@@ -189,7 +189,7 @@ export default function Navbar({ data }: { data: any }) {
           backdropFilter: isScrolled ? 'blur(16px)' : 'none'
         }}
       >
-        <a href="/" className={cn("relative flex items-center ", logo.className)}>
+        <a href="/" aria-label="navmoblielogo" className={cn("relative flex items-center ", logo.className)}>
           {logo.src ? (
             <img
               src={optimizeCloudinaryImage(logo.src, 400)}

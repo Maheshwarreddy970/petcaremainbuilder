@@ -1,6 +1,7 @@
 import { notFound, permanentRedirect } from "next/navigation";
 import { getWebsiteData } from "@/lib/get-website";
 import WebsiteOne from "@/components/templates/WebsiteOne";
+import Script from 'next/script';
 
 // 🔥 CRITICAL FIX 1: Tell Next.js to cache the HTML of this dynamic route on the Edge CDN for 1 year!
 // (Your Publish button's 'revalidatePath' will instantly break this cache when needed).
@@ -148,15 +149,23 @@ export default async function LiveTenantPage({ params }: { params: Promise<{ slu
 
         <TemplateComponent data={templateData} slug={slug} />
         
-        {settings.googleAnalyticsId && (
-          <script async src={`https://www.googletagmanager.com/gtag/js?id=${settings.googleAnalyticsId}`}></script>
-        )}
-        {settings.googleReviewsId && (
-          <script src="https://apps.elfsight.com/p/platform.js" defer></script>
-        )}
-        {settings.googleReviewsId && (
-          <div className={`elfsight-app-${settings.googleReviewsId}`}></div>
-        )}
+       {/* Third Party Integrations */}
+{settings.googleAnalyticsId && (
+  <Script 
+    src={`https://www.googletagmanager.com/gtag/js?id=${settings.googleAnalyticsId}`}
+    strategy="worker" // Or "lazyOnload" to ensure it never blocks rendering
+  />
+)}
+
+{settings.googleReviewsId && (
+  <Script 
+    src="https://apps.elfsight.com/p/platform.js" 
+    strategy="lazyOnload" // 🔥 CRITICAL: Stops Elfsight from blocking the page load
+  />
+)}
+{settings.googleReviewsId && (
+  <div className={`elfsight-app-${settings.googleReviewsId}`}></div>
+)}
       </main>
     </div>
   );

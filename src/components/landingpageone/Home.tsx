@@ -40,7 +40,7 @@ export default function HeroSection({ data }: { data: any }) {
             {/* 🔥 MOBILE IMAGE */}
             {data.mobileImage?.src && (
                 <img
-                    src={optimizeCloudinaryImage(data.mobileImage.src, 800)}
+                    src={optimizeCloudinaryImage(data.mobileImage.src, 600)}
                     alt="Hero Background Mobile"
                     fetchPriority="high"
                     decoding="sync"
@@ -129,7 +129,7 @@ export default function HeroSection({ data }: { data: any }) {
 
                     <div className={cn(" hidden md:flex flex-col gap-2 mt-6 md:mt-8", data.socialProof?.className)}>
                         <div className="flex items-center gap-1 drop-shadow-md cursor-pointer hover:opacity-80 transition-opacity">
-                            <a href={data.socialProof?.href || "#"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
+                            <a href={data.socialProof?.href || "#"} aria-label="herstars" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
                                 {[...Array(starCount)].map((_, index) => (
                                     <Star
                                         key={index}

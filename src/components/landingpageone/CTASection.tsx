@@ -27,7 +27,7 @@ export default function CtaSection({ data }: { data: any }) {
                     </div>
 
                     <div className={data.cta?.className}>
-                        <a href={data.cta?.href || "#"} className="group relative flex items-center justify-center gap-3.5 overflow-hidden rounded-2xl px-[22px] py-3.5 text-base font-medium transition-all duration-300 hover:shadow-lg active:scale-[0.98] hover:opacity-90" style={{ backgroundColor: data.cta?.bg || '#a35c38', color: data.cta?.text || '#ffffff' }}>
+                        <a href={data.cta?.href || "#"} aria-label="ctalink" className="group relative flex items-center justify-center gap-3.5 overflow-hidden rounded-2xl px-[22px] py-3.5 text-base font-medium transition-all duration-300 hover:shadow-lg active:scale-[0.98] hover:opacity-90" style={{ backgroundColor: data.cta?.bg || '#a35c38', color: data.cta?.text || '#ffffff' }}>
                             <svg className="h-5 w-5 shrink-0 transition-transform duration-300 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>

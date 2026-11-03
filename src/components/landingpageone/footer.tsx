@@ -59,7 +59,7 @@ export default function Footer({ data }: { data: any }) {
                 )}>
                     <div className={cn(hasMap && "sm:col-span-2 lg:col-span-3")}>
                         <div className="flex items-center gap-3">
-                            <a href="#" className={cn("group hover:opacity-80 transition-opacity", logo.className)}>
+                            <a href="#" aria-label="footerlogo" className={cn("group hover:opacity-80 transition-opacity", logo.className)}>
                                 {logo.src ? (
                                     <img 
                                         src={optimizeCloudinaryImage(logo.src, 400)} 
@@ -127,14 +127,14 @@ export default function Footer({ data }: { data: any }) {
                                 <p className="whitespace-pre-line">{renderWithBold(info.address)}</p>
                                 {info.phone?.label && (
                                     <p>
-                                        <a href={info.phone.href} className="hover:opacity-75 transition-opacity">
+                                        <a  aria-label="phone"  href={info.phone.href} className="hover:opacity-75 transition-opacity">
                                             {info.phone.label}
                                         </a>
                                     </p>
                                 )}
                                 {info.email?.label && (
                                     <p>
-                                        <a href={info.email.href} className="hover:opacity-75 transition-opacity">
+                                        <a href={info.email.href} aria-label="emailgoot"  className="hover:opacity-75 transition-opacity">
                                             {info.email.label}
                                         </a>
                                     </p>

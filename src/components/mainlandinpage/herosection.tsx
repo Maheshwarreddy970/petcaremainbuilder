@@ -89,7 +89,7 @@ export default function Herosection() {
 
       {/* Hero Content Center */}
       <div className="w-full h-5/6 flex flex-col items-center justify-center">
-        <a href={HERO_CONTENT.badgeLink}>
+        <a href={HERO_CONTENT.badgeLink} aria-label="bloglink">
           <div className="md:w-[459px] w-72 md:h-10 h-9 rounded-xl bg-[#2462EA]/50 flex items-center justify-center md:gap-3 gap-1">
             <p className="md:text-base text-[10px] font-semibold">
               {HERO_CONTENT.badgeText}

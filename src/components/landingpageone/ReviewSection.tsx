@@ -19,7 +19,7 @@ export default function StatsBanner({ data }: { data: any }) {
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-16 sm:gap-20 md:gap-[120px]">
                    {/* Ratings Block */}
-                    <a href={data.rating?.href || "#reviews"} className={cn("flex flex-col items-center text-center cursor-pointer hover:opacity-80 transition-opacity", data.rating?.className)}>
+                    <a href={data.rating?.href || "#reviews"} aria-label="reviewlink" className={cn("flex flex-col items-center text-center cursor-pointer hover:opacity-80 transition-opacity", data.rating?.className)}>
                         <div className="text-[32px] font-medium tracking-[-1px] flex items-center" style={{ color: data.rating?.scoreColor }}>
                             {data.rating?.score}
                             <span className="ml-1 text-[28px] opacity-90">{data.rating?.max}</span>

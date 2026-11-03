@@ -47,7 +47,7 @@ export default function AboutSection({ data }: { data: any }) {
 
                             {data.cta && (
                                 <div>
-                                    <a href={data.cta.href || "#"} className={cn("group relative rounded-2xl py-3.5 px-6 flex items-center justify-center gap-2.5 w-fit overflow-hidden transition-all duration-300 hover:opacity-90 shadow-sm", data.cta.className)} style={{ backgroundColor: data.cta.bg, color: data.cta.text }}>
+                                    <a href={data.cta.href || "#"} aria-label="cta about" className={cn("group relative rounded-2xl py-3.5 px-6 flex items-center justify-center gap-2.5 w-fit overflow-hidden transition-all duration-300 hover:opacity-90 shadow-sm", data.cta.className)} style={{ backgroundColor: data.cta.bg, color: data.cta.text }}>
                                         <span className="font-medium text-[16px] whitespace-nowrap">{data.cta.label}</span>
                                         <ArrowRight className="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 transition-transform duration-300" />
                                     </a>
