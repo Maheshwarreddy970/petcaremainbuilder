@@ -2,6 +2,7 @@ import React from 'react';
 import { Calendar, Mail, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import SmartHeading from '../ui/SmartHeading';
+import { optimizeCloudinaryImage } from '@/lib/optimize-image';
 
 export default function HeroSection({ data }: { data: any }) {
     if (!data) return null;
@@ -19,11 +20,15 @@ export default function HeroSection({ data }: { data: any }) {
             )}
             style={{ backgroundColor: data.section?.bg }}
         >
-            {/* 🔥 DESKTOP IMAGE (Falls back to full-screen if no mobile image exists) */}
+            {/* 🔥 DESKTOP IMAGE: Optimized for LCP */}
             {data.image?.src && (
                 <img
-                    src={data.image.src}
+                    src={optimizeCloudinaryImage(data.image.src, 1920)}
                     alt="Hero Background"
+                    fetchPriority="high"
+                    decoding="sync"
+                    width={1920}
+                    height={1080}
                     className={cn(
                         "absolute inset-0 w-full h-full object-cover object-[70%_center] md:object-center z-0",
                         data.mobileImage?.src ? "hidden md:block" : "block",
@@ -32,11 +37,15 @@ export default function HeroSection({ data }: { data: any }) {
                 />
             )}
 
-            {/* 🔥 MOBILE IMAGE (Only renders on small screens if explicitly provided in JSON) */}
+            {/* 🔥 MOBILE IMAGE */}
             {data.mobileImage?.src && (
                 <img
-                    src={data.mobileImage.src}
+                    src={optimizeCloudinaryImage(data.mobileImage.src, 800)}
                     alt="Hero Background Mobile"
+                    fetchPriority="high"
+                    decoding="sync"
+                    width={800}
+                    height={1200}
                     className={cn(
                         "absolute inset-0 w-full h-full object-cover object-center z-0 md:hidden block",
                         data.mobileImage?.className
@@ -44,8 +53,6 @@ export default function HeroSection({ data }: { data: any }) {
                 />
             )}
             
-          
-
             <div className="relative z-10 w-full mx-auto px-6 md:px-12 lg:px-0 lg:ml-[10%]">
                 <div className="flex flex-col max-w-[620px] py-20 md:py-0 pb-12">
                     <div className="flex flex-col gap-6 md:gap-8">
@@ -83,7 +90,7 @@ export default function HeroSection({ data }: { data: any }) {
                         />
                     </div>
 
-                    <div className={cn("mt-8 md:mt-10 flex  gap-3 md:gap-4", data.cta?.className)}>
+                    <div className={cn("mt-8 md:mt-10 flex gap-3 md:gap-4", data.cta?.className)}>
                         <a
                             href={data.cta?.href || "#"}
                             className={cn(

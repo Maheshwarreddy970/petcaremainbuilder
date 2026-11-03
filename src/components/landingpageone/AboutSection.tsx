@@ -1,6 +1,7 @@
 import { CircleCheck, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import SmartHeading from '../ui/SmartHeading';
+import { optimizeCloudinaryImage } from '@/lib/optimize-image';
 
 export default function AboutSection({ data }: { data: any }) {
     if (!data) return null;
@@ -13,8 +14,14 @@ export default function AboutSection({ data }: { data: any }) {
                     {/* 🔥 FIXED MOBILE IMAGE SIZE: aspect-[4/3] on mobile, normal tall aspect on desktop */}
                     <div className={cn("relative w-full max-w-[552px] mx-auto lg:mx-0 aspect-[4/3] md:aspect-square lg:aspect-[552/640] rounded-3xl overflow-hidden shadow-sm", data.image?.className)}>
                         {(data.image?.src || data.image) && (
-                            <img src={data.image?.src || data.image} alt="About Image" className="object-cover absolute inset-0 w-full h-full" />
-                        )}
+<img 
+    src={optimizeCloudinaryImage(data.image?.src || data.image, 800)} 
+    alt="About Image" 
+    width={800}
+    height={800}
+    loading="lazy"
+    className="object-cover absolute inset-0 w-full h-full" 
+/>                        )}
                     </div>
 
                     <div className="flex flex-col gap-8 lg:gap-[72px] max-w-[548px] mx-auto lg:mx-0">

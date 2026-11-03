@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import SmartHeading from '../ui/SmartHeading';
+import { optimizeCloudinaryImage } from '@/lib/optimize-image';
 
 export default function GallerySection({ data }: { data: any }) {
     if (!data || !data.items) return null;
@@ -15,10 +16,10 @@ export default function GallerySection({ data }: { data: any }) {
             <div className="mx-auto px-6 md:px-12 flex flex-col items-center">
 
                 <div className="flex flex-col items-center text-center max-w-[628px] mb-16 lg:mb-[94px]">
-                    <SmartHeading 
+                    <SmartHeading
                         as="h2"
                         text={data.heading?.text || data.heading}
-                        className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)} 
+                        className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)}
                         style={{ color: data.heading?.color || data.headingColor }}
                     />
                     <p
@@ -45,8 +46,14 @@ export default function GallerySection({ data }: { data: any }) {
                             {data.items.map((item: any, index: number) => (
                                 <div key={`mob-before-${index}`} className="aspect-square rounded-xl overflow-hidden shadow-sm border border-gray-200 relative">
                                     {item.before && (
-                                        <img src={item.before} alt={`Before ${item.alt || ''}`} className="absolute inset-0 w-full h-full object-cover" />
-                                    )}
+                                        <img
+                                            src={optimizeCloudinaryImage(item.before, 600)}
+                                            alt={`Before ${item.alt || ''}`}
+                                            width={600}
+                                            height={600}
+                                            loading="lazy"
+                                            className="absolute inset-0 w-full h-full object-cover"
+                                        />)}
                                 </div>
                             ))}
                         </div>
@@ -75,8 +82,14 @@ export default function GallerySection({ data }: { data: any }) {
                             {data.items.map((item: any, index: number) => (
                                 <div key={`mob-after-${index}`} className="aspect-square rounded-xl overflow-hidden shadow-sm border border-gray-200 relative">
                                     {item.after && (
-                                        <img src={item.after} alt={`After ${item.alt || ''}`} className="absolute inset-0 w-full h-full object-cover" />
-                                    )}
+<img 
+    src={optimizeCloudinaryImage(item.after, 600)} 
+    alt={`After ${item.alt || ''}`} 
+    width={600}
+    height={600}
+    loading="lazy"
+    className="absolute inset-0 w-full h-full object-cover" 
+/>                                    )}
                                 </div>
                             ))}
                         </div>
@@ -91,7 +104,7 @@ export default function GallerySection({ data }: { data: any }) {
                             <div className="absolute left-[100px] right-0 h-px bg-gray-200 top-1/2 -translate-y-1/2 z-0" />
                             <div
                                 className="w-[120px] flex-shrink-0 z-20 sticky left-0 py-2"
-                                style={{ backgroundColor: data.section?.bg || data.bg || '#fffaf8' }} 
+                                style={{ backgroundColor: data.section?.bg || data.bg || '#fffaf8' }}
                             >
                                 <div
                                     className="border border-gray-200 rounded-xl px-4 py-2 text-center font-semibold text-[16px] inline-block shadow-sm"
@@ -109,11 +122,14 @@ export default function GallerySection({ data }: { data: any }) {
                                             style={{ backgroundColor: data.styling?.badgeBg || data.badgeBg }}
                                         >
                                             {item.before && (
-                                                <img
-                                                    src={item.before}
-                                                    alt={`Before ${item.alt || ''}`}
-                                                    className="absolute inset-0 w-full h-full object-cover"
-                                                />
+                                               <img 
+    src={optimizeCloudinaryImage(item.before, 600)} 
+    alt={`Before ${item.alt || ''}`} 
+    width={600}
+    height={600}
+    loading="lazy"
+    className="absolute inset-0 w-full h-full object-cover" 
+/>
                                             )}
                                         </div>
                                     </div>
@@ -160,11 +176,14 @@ export default function GallerySection({ data }: { data: any }) {
                                             style={{ backgroundColor: data.styling?.badgeBg || data.badgeBg }}
                                         >
                                             {item.after && (
-                                                <img
-                                                    src={item.after}
-                                                    alt={`After ${item.alt || ''}`}
-                                                    className="absolute inset-0 w-full h-full object-cover"
-                                                />
+                                               <img 
+    src={optimizeCloudinaryImage(item.before, 600)} 
+    alt={`Before ${item.alt || ''}`} 
+    width={600}
+    height={600}
+    loading="lazy"
+    className="absolute inset-0 w-full h-full object-cover" 
+/>
                                             )}
                                         </div>
                                     </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Star, Smile } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import SmartHeading from '../ui/SmartHeading';
+import { optimizeCloudinaryImage } from '@/lib/optimize-image';
 
 const FiveStars = ({ color }: { color?: string }) => (
     <div className="flex items-center gap-1">
@@ -45,8 +46,14 @@ const CardRenderer = ({ card }: { card: any }) => {
         return (
             <div className={cn("relative rounded-2xl overflow-hidden min-h-[280px] group shadow-sm", card.className)} style={{ backgroundColor: card.bg || '#111111' }}>
                 {card.image && (
-                    <img src={card.image} alt={card.subtext || 'Stat Image'} className="absolute inset-0 w-full h-full object-cover opacity-70 transition-transform duration-700 group-hover:scale-105 z-0" />
-                )}
+                    <img
+                        src={optimizeCloudinaryImage(card.image, 800)}
+                        alt={card.subtext || 'Stat Image'}
+                        width={800}
+                        height={600}
+                        loading="lazy"
+                        className="absolute inset-0 w-full h-full object-cover opacity-70 transition-transform duration-700 group-hover:scale-105 z-0"
+                    />)}
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-10">
                     <Smile className="w-12 h-12 mb-4" strokeWidth={1.5} style={{ color: card.iconColor || '#ffffff' }} />
                     <h3 className="font-medium text-[40px] tracking-tight mb-1" style={{ color: card.textColor || '#ffffff' }}>{card.heading || '1200+'}</h3>
@@ -65,7 +72,14 @@ const CardRenderer = ({ card }: { card: any }) => {
             <div className="flex items-center gap-4 mt-8">
                 {card.avatar && (
                     <div className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-white border border-gray-100">
-                        <img src={card.avatar} alt={card.name || 'Avatar'} className="absolute inset-0 w-full h-full object-cover" />
+                        <img
+                            src={optimizeCloudinaryImage(card.avatar, 150)}
+                            alt={card.name || 'Avatar'}
+                            width={150}
+                            height={150}
+                            loading="lazy"
+                            className="absolute inset-0 w-full h-full object-cover"
+                        />
                     </div>
                 )}
                 <div>
@@ -101,12 +115,12 @@ export default function ReviewsSection({ data }: { data?: any }) {
         <section id='reviews' className={cn("py-20 w-full overflow-hidden", data.section?.className)} style={{ backgroundColor: data.section?.bg || data.bg || '#fffaf8' }}>
             <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center">
                 <div className="flex flex-col items-center text-center max-w-[614px] mb-12 lg:mb-16">
-                    <SmartHeading 
-    as="h2"
-    text={data.heading?.text || data.heading}
-    className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)} 
-    style={{ color: data.heading?.color || data.headingColor }}
-/>
+                    <SmartHeading
+                        as="h2"
+                        text={data.heading?.text || data.heading}
+                        className={cn("font-medium text-4xl md:text-[48px] leading-[1.2] tracking-[-1.5px] mb-4", data.heading?.className)}
+                        style={{ color: data.heading?.color || data.headingColor }}
+                    />
                     <p className={cn("text-base md:text-[18px] leading-[1.6]", data.description?.className)} style={{ color: data.description?.color || data.descColor || '#625b5b' }}>
                         {description}
                     </p>

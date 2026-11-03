@@ -1,13 +1,10 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { optimizeCloudinaryImage } from '@/lib/optimize-image';
 
-// Helper function to turn `text` into <strong>text</strong>
 const renderWithBold = (text: string) => {
     if (!text || typeof text !== 'string') return text;
-    
-    // Split by backticks. Every odd index will be the text inside the backticks.
     const parts = text.split('`');
-    
     return parts.map((part, index) => {
         if (index % 2 === 1) {
             return <strong key={index} className="font-bold">{part}</strong>;
@@ -19,20 +16,14 @@ const renderWithBold = (text: string) => {
 export default function Footer({ data }: { data: any }) {
     if (!data) return null;
 
-    // Gracefully handle both the new nested schema and the old flat schema
     const logo = data.logo || {};
     const info = data.info || {};
     const socials = data.socials || {};
-    const styling = data.styling || data; // Fallback to root data if styling object doesn't exist
+    const styling = data.styling || data;
 
-    // 🔥 DYNAMIC LINKS ARRAYS FROM JSON
     const quickLinks = data.quickLinks || [];
     const legalLinks = data.legalLinks || [];
-
-    // Check if map URL exists
     const hasMap = !!info.mapEmbedUrl;
-
-    // Safely check if disclaimer exists and is not empty
     const hasDisclaimer = typeof data.disclaimer === 'string' && data.disclaimer.trim().length > 0;
 
     return (
@@ -43,17 +34,14 @@ export default function Footer({ data }: { data: any }) {
         >
             <div className="max-w-7xl mx-auto flex flex-col gap-12">
 
-                {/* 🔥 Legal Disclaimer Block - MOVED TO TOP */}
                 {hasDisclaimer && (
                     <div className="pb-8 border-b border-black/10">
                         <p className=" text-justify" style={{ color: styling.mutedColor }}>
-                            {/* Run the text through our bolding helper */}
                             {renderWithBold(data.disclaimer)}
                         </p>
                     </div>
                 )}
 
-{/* 🔥 NEW: Local SEO / Service Areas Block */}
                 {data.seoText && (
                     <div className="pt-8 border-t border-gray-200 mt-4">
                         <h4 className="text-sm font-bold mb-2 tracking-wide uppercase" style={{ color: styling.mutedColor }}>
@@ -65,18 +53,22 @@ export default function Footer({ data }: { data: any }) {
                     </div>
                 )}
                 
-                {/* Grid layout */}
                 <div className={cn(
                     "grid grid-cols-1 sm:grid-cols-2 gap-10 items-start",
                     hasMap ? "lg:grid-cols-12" : "md:grid-cols-4"
                 )}>
-
-                    {/* Logo */}
                     <div className={cn(hasMap && "sm:col-span-2 lg:col-span-3")}>
                         <div className="flex items-center gap-3">
                             <a href="#" className={cn("group hover:opacity-80 transition-opacity", logo.className)}>
                                 {logo.src ? (
-                                    <img src={logo.src} alt={logo.alt || "Business Logo"} className="h-14 w-auto max-w-full object-contain object-left" />
+                                    <img 
+                                        src={optimizeCloudinaryImage(logo.src, 400)} 
+                                        alt={logo.alt || "Business Logo"} 
+                                        width={160}
+                                        height={56}
+                                        loading="lazy"
+                                        className="h-14 w-auto max-w-full object-contain object-left" 
+                                    />
                                 ) : (
                                     <span className="font-bold text-xl" style={{ color: styling.textColor }}>Logo</span>
                                 )}
@@ -84,7 +76,6 @@ export default function Footer({ data }: { data: any }) {
                         </div>
                     </div>
 
-                    {/* 🔥 DYNAMIC Quick Links */}
                     {quickLinks.length > 0 && (
                         <div className={cn(hasMap && "lg:col-span-2")}>
                             <nav aria-label="Quick links">
@@ -106,7 +97,6 @@ export default function Footer({ data }: { data: any }) {
                         </div>
                     )}
 
-                    {/* 🔥 DYNAMIC Legal Links */}
                     {legalLinks.length > 0 && (
                         <div className={cn(hasMap && "lg:col-span-2")}>
                             <nav aria-label="Legal documents">
@@ -128,17 +118,13 @@ export default function Footer({ data }: { data: any }) {
                         </div>
                     )}
 
-                    {/* Contact Info */}
                     <div className={cn(hasMap && "lg:col-span-2")}>
                         <div>
                             <h4 className="text-sm font-normal mb-5 tracking-wide uppercase" style={{ color: styling.mutedColor }}>
                                 {info.heading || "Locations"}
                             </h4>
                             <address className="not-italic space-y-4 text-base font-normal leading-relaxed" style={{ color: styling.textColor }}>
-                                
-                                {/* 🔥 APPLIED renderWithBold TO ADDRESS SO BACKTICKS WORK HERE! */}
                                 <p className="whitespace-pre-line">{renderWithBold(info.address)}</p>
-                                
                                 {info.phone?.label && (
                                     <p>
                                         <a href={info.phone.href} className="hover:opacity-75 transition-opacity">
@@ -156,23 +142,22 @@ export default function Footer({ data }: { data: any }) {
                             </address>
                         </div>
                     </div>
-
                 </div>
 
-                {/* 🗺️ Google Map & Storefront Side-by-Side */}
                 {(hasMap || info.storefrontImage?.src) && (
                     <div className="w-full flex flex-col mt-4">
                         <h4 className="text-sm font-semibold mb-4 tracking-wider uppercase" style={{ color: styling.mutedColor }}>
                             {info.storefrontImage?.src ? "Location & Storefront" : "Our Location"}
                         </h4>
-
                         <div className={cn("grid gap-4", hasMap && info.storefrontImage?.src ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1")}>
-
                             {info.storefrontImage?.src && (
-                                <div className="relative w-full h-[300px] rounded-2xl overflow-hidden border border-black/5 shadow-sm hover:shadow-md transition-shadow">
+                                <div className="relative w-full h-[300px] rounded-2xl overflow-hidden border border-black/5 shadow-sm hover:shadow-md transition-shadow bg-slate-100">
                                     <img
-                                        src={info.storefrontImage.src}
+                                        src={optimizeCloudinaryImage(info.storefrontImage.src, 800)}
                                         alt="Our Storefront"
+                                        width={600}
+                                        height={300}
+                                        loading="lazy"
                                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                                     />
                                 </div>
@@ -194,12 +179,10 @@ export default function Footer({ data }: { data: any }) {
                                     />
                                 </div>
                             )}
-
                         </div>
                     </div>
                 )}
 
-                {/* Bottom Footer Section */}
                 <div className="pt-8 border-t border-black/10 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <p className="text-sm text-center sm:text-left" style={{ color: styling.mutedColor }}>
                         {renderWithBold(data.copyright)}
@@ -226,7 +209,6 @@ export default function Footer({ data }: { data: any }) {
                         )}
                     </div>
                 </div>
-
             </div>
         </footer>
     );

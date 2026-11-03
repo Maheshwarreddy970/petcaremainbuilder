@@ -1,6 +1,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import SmartHeading from '../ui/SmartHeading';
+import { optimizeCloudinaryImage } from '@/lib/optimize-image';
 
 export default function ProcessSection({ data }: { data: any }) {
     if (!data) return null;
@@ -31,8 +32,16 @@ export default function ProcessSection({ data }: { data: any }) {
                                     <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
                                         <div className="w-full max-w-[474px]">
                                             <div className="relative w-full aspect-[474/284] rounded-2xl overflow-hidden shadow-sm border border-black/5" style={{ backgroundColor: data.section?.bg || data.bg }}>
-                                                {step.image && <img src={step.image} alt={step.title} className="object-cover absolute inset-0 w-full h-full" />}
-                                            </div>
+{step.image && (
+    <img 
+        src={optimizeCloudinaryImage(step.image, 600)} 
+        alt={step.title} 
+        width={600}
+        height={400}
+        loading="lazy"
+        className="object-cover absolute inset-0 w-full h-full" 
+    />
+)}                                            </div>
                                         </div>
                                     </div>
 

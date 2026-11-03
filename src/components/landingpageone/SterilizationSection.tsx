@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { optimizeCloudinaryImage } from '@/lib/optimize-image';
 
 export default function SterilizationSection({ data }: { data: any }) {
     if (!data) return null;
@@ -57,10 +58,13 @@ export default function SterilizationSection({ data }: { data: any }) {
                     {/* The object-[85%_center] perfectly crops out the left text, revealing only the machine! */}
                     <div className="order-1 lg:order-2 w-full h-[400px] md:h-[500px] lg:h-[650px] relative rounded-[32px] overflow-hidden shadow-lg border border-black/5">
                         <img 
-                            src={data.image?.src} 
-                            alt={data.image?.alt || "Sterilization Process"} 
-                            className="absolute inset-0 w-full h-full object-cover object-[85%_center]"
-                        />
+    src={optimizeCloudinaryImage(data.image?.src, 800)} 
+    alt={data.image?.alt || "Sterilization Process"} 
+    width={800}
+    height={800}
+    loading="lazy"
+    className="absolute inset-0 w-full h-full object-cover object-[85%_center]"
+/>
                     </div>
 
                 </div>
