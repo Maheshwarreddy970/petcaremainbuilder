@@ -5,7 +5,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import Navbar from "@/components/landingpageone/Navbar";
 import Homepage from "@/components/landingpageone/Home";
 import StatsBanner from "@/components/landingpageone/ReviewSection";
-import ImageSliderSection from "@/components/landingpageone/ImageSliderSection"; 
+import ImageSliderSection from "@/components/landingpageone/ImageSliderSection";
 import GallerySection from "@/components/landingpageone/GallerySection";
 import AboutSection from "@/components/landingpageone/AboutSection";
 import ServicesSection from "@/components/landingpageone/ServicesSection";
@@ -13,14 +13,14 @@ import ProcessSection from "@/components/landingpageone/ProcessSection";
 import ComparisonSection from "@/components/landingpageone/ComparisonSection";
 import ReviewsSection from "@/components/landingpageone/ReviewsSection";
 import InsightsSection from "@/components/landingpageone/InsightsSection";
-import FAQSection from "@/components/landingpageone/FAQSection"; 
-import ContactSection from "@/components/landingpageone/ContactSection"; 
+import FAQSection from "@/components/landingpageone/FAQSection";
+import ContactSection from "@/components/landingpageone/ContactSection";
 import CTASection from "@/components/landingpageone/CTASection";
 import Footer from "@/components/landingpageone/footer";
 import FounderSection from "../landingpageone/FounderSection";
 import SterilizationSection from "../landingpageone/SterilizationSection";
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   display: "swap", // 🔥 Ensure this is here
@@ -35,7 +35,7 @@ const playfair = Playfair_Display({
   variable: "--font-accent",
 });
 
-export default function WebsiteOne({ data, slug }: { data: any, slug?: string }) {
+export default function WebsiteOne({ data, slug, pageRoute = "home" }: { data: any, slug?: string, pageRoute?: "home" | "about" | "services" | "contact" }) {
   if (!data) return null;
 
   const primaryColor = data?.theme?.primaryColor || "#a35c38";
@@ -75,59 +75,71 @@ export default function WebsiteOne({ data, slug }: { data: any, slug?: string })
   `);
 
   return (
-    <div 
+    <div
       id="live-preview-box"
-      // 🔥 Inject both font variables into the root container
       className={`relative w-full min-h-screen bg-white text-gray-900 ${inter.variable} ${playfair.variable}`}
-      style={{ 
+      style={{
         fontFamily: 'var(--font-main)',
-        '--primary': primaryColor // 🔥 Added this line!
-      } as React.CSSProperties}// Set default font to Inter
+        '--primary': primaryColor
+      } as React.CSSProperties}
     >
       <style>{`
-        /* Smooth scrolling for the whole page */
-        html {
-          scroll-behavior: smooth;
-        }
-
-        /* 🔥 MAGIC FONT TRICK:
-          Any text wrapped in <em> or <i> tags will automatically switch to the 
-          luxurious Playfair Display font. You can trigger this just by italicizing 
-          words in your JSON editor (e.g. <i>family</i>).
-        */
-        em, i {
-          font-family: var(--font-accent), serif !important;
-          font-style: italic;
-          font-weight: 500;
-        }
-
-        /* Paw Cursors */
-        body, input, textarea, select {
-          cursor: url("data:image/svg+xml;utf8,${defaultPawSvg}") 24 12, auto !important;
-        }
-
-        a, button, [role='button'], input[type='submit'], input[type='button'], summary {
-          cursor: url("data:image/svg+xml;utf8,${hoverPawSvg}") 24 12, pointer !important;
-          transition: all 0.25s ease-in-out;
-        }
+        html { scroll-behavior: smooth; }
+        em, i { font-family: var(--font-accent), serif !important; font-style: italic; font-weight: 500; }
+        body, input, textarea, select { cursor: url("data:image/svg+xml;utf8,${defaultPawSvg}") 24 12, auto !important; }
+        a, button, [role='button'], input[type='submit'], input[type='button'], summary { cursor: url("data:image/svg+xml;utf8,${hoverPawSvg}") 24 12, pointer !important; transition: all 0.25s ease-in-out; }
       `}</style>
 
+      {/* Global Navbar */}
       {data.navbar && <Navbar data={data.navbar} />}
-      {data.hero && <Homepage data={data.hero} />}
-      {data.statsBanner && <StatsBanner data={data.statsBanner} />}    
-      {data.founder && <FounderSection data={data.founder} />}  
-      {data.gallery && <GallerySection data={data.gallery} />}
-      {data.about && <AboutSection data={data.about} />}
-      {data.services && <ServicesSection data={data.services} />}
-      {data.process && <ProcessSection data={data.process} />}
-      {data.comparison && <ComparisonSection data={data.comparison} />}
-      {data.reviews && <ReviewsSection data={data.reviews} />}
-      {data.imageSlider && <ImageSliderSection data={data.imageSlider} />}
-      {data.insights && <InsightsSection data={data.insights} />}
-      {data.faq && <FAQSection data={data.faq} />}
-      {data.contactSection && <ContactSection data={data.contactSection} slug={slug} />}
-      {data.sterilization && <SterilizationSection data={data.sterilization} />}
-      {data.ctaSection && <CTASection data={data.ctaSection} />}
+
+      {/* ============================================== */}
+      {/* 🏠 HOME PAGE ROUTE */}
+      {/* ============================================== */}
+      {pageRoute === "home" && (
+        <>
+          {data.hero && <Homepage data={data.hero} />}
+          {data.statsBanner && <StatsBanner data={data.statsBanner} />}
+          {data.imageSlider && <ImageSliderSection data={data.imageSlider} />}
+          {data.ctaSection && <CTASection data={data.ctaSection} />}
+        </>
+      )}
+
+      {/* ============================================== */}
+      {/* 📖 ABOUT PAGE ROUTE */}
+      {/* ============================================== */}
+      {pageRoute === "about" && (
+        <div className="pt-28 md:pt-16 pb-10 min-h-screen">
+          {data.about && <AboutSection data={data.about} />}
+          {data.founder && <FounderSection data={data.founder} />}
+          {data.process && <ProcessSection data={data.process} />}
+          {data.reviews && <ReviewsSection data={data.reviews} />}
+        </div>
+      )}
+
+      {/* ============================================== */}
+      {/* ✂️ SERVICES PAGE ROUTE */}
+      {/* ============================================== */}
+      {pageRoute === "services" && (
+        <div className="pt-28 md:pt-16 pb-10 min-h-screen">
+          {data.services && <ServicesSection data={data.services} />}
+          {data.comparison && <ComparisonSection data={data.comparison} />}
+          {data.sterilization && <SterilizationSection data={data.sterilization} />}
+          {data.gallery && <GallerySection data={data.gallery} />}
+        </div>
+      )}
+
+      {/* ============================================== */}
+      {/* 📞 CONTACT PAGE ROUTE */}
+      {/* ============================================== */}
+      {pageRoute === "contact" && (
+        <div className="pt-28 md:pt-16 pb-10 min-h-screen">
+          {data.contactSection && <ContactSection data={data.contactSection} slug={slug} />}
+          {data.faq && <FAQSection data={data.faq} />}
+          {data.insights && <InsightsSection data={data.insights} />}
+        </div>
+      )}
+
       {data.footer && <Footer data={data.footer} />}
     </div>
   );

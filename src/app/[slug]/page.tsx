@@ -47,13 +47,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     keywords: settings.keywords || "",
     metadataBase: new URL(domain),
     alternates: { canonical: '/' },
-    
+
     icons: {
       icon: cacheBusterUrl,
       shortcut: cacheBusterUrl,
       apple: settings.appleTouchIcon || cacheBusterUrl,
     },
-    
+
     robots: {
       index: true,
       follow: true,
@@ -108,12 +108,12 @@ export default async function LiveTenantPage({ params }: { params: Promise<{ slu
   const currentPath = '/';
 
   if (settings.redirects && settings.redirects.length > 0) {
-      const match = settings.redirects.find((r: any) => r.oldPath === currentPath);
-      if (match) permanentRedirect(match.newPath); 
+    const match = settings.redirects.find((r: any) => r.oldPath === currentPath);
+    if (match) permanentRedirect(match.newPath);
   }
 
   const domain = data.customDomain ? `https://${data.customDomain}` : `https://${slug}.nexpetcare.online`;
-  
+
   const socialsObj = templateData?.footer?.socials || {};
   const sameAsLinks = Object.values(socialsObj).filter((url: any) => url && url !== "#");
 
@@ -141,31 +141,31 @@ export default async function LiveTenantPage({ params }: { params: Promise<{ slu
   return (
     <div id="tenant-wrapper" lang={settings.language || "en"} dir={settings.rtlLayout ? "rtl" : "ltr"} className={htmlClasses.join(" ")}>
       <main className="w-full min-h-screen">
-        
-        <script 
-          type="application/ld+json" 
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} 
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
 
-        <TemplateComponent data={templateData} slug={slug} />
-        
-       {/* Third Party Integrations */}
-{settings.googleAnalyticsId && (
-  <Script 
-    src={`https://www.googletagmanager.com/gtag/js?id=${settings.googleAnalyticsId}`}
-    strategy="worker" // Or "lazyOnload" to ensure it never blocks rendering
-  />
-)}
+<TemplateComponent data={templateData} slug={slug} pageRoute="home" />
 
-{settings.googleReviewsId && (
-  <Script 
-    src="https://apps.elfsight.com/p/platform.js" 
-    strategy="lazyOnload" // 🔥 CRITICAL: Stops Elfsight from blocking the page load
-  />
-)}
-{settings.googleReviewsId && (
-  <div className={`elfsight-app-${settings.googleReviewsId}`}></div>
-)}
+        {/* Third Party Integrations */}
+        {settings.googleAnalyticsId && (
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${settings.googleAnalyticsId}`}
+            strategy="worker" // Or "lazyOnload" to ensure it never blocks rendering
+          />
+        )}
+
+        {settings.googleReviewsId && (
+          <Script
+            src="https://apps.elfsight.com/p/platform.js"
+            strategy="lazyOnload" // 🔥 CRITICAL: Stops Elfsight from blocking the page load
+          />
+        )}
+        {settings.googleReviewsId && (
+          <div className={`elfsight-app-${settings.googleReviewsId}`}></div>
+        )}
       </main>
     </div>
   );
