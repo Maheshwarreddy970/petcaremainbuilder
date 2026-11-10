@@ -94,7 +94,7 @@ export default function HeroSection({ data }: { data: any }) {
                         <a
                             href={data.cta?.href || "#"}
                             className={cn(
-                                "group relative text-sm rounded-full py-3.5 px-8 flex items-center justify-center gap-[10px] w-full sm:w-fit overflow-hidden",
+                                "group relative text-sm rounded-full py-3.5 px-8 flex items-center justify-center gap-[10px] w-fit overflow-hidden",
                                 "transition-all duration-300 shadow-sm hover:opacity-90 hover:shadow-md"
                             )}
                             style={{
@@ -111,7 +111,7 @@ export default function HeroSection({ data }: { data: any }) {
                             <a
                                 href={data.ctaSecondary?.href || "#contact"}
                                 className={cn(
-                                    "group relative text-sm rounded-full py-3.5 px-8 flex items-center justify-center gap-[10px] w-full sm:w-fit overflow-hidden border-2",
+                                    "group relative text-sm rounded-full py-3.5 px-8 flex items-center justify-center gap-[10px] w-fit overflow-hidden border-2",
                                     "transition-all duration-300 hover:bg-black/5 shadow-none",
                                     data.ctaSecondary?.className
                                 )}
