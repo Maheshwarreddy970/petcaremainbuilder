@@ -99,9 +99,21 @@ export default function WebsiteOne({ data, slug, pageRoute = "home" }: { data: a
       {pageRoute === "home" && (
         <>
           {data.hero && <Homepage data={data.hero} />}
-          {data.statsBanner && <StatsBanner data={data.statsBanner} />}
-          {data.imageSlider && <ImageSliderSection data={data.imageSlider} />}
-          {data.ctaSection && <CTASection data={data.ctaSection} />}
+      {data.statsBanner && <StatsBanner data={data.statsBanner} />}    
+      {data.founder && <FounderSection data={data.founder} />}  
+      {data.gallery && <GallerySection data={data.gallery} />}
+      {data.about && <AboutSection data={data.about} />}
+      {data.services && <ServicesSection data={data.services} />}
+      {data.process && <ProcessSection data={data.process} />}
+      {data.comparison && <ComparisonSection data={data.comparison} />}
+      {data.reviews && <ReviewsSection data={data.reviews} />}
+      {data.imageSlider && <ImageSliderSection data={data.imageSlider} />}
+      {data.insights && <InsightsSection data={data.insights} />}
+      {data.faq && <FAQSection data={data.faq} />}
+      {data.contactSection && <ContactSection data={data.contactSection} slug={slug} />}
+      {data.sterilization && <SterilizationSection data={data.sterilization} />}
+      {data.ctaSection && <CTASection data={data.ctaSection} />}
+
         </>
       )}
 
@@ -109,7 +121,7 @@ export default function WebsiteOne({ data, slug, pageRoute = "home" }: { data: a
       {/* 📖 ABOUT PAGE ROUTE */}
       {/* ============================================== */}
       {pageRoute === "about" && (
-        <div className="pt-28 md:pt-16 pb-10 min-h-screen">
+        <div className="pt-28 md:pt- pb-10 min-h-screen">
           {data.about && <AboutSection data={data.about} />}
           {data.founder && <FounderSection data={data.founder} />}
           {data.process && <ProcessSection data={data.process} />}
@@ -121,7 +133,7 @@ export default function WebsiteOne({ data, slug, pageRoute = "home" }: { data: a
       {/* ✂️ SERVICES PAGE ROUTE */}
       {/* ============================================== */}
       {pageRoute === "services" && (
-        <div className="pt-28 md:pt-16 pb-10 min-h-screen">
+        <div className="pt-28 md:pt- pb-10 min-h-screen">
           {data.services && <ServicesSection data={data.services} />}
           {data.comparison && <ComparisonSection data={data.comparison} />}
           {data.sterilization && <SterilizationSection data={data.sterilization} />}
@@ -133,7 +145,7 @@ export default function WebsiteOne({ data, slug, pageRoute = "home" }: { data: a
       {/* 📞 CONTACT PAGE ROUTE */}
       {/* ============================================== */}
       {pageRoute === "contact" && (
-        <div className="pt-28 md:pt-16 pb-10 min-h-screen">
+        <div className="pt-28 md:pt- pb-10 min-h-screen">
           {data.contactSection && <ContactSection data={data.contactSection} slug={slug} />}
           {data.faq && <FAQSection data={data.faq} />}
           {data.insights && <InsightsSection data={data.insights} />}

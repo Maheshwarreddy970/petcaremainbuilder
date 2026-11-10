@@ -1,791 +1,655 @@
 {
-  "footer": {
-    "textColor": "#1e0c05",
-    "logo": {
-      "src": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785601906/cadksgqrku7suh4dsuxt.webp",
-      "alt": "Pet Town Grooming Logo",
+  "insights": {
+    "items": [
+      {
+        "title": "Casi's Double the Love Litter is Here!",
+        "date": "Oct 28, 2026",
+        "className": "",
+        "id": 1,
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/b1_n4dpky.avif"
+      },
+      {
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299759/nexpetcare_uploads/qenw2yidohwtu3fi1xht.avif",
+        "className": "",
+        "date": "Fall 2026",
+        "title": "Preparing your home for a new Mini Doodle",
+        "id": 2
+      },
+      {
+        "title": "Meet the Moms: Maggie (Daddy's Girl)",
+        "id": 3,
+        "date": "May 13, 2026",
+        "className": "",
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/b3_hs9zzk.avif"
+      }
+    ],
+    "section": {
+      "bg": "#f9f7f5",
       "className": ""
     },
-    "socials": {
-      "facebook": "http://facebook.com/pettowngroominginc/",
-      "instagram": "https://www.instagram.com/pettowngroominginc",
-      "tiktok": "https://www.tiktok.com/@pettowncanada"
-    },
-    "mutedColor": "#625b5b",
-    "iconBg": "#347135",
-    "iconText": "#ffffff",
-    "info": {
-      "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2743.051211910019!2d-80.4262627!3d43.672293599999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b9508196c5697%3A0xdd8c4d554791d1b!2sPet%20Town%20Grooming%20Inc!5e1!3m2!1sen!2sin!4v1786210711798!5m2!1sen!2sin",
-      "storeImage": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785604726/wzc6pzomqbehmj51lawv.jpg",
-      "address": "7455 Speers Road. Elora, Ontario",
-      "phone": {
-        "href": "tel:+15197100935",
-        "label": "519-710-0935"
-      },
-      "email": {
-        "label": "pettowngroominginc@gmail.com",
-        "href": "mailto:pettowngroominginc@gmail.com"
-      },
-      "storefrontImage": {
-        "className": "",
-        "src": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1787828651/q9fjk4wuqbz7xfqodxh0.jpg"
-      }
-    },
-    "bg": "#fdfdfd",
-    "copyright": "Copyright © 2026 Pet Town Grooming Inc. All rights reserved.",
     "styling": {
-      "iconBg": "#F28222",
-      "mutedColor": "#625b5b",
-      "textColor": "#1e0c05",
-      "iconText": "#ffffff"
-    },
-    "section": {
+      "cardTitle": "#0c0a0d",
+      "cardDateBg": "#f9f7f5",
+      "cardBg": "#f9f7f5",
       "className": "",
-      "bg": "#fdfdfd"
+      "cardDateText": "#4a423f"
+    },
+    "heading": {
+      "color": "#0c0a0d",
+      "className": "",
+      "text": "Litter Updates & News"
+    },
+    "description": {
+      "className": "",
+      "text": "Updates on our current litters and news from our home in Aldershot.",
+      "color": "#4a423f"
     }
   },
-  "contactSection": {
+  "footer": {
     "section": {
       "className": "",
       "bg": "#ffffff"
     },
-    "heading": {
+    "copyright": "Copyright © 2024 by Bev's Mini Doodles. All rights reserved.",
+    "logo": {
+      "alt": "Bev's Mini Doodles Logo",
       "className": "",
-      "text": "Get in Touch",
-      "color": "#1e0c05"
+      "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1794298239/nexpetcare_uploads/hrm98mgxw0yazhu1hsgl.avif"
     },
-    "button": {
+    "socials": {
+      "instagram": "https://www.instagram.com/bevsminidoodles",
+      "facebook": "https://www.facebook.com/bevs.mini.doodles01"
+    },
+    "info": {
+      "mapEmbedUrl": "",
+      "email": {
+        "label": "beverley@bevsminidoodles.com",
+        "href": "mailto:beverley@bevsminidoodles.com"
+      },
+      "phone": {
+        "label": "+1-437-225-7112",
+        "href": "tel:+14372257112"
+      },
+      "address": "Aldershot, Burlington, Ontario"
+    },
+    "styling": {
+      "iconBg": "#ffffff",
+      "iconText": "#000000",
+      "textColor": "#000000",
+      "mutedColor": "#000000"
+    }
+  },
+  "services": {
+    "items": [
+      {
+        "className": "",
+        "title": "1 Week of Food",
+        "priceLabel": "Included",
+        "ctaLabel": "Learn More",
+        "href": "#contact",
+        "iconKey": "bone",
+        "description": "Your puppy goes home with a full week of familiar food to ensure their tummy stays settled."
+      },
+      {
+        "title": "4 Weeks Pet Insurance",
+        "ctaLabel": "Learn More",
+        "iconKey": "shield",
+        "className": "",
+        "href": "#contact",
+        "priceLabel": "Included",
+        "description": "Peace of mind right from the start with 4 weeks of comprehensive pet insurance."
+      },
+      {
+        "description": "Our relationship doesn't end on go-home day. We are here to answer questions for life.",
+        "title": "Lifelong Breeder Support",
+        "className": "",
+        "priceLabel": "Included",
+        "href": "#contact",
+        "ctaLabel": "Learn More",
+        "iconKey": "heart"
+      },
+      {
+        "iconKey": "home",
+        "className": "",
+        "title": "Mom-Scented Blanket",
+        "description": "A comforting blanket that smells like mom and littermates to help them sleep soundly.",
+        "priceLabel": "Included",
+        "ctaLabel": "Learn More",
+        "href": "#contact"
+      }
+    ],
+    "cta": {
+      "className": "",
+      "bg": "#8a7859",
+      "href": "#apply",
       "text": "#ffffff",
-      "label": "Send Message",
-      "bg": "#F28222",
+      "label": "Apply Now"
+    },
+    "section": {
+      "bg": "#ffffff",
       "className": ""
     },
     "description": {
-      "color": "#625b5b",
-      "text": "Have questions? Send us a message and we'll reply directly to your email.",
+      "color": "#4a423f",
+      "className": "",
+      "text": "We want your new family member to transition smoothly into your home. Here is what comes with every Bev's Mini Doodle."
+    },
+    "styling": {
+      "className": "",
+      "iconColor": "#8a7859",
+      "cardBorder": "#d6cabc",
+      "priceColor": "#8a7859",
+      "cardBg": "#f9f7f5",
+      "titleColor": "#0c0a0d"
+    },
+    "heading": {
+      "text": "What comes with your puppy",
+      "color": "#0c0a0d",
       "className": ""
     }
   },
-  "ctaSection": {
-    "image": {
-      "className": "",
-      "src": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1786381333/yvm3haw9n8vszrnyd5s0.jpg"
-    },
-    "cta": {
-      "className": "",
-      "text": "#ffffff",
-      "label": "Book Now!",
-      "href": "https://book.collar.pet/brands/pet-town-grooming/book/",
-      "bg": "#ff8000"
-    },
-    "headingColor": "#1e0c05",
+  "process": {
     "description": {
-      "text": "Think fluffy robes, gentle brushes, & tails wagging all the way home! We can’t wait to hear from you.",
-      "color": "#ff8000",
-      "className": ""
-    },
-    "bg": "#faf3ec",
-    "heading": {
-      "text": "We’d love to pamper your pet",
-      "color": "#ff8000",
-      "className": ""
-    },
-    "section": {
-      "bg": "#ffffff",
-      "className": ""
-    },
-    "descColor": "#000000"
-  },
-  "comparison": {
-    "vsText": "#ffffff",
-    "headingColor": "#1e0c05",
-    "rightBg": "#ffffff",
-    "bg": "#ffffff",
-    "heading": {
       "className": "",
-      "color": "#1e0c05",
-      "text": "Why choose Pet Town Grooming"
+      "text": "At Bev’s Mini Doodles, our waitlist is designed to make the process simple, personal, and transparent from the very beginning.",
+      "color": "#4a423f"
     },
-    "vsBadge": {
-      "className": "md:-translate-x-0  -translate-y-0",
-      "text": "#ffffff",
-      "bg": "#000000"
-    },
-    "rightIcon": "#000000",
-    "rightTitle": "Other Groomers",
-    "vsBg": "#000000",
-    "otherOffers": [
-      "Grooming tailored to your needs and preferences",
-      "Experienced groomers focused on safety",
-      "Luxurious baths with blueberry facials",
-      "Calm, low-stress handling with breaks",
-      "Adorable polaroid photo souvenirs",
-      "Tailored styling for skin sensitivity"
-    ],
-    "petocareOffers": [
-      "Untrained staff lacking safety focus",
-      "Standard shampoos without skin considerations",
-      "High-stress handling without breaks",
-      "Generic one-size-fits-all grooming",
-      "No accessories or personal touches",
-      "Inconsistent results every visit"
-    ],
-    "rightText": "#000000",
-    "leftTitle": "We Offer",
-    "leftColumn": {
-      "className": "",
-      "textColor": "#ffffff",
-      "offers": [
-        "Grooming tailored to your needs and preferences",
-        "Experienced groomers focused on safety",
-        "Luxurious baths with blueberry facials",
-        "Calm, low-stress handling with breaks",
-        "Adorable polaroid photo souvenirs",
-        "Tailored styling for skin sensitivity"
-      ],
-      "iconColor": "#ffffff",
-      "bg": "#F28222"
-    },
-    "description": {
-      "color": "#625b5b",
-      "text": "Formally MEG’S PAW SPA, we offer more than grooming — we provide personalized techniques selected based on coat type, skin sensitivity, and breed standards.",
-      "className": ""
-    },
-    "rightColumn": {
-      "offers": [
-        "Untrained staff lacking safety focus",
-        "Standard shampoos without skin considerations",
-        "High-stress handling without breaks",
-        "Generic one-size-fits-all grooming",
-        "No accessories or personal touches",
-        "Inconsistent results every visit"
-      ],
-      "iconColor": "#000000",
-      "bg": "#ffffff",
-      "textColor": "#000000",
-      "className": ""
-    },
-    "descColor": "#625b5b",
-    "section": {
-      "bg": "#ffffff",
-      "className": ""
-    },
-    "leftText": "#ffffff",
-    "leftBg": "#F28222",
-    "leftIcon": "#ffffff"
-  },
-  "insights": {
-    "section": {
-      "bg": "#ffffff",
-      "className": ""
-    },
-    "items": [
+    "steps": [
       {
-        "title": "The benefits of our signature blueberry facial",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785604582/zg1t755d6wtavnwhk2f8.webp",
-        "date": "Mar 12, 2026",
-        "id": 1
+        "title": "Contact & Apply",
+        "titleColor": "#0c0a0d",
+        "description": "Reach out and tell us a little about yourself, your family, your lifestyle, and what you are hoping for in a puppy.",
+        "id": "01",
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299019/nexpetcare_uploads/vviztkvj1hx12xbkvyhr.avif",
+        "className": "",
+        "descColor": "#4a423f"
       },
       {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785604605/uyzgymqkmuodovlx0slg.webp",
-        "title": "How often should you book a dog bath & tidy?",
-        "date": "Apr 5, 2026",
-        "id": 2
+        "titleColor": "#0c0a0d",
+        "title": "Join Our Waitlist",
+        "descColor": "#4a423f",
+        "className": "",
+        "description": "Once we connect, secure your position for an upcoming litter with a $500 deposit. First deposit receives first pick.",
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299023/nexpetcare_uploads/zhkjiwys6dgurnmpiobg.avif",
+        "id": "02"
       },
       {
-        "title": "Why dog teeth brushing is essential for oral health",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785604634/hnkamvzpl0uhghcgdgrb.webp",
-        "date": "May 3, 2026",
-        "id": 3
+        "titleColor": "#0c0a0d",
+        "title": "Welcome Your Puppy",
+        "id": "03",
+        "description": "At go-home day, take home your perfect companion, complete with health checks, first vaccinations, and a mom-scented blanket.",
+        "className": "",
+        "descColor": "#4a423f",
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299027/nexpetcare_uploads/ynk6ungqqf6nifptgcqp.avif"
       }
     ],
-    "headingColor": "#1e0c05",
+    "section": {
+      "bg": "#f9f7f5",
+      "className": ""
+    },
     "styling": {
-      "className": "",
-      "cardTitle": "#1e0c05",
-      "cardDateBg": "#ffffff",
-      "cardBg": "#ffffff",
-      "cardDateText": "#625b5b"
+      "lineColor": "#8a7859",
+      "className": ""
     },
-    "descColor": "#625b5b",
-    "bg": "#ffffff",
-    "cardBg": "#ffffff",
-    "cardTitle": "#1e0c05",
-    "description": {
-      "className": "",
-      "text": "Learn more about our specific techniques and products tailored perfectly for your pet's comfort and safety.",
-      "color": "#625b5b"
-    },
-    "cardDateBg": "#30652c",
-    "cardDateText": "#ffffff",
     "heading": {
-      "color": "#1e0c05",
-      "text": "Grooming insights",
+      "text": "How Our Puppy Waitlist Works",
+      "color": "#0c0a0d",
       "className": ""
     }
   },
   "about": {
-    "features": [
-      "Quality over speed with no shortcuts",
-      "Dedicated, one-on-one focus",
-      "A calm environment you can trust"
-    ],
-    "featureIconColor": "#30652c",
+    "heading": {
+      "text": "All of our dogs are pets first",
+      "color": "#0c0a0d",
+      "className": ""
+    },
+    "featuresList": {
+      "featureIconColor": "#8a7859",
+      "featureColor": "#0c0a0d",
+      "features": [
+        "Ethical, family-based breeding program",
+        "Embark DNA & genetically tested parents",
+        "Hypoallergenic, low-shedding coats"
+      ],
+      "className": ""
+    },
+    "section": {
+      "bg": "#f9f7f5",
+      "className": ""
+    },
     "description": {
       "className": "",
-      "text": "Welcome to our little corner of the pet grooming world, where every wagging tail is a chance to make a friend! We're passionate about making your furry companions look & feel their best.",
-      "color": "#625b5b"
+      "color": "#4a423f",
+      "text": "The idea to breed puppies began with a dream. We fell in love with Goldendoodles for their intelligence, cuteness, and hypoallergenic traits. Today, all of our parent dogs live their best lives right alongside us in our home."
     },
-    "featureColor": "#000000",
-    "section": {
-      "className": "",
-      "bg": "#ffffff"
-    },
-    "descColor": "#000000",
-    "featuresList": {
-      "className": "",
-      "featureColor": "#1e0c05",
-      "features": [
-        "Experienced groomers with safety focus",
-        "Specific techniques based on coat type",
-        "Polaroid photo souvenirs provided"
-      ],
-      "featureIconColor": "#F28222"
-    },
-    "bg": "#ffffff",
-    "headingColor": "#000000",
     "cta": {
+      "bg": "#8a7859",
       "text": "#ffffff",
-      "bg": "#F28222",
-      "className": "",
-      "href": "https://book.collar.pet/brands/pet-town-grooming/book/",
-      "label": "Book An Appointment"
-    },
-    "heading": {
-      "className": "",
-      "color": "#1e0c05",
-      "text": "Expert Grooming & Care"
+      "href": "#moms",
+      "label": "Meet The Moms",
+      "className": ""
     },
     "image": {
       "className": "",
-      "src": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785602882/mz2fz4ztz5hz5odzzaxy.webp"
+      "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1794300732/nexpetcare_uploads/zbj1ka3h5tgolfdqk0va.avif"
     }
   },
-  "gallery": {
-    "headingColor": "#1e0c05",
-    "arrowColor": "#5e3819",
-    "items": [
-      {
-        "after": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1786383448/ykjvkpkbmnkh1arcemx7.jpg",
-        "alt": "Golden Retriever grooming at Pet Town",
-        "before": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1786383445/ebrc9xgcajswwy9eioyu.jpg",
-        "id": 1
-      },
-      {
-        "before": "https://res.cloudinary.com/doscyny4j/image/upload/v1789474487/nexpetcare_uploads/izkebu6tngzrrz8wibyl.avif",
-        "alt": "Cat grooming at Pet Town",
-        "after": "https://res.cloudinary.com/doscyny4j/image/upload/v1789474490/nexpetcare_uploads/ipplvbq8bizymur9ead5.avif",
-        "id": 2
-      },
-      {
-        "id": 3,
-        "alt": "Poodle grooming at Pet Town",
-        "before": "https://res.cloudinary.com/doscyny4j/image/upload/v1788026653/nexpetcare_uploads/mrpuvfsfv98boura9b1y.avif",
-        "after": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1788027388/sejs5znlksb8midfvtvk.avif"
-      }
-    ],
-    "heading": {
-      "color": "#1e0c05",
-      "className": "",
-      "text": "See it to believe it"
-    },
-    "description": {
-      "text": "Every photo shows care and skill. Browse our gallery to see the Pet Town Grooming difference — one happy pet at a time.",
-      "color": "#625b5b",
-      "className": ""
-    },
-    "badgeBg": "#5e3819",
-    "badgeText": "#ffffff",
-    "descColor": "#000000",
-    "section": {
-      "bg": "#ffffff",
-      "className": ""
-    },
-    "styling": {
-      "badgeBg": "#F28222",
-      "badgeText": "#ffffff",
-      "className": "",
-      "arrowColor": "#F28222"
-    },
-    "bg": "#ffffff"
-  },
-  "faq": {
-    "section": {
-      "className": "",
-      "bg": "#ffffff"
-    },
-    "description": {
-      "text": "Everything you need to know about our grooming process and salon policies.",
-      "color": "#625b5b",
-      "className": ""
-    },
-    "items": [
-      {
-        "answer": "We ask you please be patient with us. Think of how long your hair dresser takes to wash, blow dry & cut your hair. We ask you please give us 2-3 hours minimum as animals do have a TON of hair to wash, blow dry, clip & snip.",
-        "className": "",
-        "question": "How long will the appointment take?"
-      },
-      {
-        "question": "What is your cancellation policy?",
-        "className": "",
-        "answer": "As with any appointment based service business we ask you respectfully give us at least 24 hours notice of any changes to your appointment. Failure to do so will result in a no show fee of the full grooming cost."
-      },
-      {
-        "className": "",
-        "answer": "We will ALWAYS send an automated text message to the number given to us at drop off when your pet is finished. Please arrive no more than 45 minutes after you have received our message. We have the right to charge you a fee of $15 per 10 minutes that you are late.",
-        "question": "How do I know when my pet is ready for pick up?"
-      },
-      {
-        "answer": "We will ALWAYS try to groom aggressive animals. We hold the right to refuse services at any point during the grooming process if your pet becomes too stressed or dangerous to groom. Our main focus is to keep your pet’s & our groomers safe. You will still be charged the full grooming fee.",
-        "className": "",
-        "question": "Do you groom aggressive animals?"
-      },
-      {
-        "answer": "Grooming has the ability to expose hidden medical problems or aggravate current ones. This can happen during or after grooming. Groomers will inform owners of any issues that arise during the grooming session. We take every precaution necessary to avoid any accidents with our tools however sometimes these things do happen working with sharp tools & wiggly pets. Medical expenses for vet care will be covered by the pet’s owner.",
-        "question": "What if my pet gets hurt during the grooming process?",
-        "className": ""
-      },
-      {
-        "className": "",
-        "question": "How do I pay?",
-        "answer": "We accept CASH, DEBIT or E-TRANSFER. PLEASE NOTE: We DO NOT offer any refunds on services."
-      },
-      {
-        "question": "Is there a Late Drop Off Fee?",
-        "answer": "We understand that life happens, but do give us a heads up if you will be running late. We charge $15 for late drop off. We give a grace period of 10mins.",
-        "className": ""
-      },
-      {
-        "question": "Do you offer just Nail Trims service?",
-        "answer": "We offer walk-in service for nail trims without prior appointments made between 10am - 5pm Tuesday - Saturday. Kindly give us a heads up via text or phone call.",
-        "className": ""
-      }
-    ],
-    "styling": {
-      "answerColor": "#625b5b",
-      "className": "",
-      "iconColor": "#F28222",
-      "dividerColor": "#000000",
-      "questionColor": "#1e0c05"
-    },
-    "heading": {
-      "color": "#1e0c05",
-      "text": "Your Questions, Answered",
-      "className": ""
-    }
-  },
-  "services": {
-    "iconColor": "#000000",
-    "items": [
-      {
-        "href": "https://book.collar.pet/brands/pet-town-grooming/book/",
-        "description": "Nail grinding and/or nail clipper\nCalm, low-stress handling with breaks as needed. We assess each pet for absolute comfort & safety.",
-        "ctaLabel": "Book Now",
-        "title": "Nail Trim (Walk-in)",
-        "iconKey": "nail",
-        "priceLabel": "From $20"
-      },
-      {
-        "ctaLabel": "Book Now",
-        "href": "https://book.collar.pet/brands/pet-town-grooming/book/",
-        "title": "Dog Full Grooming",
-        "iconKey": "grooming",
-        "priceLabel": "CA$95.00",
-        "description": "Full service. Luxurious bath, blueberry facial, blow out blow drying, requested haircut, nail trim, paw pads, gentle ear cleaning, sanitary & polaroid souvenir."
-      },
-      {
-        "ctaLabel": "Book Now",
-        "iconKey": "bath",
-        "title": "Dog Bath & Tidy",
-        "description": "Bath and spray leave-in conditioning, blow drying and deshedding. Nail trim, tidying of paws, sanitary and face.",
-        "href": "https://book.collar.pet/brands/pet-town-grooming/book/",
-        "priceLabel": "CA$65.00"
-      },
-      {
-        "title": "Dog Bath Only",
-        "iconKey": "bath",
-        "priceLabel": "CA$50.00",
-        "description": "Classic dog bath, spray leave-in conditioner, blow drying and gentle ear cleaning. Full body brushing Only.",
-        "ctaLabel": "Book Now",
-        "href": "https://book.collar.pet/brands/pet-town-grooming/book/"
-      },
-      {
-        "priceLabel": "From CA$105.00",
-        "title": "Cat Full Groom",
-        "href": "https://book.collar.pet/brands/pet-town-grooming/book/",
-        "description": "Nail clipping, deshedding or lion cut, and optional waterless bath.",
-        "iconKey": "scissor",
-        "ctaLabel": "Book Now"
-      },
-      {
-        "title": "Cat Bath Only",
-        "ctaLabel": "Book Now",
-        "href": "https://book.collar.pet/brands/pet-town-grooming/book/",
-        "iconKey": "bath",
-        "description": "Waterless shampoo cat bath.",
-        "priceLabel": "CA$90.00"
-      }
-    ],
-    "descColor": "#9e9e9e",
-    "cardBorder": "#000000",
-    "cta": {
-      "label": "Book Now",
-      "bg": "#F28222",
-      "text": "#ffffff",
-      "className": "",
-      "href": "https://book.collar.pet/brands/pet-town-grooming/book/"
-    },
-    "description": {
-      "color": "#625b5b",
-      "text": "All services performed by experienced groomers. Techniques and products are selected based on coat type, skin sensitivity, and breed standards.",
-      "className": ""
-    },
-    "section": {
-      "bg": "#ffffff",
-      "className": ""
-    },
-    "priceColor": "#000000",
-    "cardBg": "#ffffff",
-    "headingColor": "#ffffff",
-    "titleColor": "#050505",
-    "heading": {
-      "text": "Explore Our Services",
-      "color": "#1e0c05",
-      "className": ""
-    },
-    "bg": "#30652c",
-    "styling": {
-      "className": "",
-      "titleColor": "#1e0c05",
-      "cardBg": "#ffffff",
-      "priceColor": "#F28222",
-      "cardBorder": "#ece5de",
-      "iconColor": "#F28222"
-    }
-  },
-  "process": {
-    "descColor": "#625b5b",
-    "steps": [
-      {
-        "titleColor": "#1e0c05",
-        "descColor": "#625b5b",
-        "id": "01",
-        "description": "Bringing your furry friend in for a pampering session has never been easier! Book an appointment today.",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785604722/g6uqyya67l5nqahgklqd.jpg",
-        "title": "Book your appointment"
-      },
-      {
-        "titleColor": "#1e0c05",
-        "description": "Drop by our clinic on Speers Road. We assess each pet for comfort & safety with calm, low-stress handling.",
-        "id": "02",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785604726/wzc6pzomqbehmj51lawv.jpg",
-        "title": "Drop off your pet",
-        "descColor": "#625b5b"
-      },
-      {
-        "titleColor": "#1e0c05",
-        "title": "Pick up a happy pet",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785604980/ft6014zzti9sxqo46w6r.jpg",
-        "description": "Grab your freshly groomed pet and your complimentary polaroid photo souvenir to remember their spa day!",
-        "id": "03",
-        "descColor": "#625b5b"
-      }
-    ],
-    "heading": {
-      "color": "#1e0c05",
-      "text": "Book An Appointment",
-      "className": ""
-    },
-    "headingColor": "#1e0c05",
-    "lineColor": "#30652c",
-    "bg": "#ffffff",
-    "section": {
-      "className": "",
-      "bg": "#ffffff"
-    },
-    "description": {
-      "text": "Let our expert groomers treat your dog to a tail-wagging good time. Our process ensures a smooth and safe experience.",
-      "color": "#625b5b",
-      "className": ""
-    },
-    "styling": {
-      "lineColor": "#F28222",
-      "className": ""
-    }
-  },
-  "imageSlider": {
-    "heading": {
-      "className": "",
-      "text": "Our Happy Clients",
-      "color": "#1e0c05"
-    },
-    "section": {
-      "className": "",
-      "bg": "#ffffff"
-    },
-    "description": {
-      "className": "",
-      "text": "Check out a few of the adorable pups and kitties who visited our salon.",
-      "color": "#625b5b"
-    },
-    "items": [
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1788027186/c8n5sfz4u2asddbbejrg.avif",
-        "className": "",
-        "alt": "Happy Pet"
-      },
-      {
-        "alt": "Happy Pet",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1788027212/kx4c7cnuxld7emluwfob.webp",
-        "className": ""
-      },
-      {
-        "alt": "Happy Pet",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1788027191/imt17gtgwvdpoajyosfh.avif",
-        "className": ""
-      },
-      {
-        "alt": "Happy Pet",
-        "className": "",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1788027197/dlxmrnafgbx1gdjqmbim.avif"
-      },
-      {
-        "alt": "New Image",
-        "className": "",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1788027232/rdxo3hxixyap21jx5uun.avif"
-      },
-      {
-        "alt": "New Image",
-        "className": "",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1788027237/dl6n7pxtoavzje27mfz9.avif"
-      }
-    ]
-  },
-  "statsBanner": {
-    "section": {
-      "bg": "#000000",
-      "className": ""
-    },
-    "headingColor": "#fdfdfd",
-    "rating": {
-      "score": "5.0",
-      "className": "",
-      "labelColor": "#fffaf8",
-      "max": "/5",
-      "starColor": "#FBF022",
-      "stars": 5,
-      "label": "Highly Rated Service",
-      "scoreColor": "#fdfdfd"
-    },
-    "heading": {
-      "color": "#fdfdfd",
-      "text": "As Featured In Total Grooming Magazine UK, Toronto Star, & Grand River Booster Magazine!",
-      "className": ""
-    },
-    "bg": "#5e3819",
-    "experience": {
-      "subtitle": "Expert Care & Safety",
-      "title": "Experienced Pet Groomers",
-      "subColor": "#fffaf8",
-      "className": "",
-      "iconColor": "#FBF022",
-      "titleColor": "#fdfdfd"
-    }
-  },
-  "contact": {
-    "headingColor": "#1e0c05",
-    "button": {
-      "text": "#ffffff",
-      "bg": "#F28222",
-      "label": "Send Message"
-    },
-    "description": "Have questions or ready to book? Send us a message below!",
-    "bg": "#fffaf8",
-    "heading": "Contact Us",
-    "descColor": "#625b5b"
+  "theme": {
+    "primaryColor": "#8a7859"
   },
   "reviews": {
     "description": {
-      "text": "Our work speaks for itself, but the words of our amazing community in Elora truly capture our dedication and love for animals.",
-      "color": "#625b5b",
+      "text": "When you welcome one of our puppies into your home, you’re not just adopting a dog — you’re gaining a loyal friend and cherished family member.",
+      "color": "#4a423f",
       "className": ""
     },
-    "heading": {
-      "text": "The reviews say it all",
-      "color": "#1e0c05",
-      "className": ""
-    },
-    "descColor": "#625b5b",
-    "bg": "#ffffff",
     "section": {
       "className": "",
-      "bg": "#ffffff"
+      "bg": "#f9f7f5"
     },
     "columns": {
-      "col1": [
-        {
-          "bg": "#ffffff",
-          "role": "Dog Owner",
-          "text": "“We have been bringing our dog, Dante, to this amazing groomer for almost two years now, and we couldn't be happier. He comes home looking so handsome every single time!”",
-          "name": "Erika Tollett",
-          "starColor": "#F28222",
-          "avatar": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785605356/n2s6vt12c3lqgwv673nk.png",
-          "type": "review",
-          "textColor": "#F28222",
-          "titleColor": "#F28222"
-        },
-        {
-          "starColor": "#ffffff",
-          "score": "4.96",
-          "bg": "#F28222",
-          "scale": "/5",
-          "textColor": "#ffffff",
-          "type": "stat-numeric",
-          "subtext": "5-Star Reviews",
-          "scoreColor": "#ffffff"
-        }
-      ],
       "col3": [
         {
-          "subtext": "Happy Pets Pampered",
-          "heading": "1000+",
-          "bg": "#1e0c05",
-          "iconColor": "#ffffff",
-          "image": "https://res.cloudinary.com/doscyny4j/image/upload/gos_q5rxld.avif",
           "type": "stat-image",
-          "textColor": "#ffffff"
+          "heading": "1 Year",
+          "iconColor": "#ffffff",
+          "textColor": "#ffffff",
+          "image": "https://res.cloudinary.com/doscyny4j/image/upload/gos_q5rxld.avif",
+          "bg": "#0c0a0d",
+          "subtext": "Comprehensive Health Guarantee"
         },
         {
-          "role": "Dog Owner",
-          "titleColor": "#ffffff",
-          "starColor": "#ffffff",
-          "bg": "#F28222",
-          "textColor": "#ffffff",
-          "avatar": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785605414/wy28rbgppl2530mcidrc.png",
-          "text": "“Recently moved to the area with our two dogs... I was so pleased with how their grooms turned out. The little Polaroids were the sweetest added touch.”",
-          "name": "Local Client",
-          "type": "review"
+          "type": "review",
+          "name": "Karen Lewis",
+          "avatar": "https://res.cloudinary.com/doscyny4j/image/upload/p3_sp2hha.avif",
+          "bg": "#ffffff",
+          "role": "Doodle Owner",
+          "textColor": "#4a423f",
+          "starColor": "#8a7859",
+          "text": "“Bella is more than just a dog to us, she is a big part of our family. We feel very blessed to have her in our lives. She is a constant companion and a source of joy.”",
+          "titleColor": "#0c0a0d"
         }
       ],
       "col2": [
         {
-          "name": "Jessica Adams",
-          "avatar": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785605406/qzcfkzlc8z7jxxgxjtpo.png",
-          "titleColor": "#F28222",
-          "starColor": "#F28222",
-          "textColor": "#F28222",
           "bg": "#ffffff",
+          "titleColor": "#0c0a0d",
+          "text": "“My mom says she is the best dressed dog she has ever seen. Bella loves treats and belly rubs... We are truly blessed to have her.”",
+          "avatar": "https://res.cloudinary.com/doscyny4j/image/upload/p2_dx0rmx.avif",
+          "role": "Doodle Owner",
+          "name": "Karen Lewis",
           "type": "review",
-          "role": "Golden Retriever Owner",
-          "text": "“They did such a great job with my 80 lb golden retriever. An excellent groom. And they were communicative, on time, friendly, professional. I’m definitely going back and highly recommend!”"
+          "starColor": "#8a7859",
+          "textColor": "#4a423f"
+        }
+      ],
+      "col1": [
+        {
+          "titleColor": "#0c0a0d",
+          "avatar": "https://res.cloudinary.com/doscyny4j/image/upload/p1_wroqky.avif",
+          "bg": "#ffffff",
+          "starColor": "#8a7859",
+          "textColor": "#4a423f",
+          "text": "“When I got Bella from Bev’s mini Doodles she was the most adorable thing I had ever seen. She was also quite the diva. My entire family fell in love with her.”",
+          "name": "Karen Lewis",
+          "type": "review",
+          "role": "Doodle Owner"
+        },
+        {
+          "subtext": "Embark Health Tested",
+          "scale": "%",
+          "scoreColor": "#0c0a0d",
+          "starColor": "#0c0a0d",
+          "textColor": "#0c0a0d",
+          "bg": "#d6cabc",
+          "score": "100",
+          "type": "stat-numeric"
         }
       ]
     },
-    "headingColor": "#1e0c05"
+    "heading": {
+      "className": "",
+      "color": "#0c0a0d",
+      "text": "Loved by our families"
+    }
   },
   "navbar": {
-    "cta": {
-      "text": "#ffffff",
-      "label": "Book Now",
-      "className": "",
-      "href": "https://book.collar.pet/brands/pet-town-grooming/book/",
-      "bg": "#F28222"
+    "styling": {
+      "linkColor": "#4a423f",
+      "linkHoverColor": "#0c0a0d"
     },
-    "linkColor": "#3b3b3b",
-    "logo": {
-      "status": "approved",
+    "cta": {
+      "href": "#apply",
+      "text": "#ffffff",
+      "label": "Apply Now",
       "className": "",
-      "src": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785601886/rcgeet9vlla0phdd2oqk.webp",
-      "alt": "Pet Town Grooming Logo"
+      "bg": "#8a7859"
+    },
+    "section": {
+      "bg": "#ffffff",
+      "className": ""
     },
     "links": [
       {
-        "icon": "Home",
+        "className": "",
+        "href": "/",
         "label": "Home",
-        "href": "/"
+        "icon": "Home"
       },
       {
-        "label": "About",
-        "href": "/about",
-        "icon": "Briefcase"
+        "icon": "about",
+        "label": "About Us",
+        "className": "",
+        "href": "/about"
       },
       {
-        "href": "/services",
-        "icon": "Reviews",
-        "label": "Services"
+        "icon": "Dog",
+        "className": "",
+        "label": "Services",
+        "href": "/services"
       },
       {
-        "label": "Contact",
+        "className": "",
         "href": "/contact",
-        "icon": "Dog"
+        "label": "Contact",
+        "icon": "MessageSquare"
       }
     ],
-    "linkHoverColor": "#000000",
-    "styling": {
-      "linkColor": "#625b5b",
-      "linkHoverColor": "#1e0c05"
+    "logo": {
+      "alt": "Bev's Mini Doodles Logo",
+      "className": "",
+      "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1794298231/nexpetcare_uploads/kjejivjvnzpduzragyho.avif"
+    }
+  },
+  "hero": {
+    "socialProof": {
+      "stars": 5,
+      "starColor": "#ffea00",
+      "textColor": "#0c0a0d",
+      "className": "",
+      "text": "Raised with Love. Matched with Care."
     },
-    "bg": "#ffffff",
+    "section": {
+      "bg": "#d6cabc",
+      "className": "items-start pt-10 sm:pt-0"
+    },
+    "cta": {
+      "label": "Apply to our Waitlist",
+      "className": "",
+      "href": "#apply",
+      "text": "#ffffff",
+      "bg": "#8a7859"
+    },
+    "image": {
+      "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1794298131/nexpetcare_uploads/ruyaxegaa0s09tvme1h2.avif",
+      "className": ""
+    },
+    "heading": {
+      "text": "From one loving home to another",
+      "color": "#0c0a0d",
+      "className": ""
+    },
+    "description": {
+      "className": "",
+      "color": "#0c0a0d",
+      "text": "We are a small family-based breeding program in Aldershot, Ontario, dedicated to raising happy, healthy, and DNA-tested Micro & Mini Goldendoodles."
+    }
+  },
+  "imageSlider": {
+    "heading": {
+      "text": "Photo & Video Gallery",
+      "color": "#0c0a0d",
+      "className": ""
+    },
+    "section": {
+      "bg": "#f9f7f5",
+      "className": ""
+    },
+    "items": [
+      {
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299101/nexpetcare_uploads/p2jrhxhxgapebu5n9aeb.avif",
+        "className": "",
+        "alt": "Happy Doodle 1"
+      },
+      {
+        "alt": "Happy Doodle 2",
+        "className": "",
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299105/nexpetcare_uploads/badakkh549sfrv4ykyjy.avif"
+      },
+      {
+        "className": "",
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299140/nexpetcare_uploads/mvhcrluxuyfm5b3pt98v.avif",
+        "alt": "Happy Doodle 3"
+      },
+      {
+        "className": "",
+        "alt": "Happy Doodle 4",
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299146/nexpetcare_uploads/foyjgnckrldfe6qayfpz.avif"
+      },
+      {
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299166/nexpetcare_uploads/vtukse0sjyi4po3htik5.avif",
+        "className": "",
+        "alt": "Happy Doodle 5"
+      }
+    ],
+    "description": {
+      "className": "",
+      "color": "#4a423f",
+      "text": "Take a look at some of the beautiful Micro and Mini Goldendoodles from our previous litters."
+    }
+  },
+  "comparison": {
+    "vsBadge": {
+      "className": "",
+      "bg": "#8a7859",
+      "text": "#ffffff"
+    },
+    "rightColumn": {
+      "className": "",
+      "iconColor": "#ffffff",
+      "textColor": "#ffffff",
+      "offers": [
+        "Raised right inside our loving home",
+        "Strictly quality over quantity",
+        "Embark DNA & genetically health tested",
+        "Daily handling & early socialization",
+        "Parents live their best lives alongside us",
+        "1-Year health guarantee included"
+      ],
+      "bg": "#8a7859"
+    },
     "section": {
       "className": "",
       "bg": "#ffffff"
+    },
+    "leftColumn": {
+      "iconColor": "#4a423f",
+      "textColor": "#4a423f",
+      "offers": [
+        "Kennel-raised environments",
+        "Quantity over quality",
+        "Untested genetic backgrounds",
+        "No early socialization",
+        "Unknown parental temperaments",
+        "No health guarantees"
+      ],
+      "bg": "#f9f7f5",
+      "className": ""
+    },
+    "description": {
+      "text": "Every puppy is raised with love, care, and purpose. We prioritize excellent temperament, strong genetics, and overall health to ensure every puppy thrives.",
+      "className": "",
+      "color": "#4a423f"
+    },
+    "heading": {
+      "color": "#0c0a0d",
+      "className": "",
+      "text": "Why choose Bev’s Mini Doodles"
     }
   },
-  "theme": {
-    "primaryColor": "#F28222"
-  },
-  "hero": {
+  "ctaSection": {
+    "cta": {
+      "bg": "#8a7859",
+      "href": "#apply",
+      "text": "#ffffff",
+      "label": "Join Waitlist",
+      "className": ""
+    },
     "image": {
-      "className": "",
-      "src": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1788007755/pq4jys7fquvoqbt418xr.avif"
+      "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1794306723/nexpetcare_uploads/oyrfjxkfearc6iwxrtoz.avif",
+      "className": ""
     },
-    "headingColor": "#1e0c05",
-    "heading": {
-      "className": "",
-      "text": "Welcome To Your Pet’s Happy Place",
-      "color": "#000000"
-    },
-    "socialProof": {
-      "text": "Voted Elora's Top Pet Groomer",
-      "textColor": "#000000",
-      "className": "",
-      "stars": 5,
-      "starColor": "#FBF022"
-    },
-    "announcements": "Formally Meg Paw Spa",
-    "descColor": "#1e0c05",
-    "announcement": {
-      "className": "",
-      "textColor": "#ffffff",
-      "bg": "#F28222",
-      "text": "FORMALLY MEG'S PAW SPA"
-    },
-    "bg": "#fffaf8",
     "description": {
-      "text": "One-on-One grooming.\nWe're passionate about making your furry companions look & feel their best, with a touch of care in every snip & style.",
+      "text": "We would love to learn more about you and help you find the perfect addition to your family.",
       "className": "",
-      "color": "#000000"
+      "color": "#4a423f"
+    },
+    "section": {
+      "bg": "#ffffff",
+      "className": ""
+    },
+    "heading": {
+      "text": "Ready to join the Bev’s Mini Doodles family?",
+      "className": "",
+      "color": "#0c0a0d"
+    }
+  },
+  "faq": {
+    "description": {
+      "text": "Common questions about our Goldendoodle program, waitlist, and puppies.",
+      "color": "#4a423f",
+      "className": ""
+    },
+    "heading": {
+      "text": "Frequently Asked Questions",
+      "className": "",
+      "color": "#0c0a0d"
+    },
+    "styling": {
+      "dividerColor": "#d6cabc",
+      "iconColor": "#8a7859",
+      "className": "",
+      "answerColor": "#4a423f",
+      "questionColor": "#0c0a0d"
     },
     "section": {
       "className": "",
-      "bg": "#fffaf8"
+      "bg": "#f9f7f5"
     },
-    "cta": {
-      "label": "Book Now",
-      "href": "https://book.collar.pet/brands/pet-town-grooming/book/",
+    "items": [
+      {
+        "question": "How big will my Goldendoodle get?",
+        "answer": "All of our puppies are Micro & Miniature Goldendoodles and should be 10-25 lbs when fully grown.",
+        "className": ""
+      },
+      {
+        "className": "",
+        "question": "Are your parent dogs health tested?",
+        "answer": "Yes, absolutely. All of our parent dogs, including Maggie and Casi, are Embark DNA and genetically health tested to ensure the best possible start for each puppy."
+      },
+      {
+        "question": "How much are your puppies and what is the deposit?",
+        "answer": "Our puppies are generally around $3,500. There is a $500 non-refundable deposit which secures your place on the waitlist and is applied towards the final purchase price.",
+        "className": ""
+      }
+    ]
+  },
+  "gallery": {
+    "section": {
       "className": "",
-      "bg": "#F28222",
-      "text": "#ffffff"
+      "bg": "#ffffff"
+    },
+    "items": [
+      {
+        "before": "https://res.cloudinary.com/doscyny4j/image/upload/v1794301317/nexpetcare_uploads/komt8svec8pmdxydrw4u.avif",
+        "id": 1,
+        "alt": "Maggie - From Puppy to Adult",
+        "className": "",
+        "after": "https://res.cloudinary.com/doscyny4j/image/upload/v1794301338/nexpetcare_uploads/b2rdat8h6xzkc12jynch.avif"
+      },
+      {
+        "id": 2,
+        "className": "",
+        "after": "https://res.cloudinary.com/doscyny4j/image/upload/v1794301331/nexpetcare_uploads/s2k0qlzofrhrtf3jqqjv.avif",
+        "before": "https://res.cloudinary.com/doscyny4j/image/upload/v1794301329/nexpetcare_uploads/b1mphzdiwhup4vmpbg0u.avif",
+        "alt": "Casi - From Puppy to Adult"
+      },
+      {
+        "id": 3,
+        "after": "https://res.cloudinary.com/doscyny4j/image/upload/v1794301349/nexpetcare_uploads/etbce4asce18wqwcrvfx.avif",
+        "className": "",
+        "alt": "Watch our puppies grow!",
+        "before": "https://res.cloudinary.com/doscyny4j/image/upload/v1794301351/nexpetcare_uploads/pv6euyczvomdsfcjjkxm.avif"
+      }
+    ],
+    "styling": {
+      "cardBg": "#f9f7f5",
+      "badgeBg": "#d6cabc",
+      "arrowColor": "#8a7859",
+      "titleColor": "#0c0a0d",
+      "className": "",
+      "badgeText": "#0c0a0d"
+    },
+    "heading": {
+      "text": "From `Newborn` to `Go-Home` Day",
+      "color": "#0c0a0d",
+      "className": ""
+    },
+    "description": {
+      "text": "Drag the slider to see how fast our puppies grow! See the transformation from tiny newborns to fluffy 8-week-old companions ready for their forever homes.",
+      "className": "",
+      "color": "#4a423f"
+    }
+  },
+  "statsBanner": {
+    "section": {
+      "className": "",
+      "bg": "#0c0a0d"
+    },
+    "rating": {
+      "className": "",
+      "starColor": "#ffffff",
+      "stars": 5,
+      "label": "Comprehensive Health Guarantee",
+      "labelColor": "#ffffff",
+      "score": "1",
+      "max": " YR",
+      "scoreColor": "#ffffff"
+    },
+    "experience": {
+      "iconColor": "#ffffff",
+      "className": "",
+      "title": "Embark Health Tested",
+      "titleColor": "#ffffff",
+      "subtitle": "Genetically Sound Parents",
+      "subColor": "#ffffff"
+    },
+    "heading": {
+      "color": "#ffffff",
+      "className": "",
+      "text": "We strive for excellent temperament, healthy puppies, and genetic soundness."
+    }
+  },
+  "contactSection": {
+    "heading": {
+      "color": "#0c0a0d",
+      "className": "",
+      "text": "Apply to our Waitlist"
+    },
+    "description": {
+      "className": "",
+      "text": "Tell us about yourself, your home environment, and your puppy preferences to join our waitlist.",
+      "color": "#4a423f"
+    },
+    "section": {
+      "bg": "#ffffff",
+      "className": ""
+    },
+    "button": {
+      "className": "",
+      "bg": "#8a7859",
+      "text": "#ffffff",
+      "label": "Submit Application"
     }
   }
 }
