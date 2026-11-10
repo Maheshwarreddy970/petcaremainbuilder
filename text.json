@@ -1,497 +1,115 @@
 {
   "imageSlider": {
-    "items": [
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180115/nexpetcare_uploads/dbantt0c1yv9x0er5vwg.avif",
-        "alt": "New Image",
-        "className": ""
-      },
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180125/nexpetcare_uploads/n5qpxdyun44fcrvwxddv.avif",
-        "className": "",
-        "alt": "New Image"
-      },
-      {
-        "className": "",
-        "alt": "New Image",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180159/nexpetcare_uploads/fbwyhfisugoefz5dzkwa.avif"
-      },
-      {
-        "alt": "New Image",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180169/nexpetcare_uploads/ii39xzszn7jwm3owqwfo.avif",
-        "className": ""
-      },
-      {
-        "alt": "New Image",
-        "className": "",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180173/nexpetcare_uploads/ulhudkvjuemf9t62tc8i.avif"
-      },
-      {
-        "alt": "New Image",
-        "className": "",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180277/nexpetcare_uploads/jcdovlwyqd82qx4r4mko.avif"
-      },
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180282/nexpetcare_uploads/tdyp7pusv9pkyz3xqjag.avif",
-        "className": "",
-        "alt": "New Image"
-      },
-      {
-        "alt": "New Image",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180288/nexpetcare_uploads/qrfrijymzajwy5trzhnh.avif",
-        "className": ""
-      },
-      {
-        "className": "",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180294/nexpetcare_uploads/ddcr1oaji6ikdzolwb3z.avif",
-        "alt": "New Image"
-      },
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180738/nexpetcare_uploads/b4zgjoyxnglfoda0vz35.avif",
-        "className": "",
-        "alt": "New Image"
-      },
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180743/nexpetcare_uploads/fgwhmfdm8tufrx4lgszc.avif",
-        "className": "",
-        "alt": "New Image"
-      },
-      {
-        "alt": "New Image",
-        "className": "",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180747/nexpetcare_uploads/yarhdmjwvkkd5sui0ahz.avif"
-      },
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180781/nexpetcare_uploads/qh45rzcvqlkudnlkoaew.avif",
-        "alt": "New Image",
-        "className": ""
-      },
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180786/nexpetcare_uploads/hje06onhzj4dteao6gbg.avif",
-        "alt": "New Image",
-        "className": ""
-      },
-      {
-        "alt": "New Image",
-        "className": "",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180802/nexpetcare_uploads/q2d6igc57ixf2oy3uwad.avif"
-      },
-      {
-        "alt": "New Image",
-        "className": "",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180882/nexpetcare_uploads/c05zc1dq31yjz7grasre.avif"
-      },
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180816/nexpetcare_uploads/xn9zfw4gcmu4f97ebhk6.avif",
-        "className": "",
-        "alt": "New Image"
-      },
-      {
-        "className": "",
-        "alt": "New Image",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180821/nexpetcare_uploads/viuwu0tomavrzjabyhdh.avif"
-      },
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180826/nexpetcare_uploads/xm3bpj5wzrdozl7pjzjp.avif",
-        "className": "",
-        "alt": "New Image"
-      },
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180830/nexpetcare_uploads/mcukxrv14geab3wgant4.avif",
-        "className": "",
-        "alt": "New Image"
-      },
-      {
-        "alt": "New Image",
-        "className": "",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180840/nexpetcare_uploads/khw3ywg8wosazh20qqho.avif"
-      },
-      {
-        "className": "",
-        "alt": "New Image",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180845/nexpetcare_uploads/govjjb79aca2hmspnkwx.avif"
-      },
-      {
-        "className": "",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180850/nexpetcare_uploads/xnln1ip8gt5pwnr8isns.avif",
-        "alt": "New Image"
-      },
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180855/nexpetcare_uploads/xxrgorm56j1iwdhr5npa.avif",
-        "className": "",
-        "alt": "New Image"
-      },
-      {
-        "alt": "New Image",
-        "className": "",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180864/nexpetcare_uploads/rlfac7pleuqhoossllsp.avif"
-      },
-      {
-        "alt": "New Image",
-        "className": "",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180892/nexpetcare_uploads/ehx13jeb2eimdeafvxjm.avif"
-      },
-      {
-        "alt": "New Image",
-        "className": "",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180898/nexpetcare_uploads/hobzq7yhmhznhezapu5t.avif"
-      },
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180907/nexpetcare_uploads/xj3aoxzi0qusvq2vlef6.avif",
-        "alt": "New Image",
-        "className": ""
-      },
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180912/nexpetcare_uploads/wtevccguboq5cpf0iuor.avif",
-        "alt": "New Image",
-        "className": ""
-      },
-      {
-        "alt": "New Image",
-        "className": "",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180917/nexpetcare_uploads/mpjwodnknqwin6rkl0jz.avif"
-      },
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180928/nexpetcare_uploads/qjesb5rzba2evxbt0wue.avif",
-        "alt": "New Image",
-        "className": ""
-      },
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180932/nexpetcare_uploads/khalfn7cnctw0kbdsvqg.avif",
-        "alt": "New Image",
-        "className": ""
-      },
-      {
-        "alt": "New Image",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180937/nexpetcare_uploads/fz0gwomzzfo4639ezxmw.avif",
-        "className": ""
-      },
-      {
-        "className": "",
-        "alt": "New Image",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180950/nexpetcare_uploads/i1nrulseo5j3pm9svzy5.avif"
-      },
-      {
-        "className": "",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180955/nexpetcare_uploads/fwcheootdtyxfg6dbfb0.avif",
-        "alt": "New Image"
-      },
-      {
-        "className": "",
-        "alt": "New Image",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1788180964/nexpetcare_uploads/zo1wji9yjbs5wsfvtkqu.avif"
-      }
-    ],
+    "heading": {
+      "color": "#0c0a0d",
+      "text": "Photo & Video Gallery",
+      "className": ""
+    },
     "section": {
       "className": "",
-      "bg": "#ffffff"
-    },
-    "heading": {
-      "color": "#1e0c05",
-      "className": "",
-      "text": "Happy Client Smiles"
-    },
-    "description": {
-      "className": "",
-      "text": "Check out many of the pups and kitties who visited our boutique.",
-      "color": "#625b5b"
-    }
-  },
-  "about": {
-    "headingColor": "#000000",
-    "featureColor": "#000000",
-    "features": [
-      "Specializing in highly anxious, rescue, and senior pets",
-      "A distraction-free, quiet, and hygienic environment",
-      "We never rush—we work completely at your pet's pace"
-    ],
-    "featuresList": {
-      "featureIconColor": "#994500",
-      "features": [
-        "Quality over speed with no shortcuts",
-        "Dedicated, one-on-one focus",
-        "A calm environment you can trust"
-      ],
-      "className": "",
-      "featureColor": "#000000"
-    },
-    "section": {
-      "bg": "#ffffff",
-      "className": ""
-    },
-    "featureIconColor": "#30652c",
-    "heading": {
-      "text": "Trust and Comfort",
-      "color": "#000000",
-      "className": ""
-    },
-    "descColor": "#000000",
-    "description": {
-      "className": "whitespace-pre-line text-justify",
-      "text": "We understand that every dog is different. We work with dogs who may be nervous, anxious, visually impaired, living with diabetes, seniors, or those with other health issues. \n\nOne of the questions we hear most often is, “How do you keep my dog still?” The answer is simple: we don’t force them to stay in one position.\n\nWe work with each pet in the position where they feel most comfortable. If they want to stand, we stand. If they prefer to sit, we sit. If they feel more comfortable on the floor or on their favourite mat, we move with them. We also have a large, comfortable dog bed and a soft, welcoming tabletop, giving us different options to create a relaxed experience. \n\nFor our feline friends, we use a soft, 100% cotton towel to gently swaddle them, keeping their front paws safely tucked in while allowing them to remain comfortable and secure throughout their teeth cleaning.",
-      "color": "#000000"
-    },
-    "image": {
-      "src": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1786206018/prze0z6jc0m4g0ssgu8v.avif",
-      "className": "scale-105 rounded-[30px]"
-    },
-    "cta": {
-      "className": "hidden",
-      "bg": "#994500",
-      "href": "#services",
-      "label": "About Our Boutique",
-      "text": "#ffffff"
-    },
-    "bg": "#ffffff"
-  },
-  "hero": {
-  "mobileImage": {
-    "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1789150645/nexpetcare_uploads/q6ixd7ygp0hi3azkqons.avif"
-  },
-  "bg": "#fffaf8",
-  "description": {
-    "className": "",
-    "text": "We take dogs and cats of all ages, sizes and temperaments... even the SASSY ones! We respect your pet's comfort level, ensuring a calm, unhurried experience.<style>@media (max-width:767px){#home{height:100svh}#home>div{align-self:stretch;display:flex;flex-direction:column}#home>div>div{flex:1;padding-bottom:24px}#home>div>div>div:nth-child(2){margin-top:auto}}</style>",
-    "color": "#1e0c05"
-  },
-  "image": {
-    "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1789147081/nexpetcare_uploads/m7jt59wkb2vovqaljpft.avif",
-    "className": ""
-  },
-  "socialProof": {
-    "href": "https://www.google.com/search?q=The+Dog+%26+Cat+Teeth+Cleaning+Boutique+Burlington#lrd=0x882c9d2e4ba51f55:0xbd60a117790075ab,3",
-    "starColor": "#ffd500",
-    "text": "Over 1000 Clean Smiles Delivered",
-    "stars": 5,
-    "textColor": "#1e0c05",
-    "className": ""
-  },
-  "cta": {
-    "href": "https://book.squareup.com/appointments/fg2nrjc0q38yap/location/LJBMGZQAQ6J5B/services",
-    "bg": "#a35c38",
-    "label": "Book Online",
-    "text": "#ffffff",
-    "className": ""
-  },
-  "heading": {
-    "color": "#000000",
-    "className": "text-4xl md:text-7xl font-normal",
-    "text": "Natural, Effective Teeth Cleaning for Pets"
-  },
-  "headingColor": "#1e0c05",
-  "ctaSecondary": {
-    "href": "#contact",
-    "label": "Questions?",
-    "borderColor": "#a35c38",
-    "text": "#ffffff",
-    "bg": "#68844d",
-    "className": ""
-  },
-  "section": {
-    "bg": "#fffaf8",
-    "className": "items-start pt-10 sm:pt-0"
-  },
-  "descColor": "#1e0c05"
-},
-  "contactSection": {
-    "section": {
-      "bg": "#ffffff",
-      "className": ""
-    },
-    "button": {
-      "bg": "#994500",
-      "text": "#ffffff",
-      "label": "Send Message",
-      "className": ""
-    },
-    "heading": {
-      "color": "#1e0c05",
-      "className": "",
-      "text": "Get in Touch"
-    },
-    "description": {
-      "color": "#625b5b",
-      "text": "Have questions? Send us a message and we'll reply directly to your email.",
-      "className": ""
-    }
-  },
-  "faq": {
-    "styling": {
-      "answerColor": "#625b5b",
-      "iconColor": "#994500",
-      "dividerColor": "#ece5de",
-      "className": "",
-      "questionColor": "#1e0c05"
+      "bg": "#f9f7f5"
     },
     "items": [
       {
-        "answer": "No. Our ALL NATURAL teeth cleaning service is designed to complement your pet’s regular care, not replace it. We focus specifically on gently removing visible tartar and plaque buildup.",
+        "alt": "Happy Doodle 1",
         "className": "",
-        "question": "Is All Natural teeth cleaning a replacement for care provided by my veterinarian?"
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299101/nexpetcare_uploads/p2jrhxhxgapebu5n9aeb.avif"
       },
       {
-        "question": "What happens if my pet tries to bite during their appointment?",
-        "answer": "Your pet’s safety and our safety are both very important to us. We carefully observe your pet’s body language. If we feel that continuing would not be comfortable or appropriate for your pet, we will stop the cleaning.",
+        "className": "",
+        "alt": "Happy Doodle 2",
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299105/nexpetcare_uploads/badakkh549sfrv4ykyjy.avif"
+      },
+      {
+        "className": "",
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299140/nexpetcare_uploads/mvhcrluxuyfm5b3pt98v.avif",
+        "alt": "Happy Doodle 3"
+      },
+      {
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299146/nexpetcare_uploads/foyjgnckrldfe6qayfpz.avif",
+        "alt": "Happy Doodle 4",
         "className": ""
       },
       {
         "className": "",
-        "question": "Is there a lower price for more frequent maintenance visits?",
-        "answer": "Yes. For pets who benefit from more frequent maintenance cleans, we offer a lower rate for visits scheduled less than six months apart."
-      },
-      {
-        "answer": "No. Our pricing is based on the type and frequency of the visit, not the size of your pet. A tiny dog can be just as wiggly as a large dog!",
-        "question": "Does the size of my pet affect the price?",
-        "className": ""
-      },
-      {
-        "answer": "Payment is made after your pet’s cleaning is complete. We also offer our No-Charge Guarantee — if we are unable to clean your pet’s teeth, there is no charge for the visit.",
-        "className": "",
-        "question": "Do I pay before or after the cleaning?"
-      },
-      {
-        "question": "Can I stay with my pet during the cleaning?",
-        "className": "",
-        "answer": "We generally prefer to work with your pet one-on-one. Many pets settle more easily without the distraction of their owner nearby. However, if having you nearby would help, we will contact you."
-      },
-      {
-        "question": "How do you work with nervous or anxious pets?",
-        "className": "",
-        "answer": "We have experience working with nervous pets, seniors and rescue animals. We take things slowly, introduce our tools gradually, and allow them time to settle in. There is never a need to rush."
+        "alt": "Happy Doodle 5",
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299166/nexpetcare_uploads/vtukse0sjyi4po3htik5.avif"
       }
     ],
-    "section": {
-      "bg": "#faf3ec",
-      "className": ""
-    },
-    "heading": {
-      "text": "Frequently Asked Questions",
-      "className": "",
-      "color": "#1e0c05"
-    },
     "description": {
       "className": "",
-      "color": "#625b5b",
-      "text": "Everything you need to know about our natural teeth cleaning process."
+      "color": "#4a423f",
+      "text": "Take a look at some of the beautiful Micro and Mini Goldendoodles from our previous litters."
     }
   },
   "statsBanner": {
-    "bg": "#5e3819",
-    "rating": {
-      "labelColor": "#fffaf8",
-      "scoreColor": "#fdfdfd",
-      "href": "https://www.google.com/search?q=The+Dog+%26+Cat+Teeth+Cleaning+Boutique+Burlington#lrd=0x882c9d2e4ba51f55:0xbd60a117790075ab,3",
-      "label": "5-Star 1000+ smiles",
-      "max": "/5",
-      "starColor": "#ffee00",
-      "score": "5.0",
-      "stars": 5,
-      "className": "cursor-pointer hover:opacity-80 transition-opacity"
-    },
-    "headingColor": "#fdfdfd",
-    "section": {
-      "className": "",
-      "bg": "#5e3819"
-    },
-    "heading": {
-      "text": "Trusted by Pet Owners in Burlington, Oakville, Hamilton, and the Niagara Region for all-natural care.",
-      "color": "#fdfdfd",
+    "experience": {
+      "title": "Embark Health Tested",
+      "iconColor": "#8a7859",
+      "subColor": "#d6cabc",
+      "titleColor": "#f9f7f5",
+      "subtitle": "Genetically Sound Parents",
       "className": ""
     },
-    "experience": {
-      "className": "hidden",
-      "iconColor": "#ffffff",
-      "subtitle": "Stress-free: We can come to you!",
-      "subColor": "#fffaf8",
-      "titleColor": "#fdfdfd",
-      "title": "In-Home Service Available"
+    "rating": {
+      "stars": 1,
+      "className": "",
+      "starColor": "#8a7859",
+      "label": "Comprehensive Health Guarantee",
+      "scoreColor": "#ffffff",
+      "labelColor": "#d6cabc",
+      "max": " YR",
+      "score": "1"
+    },
+    "heading": {
+      "className": "",
+      "color": "#ffffff",
+      "text": "We strive for excellent temperament, healthy puppies, and genetic soundness."
+    },
+    "section": {
+      "className": "",
+      "bg": "#0c0a0d"
     }
   },
-  "theme": {
-    "primaryColor": "#752500"
-  },
-  "founder": {
-    "description": {
-      "className": "",
-      "color": "#625b5b",
-      "text": "I started The Dog & Cat Teeth Cleaning Boutique with a simple goal: to create a calm, comfortable experience for pets and their families. We believe in patience, gentle handling, and individualized care, treating every pet with the kindness and attention they deserve.\n\nEvery animal is unique, and I've spent years learning how to read their body language to ensure they feel safe, secure, and completely unhurried. When you walk through our doors, you aren't just getting a service—you are getting a dedicated partner in your pet's health and happiness."
-    },
-    "section": {
-      "bg": "#ffffff",
+  "hero": {
+    "image": {
+      "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1794298131/nexpetcare_uploads/ruyaxegaa0s09tvme1h2.avif",
       "className": ""
     },
-    "subheading": {
+    "cta": {
+      "href": "#apply",
+      "text": "#ffffff",
+      "label": "Apply to our Waitlist",
       "className": "",
-      "text": "Owner",
-      "color": "#994500"
+      "bg": "#8a7859"
+    },
+    "socialProof": {
+      "className": "",
+      "text": "Raised with Love. Matched with Care.",
+      "starColor": "#8a7859",
+      "stars": 5,
+      "textColor": "#0c0a0d"
     },
     "heading": {
-      "text": "Meet Helen",
-      "color": "#1e0c05",
+      "text": "From one loving home to another",
+      "color": "#0c0a0d",
       "className": ""
     },
-    "images": [
-      {
-        "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1789047724/nexpetcare_uploads/hamnqeqi66bv8vrxs69w.avif",
-        "className": "",
-        "alt": "Helen with a dog"
-      },
-      {
-        "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1789047729/nexpetcare_uploads/nxz9ptax5jhsvwko7xmk.avif",
-        "alt": "Happy Cat",
-        "className": ""
-      },
-      {
-        "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1789047732/nexpetcare_uploads/qj0xmpghrvdcjflburgc.avif",
-        "className": "",
-        "alt": "Happy Dog"
-      },
-      {
-        "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1789047727/nexpetcare_uploads/s99r1hxrjvvuawiqvgo0.avif",
-        "className": "",
-        "alt": "Helen at the boutique"
-      }
-    ],
-    "signature": {
-      "color": "#1e0c05",
-      "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1789057620/nexpetcare_uploads/xm22adycekoazyomblck.avif",
+    "section": {
+      "className": "items-start pt-10 sm:pt-0",
+      "bg": "#d6cabc"
+    },
+    "description": {
       "className": "",
-      "text": "Helen"
-    },
-    "imageGrid": {
-      "className": ""
+      "color": "#0c0a0d",
+      "text": "We are a small family-based breeding program in Aldershot, Ontario, dedicated to raising happy, healthy, and DNA-tested Micro & Mini Goldendoodles."
     }
   },
   "services": {
-    "cardBg": "#ffffff",
-    "descColor": "#9e9e9e",
-    "guaranteeBadge": {
-      "alt": "No Charge Guarantee",
-      "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1789232612/nexpetcare_uploads/lgicqmf3vpdixdu96ipo.avif"
-    },
-    "priceColor": "#000000",
-    "cardBorder": "#000000",
-    "cta": {
-      "bg": "#994500",
-      "text": "#ffffff",
-      "className": "",
-      "href": "#contact",
-      "label": "Book An Appointment"
-    },
-    "titleColor": "#050505",
-    "iconColor": "#000000",
-    "styling": {
-      "cardBorder": "transparent",
-      "priceColor": "#000000",
-      "className": "shadow-sm hover:shadow-md border-transparent rounded-[24px]",
-      "iconColor": "#994500",
-      "cardBg": "#faf3ec",
-      "titleColor": "#050505"
-    },
-    "description": {
-      "color": "#625b5b",
-      "className": "",
-      "text": "Our family team treats pets with care, with gentle options designed to maintain a clean, healthy-looking smile."
+    "heading": {
+      "text": "What comes with your puppy",
+      "color": "#0c0a0d",
+      "className": ""
     },
     "section": {
       "className": "",
@@ -499,541 +117,547 @@
     },
     "items": [
       {
-        "href": "https://book.squareup.com/appointments/fg2nrjc0q38yap/location/LJBMGZQAQ6J5B/services",
-        "iconKey": "sparkles",
-        "title": "Full Service Teeth Clean",
-        "ctaLabel": "Book Now",
-        "priceLabel": "Dogs $229 / Cats $200 + GST",
+        "iconKey": "bone",
         "className": "",
-        "description": "Includes: Full Mouth Check, Before and After Photos (ready before you pay), Coconut Oil Paw Treatment, and a Teeth Cleaning Summary and Report Card.\n\nApprox 1.5 Hrs."
+        "priceLabel": "Included",
+        "href": "#contact",
+        "title": "1 Week of Food",
+        "description": "Your puppy goes home with a full week of familiar food to ensure their tummy stays settled.",
+        "ctaLabel": "Learn More"
       },
       {
-        "iconKey": "sparkles",
-        "description": "Includes: Full Mouth Check, Before and After Photos (ready before you pay), and a Teeth Cleaning Summary.\n\nApprox 1 Hr.",
-        "title": "Maintenance Clean",
+        "iconKey": "shield",
+        "ctaLabel": "Learn More",
+        "description": "Peace of mind right from the start with 4 weeks of comprehensive pet insurance.",
         "className": "",
-        "href": "https://book.squareup.com/appointments/fg2nrjc0q38yap/location/LJBMGZQAQ6J5B/services",
-        "ctaLabel": "Book Now",
-        "priceLabel": "$125 + GST"
+        "title": "4 Weeks Pet Insurance",
+        "priceLabel": "Included",
+        "href": "#contact"
       },
       {
-        "href": "https://book.squareup.com/appointments/fg2nrjc0q38yap/location/LJBMGZQAQ6J5B/services",
-        "iconKey": "sparkles",
-        "className": "",
-        "description": "For puppies under a year old. Includes a gentle, full teeth cleaning, a thorough look at your puppy’s mouth, and a friendly conversation about their teeth and what to expect as they grow. Starting early helps your puppy become comfortable.",
-        "ctaLabel": "Book Now",
-        "priceLabel": "Price Varies",
-        "title": "Puppy Visit"
-      },
-      {
-        "href": "https://book.squareup.com/appointments/fg2nrjc0q38yap/location/LJBMGZQAQ6J5B/services",
-        "iconKey": "sparkles",
-        "priceLabel": "$15 + GST",
-        "title": "Add-On: Nail Trimming",
-        "description": "A quick, stress-free nail trim added to your pet's teeth cleaning appointment.",
-        "className": "",
-        "ctaLabel": "Book Now"
-      },
-      {
-        "href": "https://book.squareup.com/appointments/fg2nrjc0q38yap/location/LJBMGZQAQ6J5B/services",
-        "description": "Perfect for senior pets, anxious travelers, or if you don't drive. We bring our full, calm, natural teeth cleaning service directly to your living room. (Highly requested in the Niagara region!)",
-        "className": "",
-        "ctaLabel": "Book Now",
-        "iconKey": "sparkles",
-        "priceLabel": "Contact for Details",
-        "title": "In-Home Visits"
-      }
-    ],
-    "headingColor": "#ffffff",
-    "bg": "#30652c",
-    "heading": {
-      "color": "#1e0c05",
-      "className": "",
-      "text": "Services We Provide"
-    }
-  },
-  "sterilization": {
-    "heading": {
-      "scriptText": "Every Time",
-      "color": "#4a2b18",
-      "scriptColor": "#68844d",
-      "text": "Clean & Sterilized",
-      "className": "text-4xl md:text-5xl font-bold mb-6"
-    },
-    "footer": {
-      "tagline": "Clean tools. Clean space. Happier pets.",
-      "pawColor": "#68844d",
-      "color": "#4a2b18"
-    },
-    "image": {
-      "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1789233742/nexpetcare_uploads/wp3u2drl4zzgqnmsd0lk.avif",
-      "className": "rounded-2xl shadow-xl w-full object-cover",
-      "alt": "Sterilization Machine"
-    },
-    "section": {
-      "className": "",
-      "bg": "#fffff"
-    },
-    "description": {
-      "className": "text-lg leading-relaxed",
-      "color": "#333333",
-      "text": "Your pet’s comfort, health and safety are always our priority. Every instrument is thoroughly cleaned and fully sterilized after each use, ensuring it is fresh, clean and ready for your pet’s next visit.\n\nWe take cleanliness seriously, from our instruments to our dedicated cleaning space. Our sterilization process helps eliminate bacteria and ensures the highest level of cleanliness between every pet, so you can feel confident knowing your dog or cat is cared for in a safe and welcoming environment."
-    }
-  },
-  "process": {
-    "description": {
-      "color": "#625b5b",
-      "text": "At our boutique, we value your time and respect your pet's comfort level. Our process ensures a calm, unhurried experience.",
-      "className": ""
-    },
-    "lineColor": "#30652c",
-    "section": {
-      "bg": "#ffffff",
-      "className": ""
-    },
-    "heading": {
-      "text": "We make it simple",
-      "color": "#1e0c05",
-      "className": ""
-    },
-    "descColor": "#625b5b",
-    "bg": "#ffffff",
-    "styling": {
-      "className": "",
-      "lineColor": "#994500"
-    },
-    "headingColor": "#1e0c05",
-    "steps": [
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1789049289/nexpetcare_uploads/eqggbnnzaixq8gxlhear.avif",
-        "description": "Pick the service you want & book a convenient time that suits you—online anytime, day or night.",
-        "titleColor": "#000000",
-        "className": "",
-        "title": "Book your appointment",
-        "id": "01",
-        "descColor": "#625b5b"
-      },
-      {
-        "descColor": "#625b5b",
-        "className": "",
-        "title": "Bring Your Pet to Us",
-        "description": "Simply bring your pet to our Burlington location at your scheduled appointment time and meet our friendly, caring team.",
-        "titleColor": "#000000",
-        "id": "02",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1789049292/nexpetcare_uploads/tvvclcrarkxcc4zfy1e8.avif"
-      },
-      {
-        "descColor": "#625b5b",
-        "titleColor": "#000000",
-        "description": "Pick up your pet, review their detailed health report card together, and enjoy the lasting results of our natural care!",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1789049295/nexpetcare_uploads/dndtsvpxjphtw733ib4s.avif",
-        "className": "",
-        "id": "03",
-        "title": "Pick up a fresh smile"
-      }
-    ]
-  },
-  "ctaSection": {
-    "cta": {
-      "text": "#ffffff",
-      "bg": "#994500",
-      "label": "Book A Cleaning",
-      "href": "#contact",
-      "className": ""
-    },
-    "image": {
-      "className": "",
-      "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1789905465/nexpetcare_uploads/rpssx39fxezuq4bjpezw.avif"
-    },
-    "headingColor": "#ffffff",
-    "heading": {
-      "className": "",
-      "color": "#1e0c05",
-      "text": "Book a session & see the smile difference today"
-    },
-    "bg": "#30652c",
-    "section": {
-      "className": "",
-      "bg": "#faf3ec"
-    },
-    "description": {
-      "className": "",
-      "color": "#000000",
-      "text": "Nothing beats seeing your pet's clean, fresh-smelling smile run to you."
-    },
-    "descColor": "#ffffff"
-  },
-  "comparison": {
-    "descColor": "#625b5b",
-    "leftBg": "#ffffff",
-    "vsText": "#ffffff",
-    "leftIcon": "#000000",
-    "description": {
-      "className": "hidden",
-      "color": "#625b5b",
-      "text": "We focus on quality over speed and attention to detail. Our calm environment ensures your pet feels completely safe."
-    },
-    "leftText": "#000000",
-    "bg": "#ffffff",
-    "vsBg": "#5c3617",
-    "rightText": "#ffffff",
-    "petocareOffers": [
-      "Gentle, patient approach",
-      "We work at your pet’s pace",
-      "Plenty of time to build trust",
-      "Calm, one-on-one experience",
-      "Thorough attention to every tooth",
-      "Comfort always comes first"
-    ],
-    "rightBg": "#30652c",
-    "section": {
-      "bg": "#ffffff",
-      "className": ""
-    },
-    "heading": {
-      "className": "",
-      "color": "#1e0c05",
-      "text": "Why Pet Parents Choose Us"
-    },
-    "otherOffers": [
-      "Harsh chemicals or extreme stress",
-      "Stressful and noisy environments"
-    ],
-    "headingColor": "#1e0c05",
-    "rightColumn": {
-      "offers": [
-        "Harsh chemicals or extreme stress",
-        "Noisy, rushed environments",
-        "Unnecessary invasive procedures"
-      ],
-      "iconColor": "#ffffff",
-      "bg": "#994500",
-      "textColor": "#ffffff",
-      "className": "hidden"
-    },
-    "vsBadge": {
-      "className": "hidden",
-      "text": "#ffffff",
-      "bg": "#30652c"
-    },
-    "leftColumn": {
-      "iconColor": "#994500",
-      "bg": "#faf3ec",
-      "className": "w-full max-w-3xl mx-auto rounded-[22px] border-none shadow-md",
-      "textColor": "#1e0c05",
-      "offers": [
-        "Gentle, patient approach",
-        "We work completely at your pet’s individual pace",
-        "Plenty of time to build genuine trust with our team",
-        "Calm, one-on-one, and distraction-free experience",
-        "Thorough attention and care given to every single tooth",
-        "Your pet's comfort and safety always comes first"
-      ]
-    },
-    "rightIcon": "#ffffff"
-  },
-  "disclaimer": "Important Notice: The Dog & Cat Teeth Cleaning Boutique is not a veterinary practice, and our services do not replace veterinary care. We do not diagnose, treat, or provide medical care for any health condition, and we do not prescribe or recommend prescription medications. We always recommend that pet owners maintain regular veterinary visits and seek veterinary care whenever they have concerns about their pet’s health.",
-  "gallery": {
-    "arrowColor": "#5e3819",
-    "descColor": "#000000",
-    "section": {
-      "className": "",
-      "bg": "#ffffff"
-    },
-    "headingColor": "#1e0c05",
-    "description": {
-      "text": "Every photo shows care and skill. Browse our gallery to see our natural cleaning difference — one smile at a time.",
-      "color": "#000000",
-      "className": ""
-    },
-    "badgeText": "#ffffff",
-    "heading": {
-      "color": "#1e0c05",
-      "className": "",
-      "text": "See it to believe it"
-    },
-    "bg": "#ffffff",
-    "styling": {
-      "className": "",
-      "arrowColor": "#994500",
-      "badgeBg": "#994500",
-      "badgeText": "#ffffff"
-    },
-    "badgeBg": "#5e3819",
-    "items": [
-      {
-        "after": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785327881/hvvjlgcxmbk8sk3mdfio.avif",
-        "className": "",
-        "id": 1,
-        "alt": "Golden Retriever teeth cleaning",
-        "before": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785327872/nhdnpsclrvrunw2i5jul.avif"
-      },
-      {
-        "before": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1787910589/ygksjwhxrj7whs7olso7.png",
-        "alt": "Long-haired cat teeth cleaning",
-        "after": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1787910592/ygxxpemml9l3svgf5ikp.png",
-        "id": 2,
+        "title": "Lifelong Breeder Support",
+        "priceLabel": "Included",
+        "ctaLabel": "Learn More",
+        "iconKey": "heart",
+        "href": "#contact",
+        "description": "Our relationship doesn't end on go-home day. We are here to answer questions for life.",
         "className": ""
       },
       {
-        "before": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1787910597/kjrumlfau4rmmsuzraua.png",
-        "alt": "Poodle teeth cleaning",
-        "id": 3,
+        "ctaLabel": "Learn More",
         "className": "",
-        "after": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1787910601/h2m0db5odkz5qbgkewyo.png"
-      }
-    ]
-  },
-  "insights": {
-    "heading": {
-      "className": "",
-      "text": "Teeth Cleaning Insights",
-      "color": "#1e0c05"
-    },
-    "headingColor": "#1e0c05",
-    "section": {
-      "className": "hidden",
-      "bg": "#ffffff"
-    },
-    "bg": "#ffffff",
-    "cardDateBg": "#30652c",
-    "cardTitle": "#1e0c05",
-    "descColor": "#625b5b",
-    "items": [
-      {
-        "title": "5 Signs your cat needs teeth cleaning care",
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785329868/uc2scljbrs77aqz8cwub.webp",
-        "className": "",
-        "id": 1,
-        "date": "Mar 12, 2026"
-      },
-      {
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785329929/vnl7k9704keaakflcrez.webp",
-        "className": "",
-        "title": "How often should you clean dog teeth?",
-        "id": 2,
-        "date": "Apr 5, 2026"
-      },
-      {
-        "className": "",
-        "title": "Keeping your pet calm during cleaning",
-        "date": "May 3, 2026",
-        "id": 3,
-        "image": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785329976/g1hneotjio4gufr4vyh5.webp"
+        "description": "A comforting blanket that smells like mom and littermates to help them sleep soundly.",
+        "href": "#contact",
+        "title": "Mom-Scented Blanket",
+        "iconKey": "home",
+        "priceLabel": "Included"
       }
     ],
-    "cardDateText": "#ffffff",
-    "cardBg": "#ffffff",
     "styling": {
-      "cardBg": "#ffffff",
-      "cardDateBg": "#994500",
-      "cardDateText": "#ffffff",
+      "cardBg": "#f9f7f5",
+      "cardBorder": "#d6cabc",
       "className": "",
-      "cardTitle": "#1e0c05"
+      "titleColor": "#0c0a0d",
+      "iconColor": "#8a7859",
+      "priceColor": "#8a7859"
     },
     "description": {
-      "text": "",
-      "color": "#625b5b",
-      "className": "hidden"
-    }
-  },
-  "footer": {
-    "styling": {
-      "iconBg": "#994500",
-      "textColor": "#1e0c05",
-      "iconText": "#ffffff",
-      "mutedColor": "#625b5b"
-    },
-    "socials": {
-      "facebook": "#",
-      "instagram": "https://www.instagram.com/thedogteethcleaningboutique/"
-    },
-    "info": {
-      "address": "Burlington\n570 Plains Road East, Burlington, ONT\n\n\nStoney Creek\n1282 Hwy 8, Stoney Creek, ONT",
-      "email": {
-        "href": "mailto:doggieteethcleaning@gmail.com",
-        "label": "doggieteethcleaning@gmail.com"
-      },
-      "phone": {
-        "label": "905-634-4624",
-        "href": "tel:+19056344624"
-      },
-      "storefrontImage": {
-        "src": "",
-        "className": ""
-      },
-      "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2902.6958517458174!2d-79.833789!3d43.320626000000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882c9d0491159fc9%3A0xe9cffc349729f5bb!2sCall%20of%20the%20Wild%20-%20Raw%20%26%20Natural%20Pet%20Food!5e0!3m2!1sen!2sin!4v1788448624147!5m2!1sen!2sin",
-      "heading": "LOCATIONS"
-    },
-    "section": {
-      "className": "",
-      "bg": "#fdfdfd"
-    },
-    "iconBg": "#347135",
-    "textColor": "#1e0c05",
-    "iconText": "#ffffff",
-    "bg": "#fdfdfd",
-    "logo": {
-      "alt": "Teeth Cleaning Boutique Logo",
-      "className": "",
-      "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1788956527/nexpetcare_uploads/hc2j3afyyad3f0p30cem.avif"
-    },
-    "disclaimer": "The Dog & Cat Teeth Cleaning Boutique is not a veterinary practice, and our services do not replace veterinary care. We do not prescribe medications or prescriptions, perform tooth extractions, or provide veterinary treatment. If your pet requires any of these services, or if you have concerns about your pet’s health or teeth that require veterinary care, please consult your veterinarian.",
-    "seoText": {
-      "title": "Mobile Dog & Cat Teeth Cleaning in Niagara Region",
-      "description": "The Dog & Cat Teeth Cleaning Boutique provides convenient, in-home dog and cat teeth cleaning throughout the Niagara Region. We proudly serve pet families in Niagara Falls, St. Catharines, Welland, Fort Erie, Port Colborne, Niagara-on-the-Lake, Grimsby, Lincoln, Pelham, Wainfleet, and West Lincoln, bringing our gentle, all-natural service right to your home."
-    },
-    "mutedColor": "#625b5b",
-    "copyright": "Copyright © 2026 The Dog & Cat Teeth Cleaning Boutique. All rights reserved."
-  },
-  "navbar": {
-    "links": [
-      {
-        "href": "#home",
-        "className": "",
-        "label": "Home",
-        "icon": "Home"
-      },
-      {
-        "icon": "Image",
-        "className": "",
-        "href": "#gallery",
-        "label": "Gallery"
-      },
-      {
-        "icon": "Briefcase",
-        "className": "",
-        "label": "Services",
-        "href": "#services"
-      },
-      {
-        "className": "",
-        "icon": "Dog",
-        "label": "Process",
-        "href": "#process"
-      },
-      {
-        "icon": "Reviews",
-        "className": "",
-        "label": "Reviews",
-        "href": "#reviews"
-      },
-      {
-        "className": "",
-        "icon": "MessageSquare",
-        "label": "FAQ",
-        "href": "#faq"
-      },
-      {
-        "className": "",
-        "href": "#sterilization",
-        "label": "Sterilization",
-        "icon": "ShieldCheck"
-      }
-    ],
-    "linkColor": "#3b3b3b",
-    "logo": {
-      "className": "",
-      "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1788956519/nexpetcare_uploads/gui1zamlebnlruakkqmw.avif",
-      "status": "approved",
-      "alt": "Teeth Cleaning Boutique Logo"
-    },
-    "section": {
-      "bg": "#ffffff",
+      "text": "We want your new family member to transition smoothly into your home. Here is what comes with every Bev's Mini Doodle.",
+      "color": "#4a423f",
       "className": ""
     },
-    "styling": {
-      "linkHoverColor": "#000000",
-      "linkColor": "#3b3b3b"
-    },
-    "linkHoverColor": "#000000",
-    "bg": "#ffffff",
     "cta": {
-      "bg": "#994500",
+      "label": "Apply Now",
+      "text": "#ffffff",
       "className": "",
-      "href": "https://book.squareup.com/appointments/fg2nrjc0q38yap/location/LJBMGZQAQ6J5B/services",
-      "label": "Book Online",
-      "text": "#ffffff"
+      "href": "#apply",
+      "bg": "#8a7859"
     }
   },
   "reviews": {
-    "heading": {
-      "text": "The reviews say it all",
-      "color": "#1e0c05",
+    "section": {
+      "bg": "#f9f7f5",
       "className": ""
     },
-    "description": {
-      "color": "#625b5b",
+    "heading": {
       "className": "",
-      "text": "Our rating truly speaks for itself — but the words behind it speak even louder and clearer, expressing our commitment."
+      "color": "#0c0a0d",
+      "text": "Loved by our families"
     },
-    "descColor": "#625b5b",
-    "bg": "#ffffff",
-    "headingColor": "#1e0c05",
+    "description": {
+      "text": "When you welcome one of our puppies into your home, you’re not just adopting a dog — you’re gaining a loyal friend and cherished family member.",
+      "className": "",
+      "color": "#4a423f"
+    },
     "columns": {
-      "col3": [
-        {
-          "subtext": "Clean Smiles Delivered Daily",
-          "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1790336307/nexpetcare_uploads/tieepmgcjgz088yigzrt.avif",
-          "bg": "#1e0c05",
-          "type": "stat-image",
-          "heading": "1000+",
-          "iconColor": "#ffffff",
-          "className": "",
-          "textColor": "#ffffff"
-        },
-        {
-          "textColor": "#30652c",
-          "avatar": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785332919/mklhtji2lbbeljn7iube.png",
-          "titleColor": "#994500",
-          "className": "",
-          "bg": "#ffffff",
-          "role": "Cat Owner",
-          "text": "I had a great experience with Doggie Teeth Cleaning Boutique!! It was my cat’s first teeth cleaning and the staff took such good care of her. It took about 2 hours and her teeth are shining now!",
-          "type": "review",
-          "name": "Sarah Seguin",
-          "starColor": "#994500"
-        }
-      ],
       "col2": [
         {
-          "bg": "#994500",
-          "className": "",
-          "avatar": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785332810/ua620jjmp3ea9mepcbzw.png",
-          "starColor": "#ffffff",
-          "titleColor": "#ffffff",
-          "textColor": "#ffffff",
+          "bg": "#ffffff",
+          "starColor": "#8a7859",
           "type": "review",
-          "name": "Rich Robichaud",
-          "text": "I have a 6 year old Labradoodle... This experience was night and day compared to before. So much easier on my dog, and a huge relief for me as well. I can’t recommend Dog & Cat Teeth Cleaning Boutique enough!",
-          "role": "Dog Owner"
+          "text": "“My mom says she is the best dressed dog she has ever seen. Bella loves treats and belly rubs... We are truly blessed to have her.”",
+          "titleColor": "#0c0a0d",
+          "name": "Karen Lewis",
+          "textColor": "#4a423f",
+          "role": "Doodle Owner",
+          "avatar": "https://res.cloudinary.com/doscyny4j/image/upload/p2_dx0rmx.avif"
+        }
+      ],
+      "col3": [
+        {
+          "bg": "#0c0a0d",
+          "type": "stat-image",
+          "textColor": "#ffffff",
+          "image": "https://res.cloudinary.com/doscyny4j/image/upload/gos_q5rxld.avif",
+          "iconColor": "#ffffff",
+          "heading": "1 Year",
+          "subtext": "Comprehensive Health Guarantee"
+        },
+        {
+          "type": "review",
+          "text": "“Bella is more than just a dog to us, she is a big part of our family. We feel very blessed to have her in our lives. She is a constant companion and a source of joy.”",
+          "titleColor": "#0c0a0d",
+          "textColor": "#4a423f",
+          "avatar": "https://res.cloudinary.com/doscyny4j/image/upload/p3_sp2hha.avif",
+          "starColor": "#8a7859",
+          "role": "Doodle Owner",
+          "bg": "#ffffff",
+          "name": "Karen Lewis"
         }
       ],
       "col1": [
         {
-          "textColor": "#30652c",
-          "titleColor": "#994500",
-          "name": "Mojan Sanandaji",
-          "starColor": "#994500",
+          "titleColor": "#0c0a0d",
+          "role": "Doodle Owner",
+          "starColor": "#8a7859",
+          "name": "Karen Lewis",
           "type": "review",
-          "avatar": "https://res.cloudinary.com/doscyny4j/image/upload/f_auto,q_auto/v1785332547/aevkhl2wmo66bintywoj.png",
-          "role": "Dog Owner",
-          "className": "",
-          "bg": "#ffffff",
-          "text": "I can’t say enough wonderful things about Helen and Amy. From the very beginning, Helen went above and beyond... When we arrived, Amy was just as incredible. She treated my elderly dog with such genuine love, patience, and kindness."
+          "text": "“When I got Bella from Bev’s mini Doodles she was the most adorable thing I had ever seen. She was also quite the diva. My entire family fell in love with her.”",
+          "avatar": "https://res.cloudinary.com/doscyny4j/image/upload/p1_wroqky.avif",
+          "textColor": "#4a423f",
+          "bg": "#ffffff"
         },
         {
-          "className": "",
-          "bg": "#994500",
-          "starColor": "#ffffff",
+          "bg": "#d6cabc",
+          "subtext": "Embark Health Tested",
+          "scale": "",
+          "textColor": "#0c0a0d",
+          "scoreColor": "#0c0a0d",
+          "score": "100%",
           "type": "stat-numeric",
-          "textColor": "#ffffff",
-          "subtext": "5-Star Reviews: 1000+",
-          "score": "5.0",
-          "scale": "/5",
-          "scoreColor": "#ffffff"
+          "starColor": "#0c0a0d"
         }
       ]
+    }
+  },
+  "process": {
+    "steps": [
+      {
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299019/nexpetcare_uploads/vviztkvj1hx12xbkvyhr.avif",
+        "titleColor": "#0c0a0d",
+        "descColor": "#4a423f",
+        "className": "",
+        "id": "01",
+        "description": "Reach out and tell us a little about yourself, your family, your lifestyle, and what you are hoping for in a puppy.",
+        "title": "Contact & Apply"
+      },
+      {
+        "descColor": "#4a423f",
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299023/nexpetcare_uploads/zhkjiwys6dgurnmpiobg.avif",
+        "titleColor": "#0c0a0d",
+        "className": "",
+        "id": "02",
+        "title": "Join Our Waitlist",
+        "description": "Once we connect, secure your position for an upcoming litter with a $500 deposit. First deposit receives first pick."
+      },
+      {
+        "className": "",
+        "title": "Welcome Your Puppy",
+        "titleColor": "#0c0a0d",
+        "descColor": "#4a423f",
+        "description": "At go-home day, take home your perfect companion, complete with health checks, first vaccinations, and a mom-scented blanket.",
+        "id": "03",
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299027/nexpetcare_uploads/ynk6ungqqf6nifptgcqp.avif"
+      }
+    ],
+    "styling": {
+      "lineColor": "#8a7859",
+      "className": ""
+    },
+    "section": {
+      "bg": "#f9f7f5",
+      "className": ""
+    },
+    "heading": {
+      "className": "",
+      "color": "#0c0a0d",
+      "text": "How Our Puppy Waitlist Works"
+    },
+    "description": {
+      "className": "",
+      "text": "At Bev’s Mini Doodles, our waitlist is designed to make the process simple, personal, and transparent from the very beginning.",
+      "color": "#4a423f"
+    }
+  },
+  "comparison": {
+    "description": {
+      "text": "Every puppy is raised with love, care, and purpose. We prioritize excellent temperament, strong genetics, and overall health to ensure every puppy thrives.",
+      "className": "",
+      "color": "#4a423f"
+    },
+    "rightColumn": {
+      "className": "",
+      "bg": "#8a7859",
+      "offers": [
+        "Raised right inside our loving home",
+        "Strictly quality over quantity",
+        "Embark DNA & genetically health tested",
+        "Daily handling & early socialization",
+        "Parents live their best lives alongside us",
+        "1-Year health guarantee included"
+      ],
+      "iconColor": "#ffffff",
+      "textColor": "#ffffff"
+    },
+    "leftColumn": {
+      "className": "",
+      "bg": "#f9f7f5",
+      "textColor": "#4a423f",
+      "iconColor": "#4a423f",
+      "offers": [
+        "Kennel-raised environments",
+        "Quantity over quality",
+        "Untested genetic backgrounds",
+        "No early socialization",
+        "Unknown parental temperaments",
+        "No health guarantees"
+      ]
+    },
+    "section": {
+      "className": "",
+      "bg": "#ffffff"
+    },
+    "heading": {
+      "className": "",
+      "text": "Why choose Bev’s Mini Doodles",
+      "color": "#0c0a0d"
+    },
+    "vsBadge": {
+      "className": "",
+      "text": "#ffffff",
+      "bg": "#8a7859"
+    }
+  },
+  "gallery": {
+    "description": {
+      "color": "#4a423f",
+      "className": "",
+      "text": "Drag the slider to see how our dogs grow! Both Maggie and Casi are Embark DNA and health tested, living their absolute best lives right alongside us."
+    },
+    "styling": {
+      "className": "",
+      "arrowColor": "#8a7859",
+      "badgeText": "#0c0a0d",
+      "badgeBg": "#d6cabc",
+      "titleColor": "#0c0a0d",
+      "cardBg": "#f9f7f5"
+    },
+    "items": [
+      {
+        "className": "",
+        "before": "https://res.cloudinary.com/doscyny4j/image/upload/v1794300011/nexpetcare_uploads/omdvnia51a18fy9dlqql.avif",
+        "id": 1,
+        "alt": "Maggie - From Puppy to Adult",
+        "after": "https://res.cloudinary.com/doscyny4j/image/upload/v1794300016/nexpetcare_uploads/nsnurgqivgyrftzgjvvu.avif"
+      },
+      {
+        "after": "https://res.cloudinary.com/doscyny4j/image/upload/v1794300041/nexpetcare_uploads/jl2xnaodzthqm9cjukvd.avif",
+        "className": "",
+        "before": "https://res.cloudinary.com/doscyny4j/image/upload/v1794300033/nexpetcare_uploads/pjqhgthxplmlinqgaum0.avif",
+        "id": 2,
+        "alt": "Casi - From Puppy to Adult"
+      },
+      {
+        "after": "UPLOAD_HERE: A photo of that exact same puppy at 8 weeks old (Go-Home Day)",
+        "before": "UPLOAD_HERE: A photo of a newborn puppy from a past litter (1-2 weeks old)",
+        "alt": "Watch our puppies grow!",
+        "className": "",
+        "id": 3
+      }
+    ],
+    "section": {
+      "bg": "#ffffff",
+      "className": ""
+    },
+    "heading": {
+      "color": "#0c0a0d",
+      "className": "",
+      "text": "Meet our beautiful `Moms`"
+    }
+  },
+  "footer": {
+    "logo": {
+      "className": "",
+      "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1794298239/nexpetcare_uploads/hrm98mgxw0yazhu1hsgl.avif",
+      "alt": "Bev's Mini Doodles Logo"
+    },
+    "styling": {
+      "mutedColor": "#d6cabc",
+      "textColor": "#ffffff",
+      "iconBg": "#d6cabc",
+      "iconText": "#0c0a0d"
+    },
+    "socials": {
+      "instagram": "https://www.instagram.com/bevsminidoodles",
+      "facebook": "https://www.facebook.com/bevs.mini.doodles01"
+    },
+    "info": {
+      "mapEmbedUrl": "",
+      "phone": {
+        "label": "+1-437-225-7112",
+        "href": "tel:+14372257112"
+      },
+      "email": {
+        "label": "beverley@bevsminidoodles.com",
+        "href": "mailto:beverley@bevsminidoodles.com"
+      },
+      "address": "Aldershot, Burlington, Ontario"
+    },
+    "section": {
+      "className": "",
+      "bg": "#0c0a0d"
+    },
+    "copyright": "Copyright © 2024 by Bev's Mini Doodles. All rights reserved."
+  },
+  "insights": {
+    "description": {
+      "className": "",
+      "text": "Updates on our current litters and news from our home in Aldershot.",
+      "color": "#4a423f"
+    },
+    "styling": {
+      "cardDateText": "#4a423f",
+      "cardBg": "#f9f7f5",
+      "className": "",
+      "cardTitle": "#0c0a0d",
+      "cardDateBg": "#f9f7f5"
+    },
+    "heading": {
+      "text": "Litter Updates & News",
+      "color": "#0c0a0d",
+      "className": ""
+    },
+    "section": {
+      "className": "",
+      "bg": "#f9f7f5"
+    },
+    "items": [
+      {
+        "id": 1,
+        "title": "Casi's Double the Love Litter is Here!",
+        "className": "",
+        "date": "Oct 28, 2026",
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/b1_n4dpky.avif"
+      },
+      {
+        "date": "Fall 2026",
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/v1794299759/nexpetcare_uploads/qenw2yidohwtu3fi1xht.avif",
+        "id": 2,
+        "title": "Preparing your home for a new Mini Doodle",
+        "className": ""
+      },
+      {
+        "title": "Meet the Moms: Maggie (Daddy's Girl)",
+        "date": "May 13, 2026",
+        "id": 3,
+        "className": "",
+        "image": "https://res.cloudinary.com/doscyny4j/image/upload/b3_hs9zzk.avif"
+      }
+    ]
+  },
+  "faq": {
+    "description": {
+      "className": "",
+      "color": "#4a423f",
+      "text": "Common questions about our Goldendoodle program, waitlist, and puppies."
+    },
+    "styling": {
+      "answerColor": "#4a423f",
+      "questionColor": "#0c0a0d",
+      "dividerColor": "#d6cabc",
+      "className": "",
+      "iconColor": "#8a7859"
+    },
+    "items": [
+      {
+        "className": "",
+        "question": "How big will my Goldendoodle get?",
+        "answer": "All of our puppies are Micro & Miniature Goldendoodles and should be 10-25 lbs when fully grown."
+      },
+      {
+        "question": "Are your parent dogs health tested?",
+        "className": "",
+        "answer": "Yes, absolutely. All of our parent dogs, including Maggie and Casi, are Embark DNA and genetically health tested to ensure the best possible start for each puppy."
+      },
+      {
+        "className": "",
+        "question": "How much are your puppies and what is the deposit?",
+        "answer": "Our puppies are generally around $3,500. There is a $500 non-refundable deposit which secures your place on the waitlist and is applied towards the final purchase price."
+      }
+    ],
+    "section": {
+      "bg": "#f9f7f5",
+      "className": ""
+    },
+    "heading": {
+      "color": "#0c0a0d",
+      "text": "Frequently Asked Questions",
+      "className": ""
+    }
+  },
+  "theme": {
+    "primaryColor": "#8a7859"
+  },
+  "ctaSection": {
+    "section": {
+      "className": "",
+      "bg": "#d6cabc"
+    },
+    "heading": {
+      "color": "#0c0a0d",
+      "className": "",
+      "text": "Ready to join the Bev’s Mini Doodles family?"
+    },
+    "image": {
+      "src": "https://res.cloudinary.com/doscyny4j/image/upload/cta_zurnmb.avif",
+      "className": ""
+    },
+    "description": {
+      "text": "We would love to learn more about you and help you find the perfect addition to your family.",
+      "color": "#4a423f",
+      "className": ""
+    },
+    "cta": {
+      "href": "#apply",
+      "label": "Join Waitlist",
+      "bg": "#8a7859",
+      "text": "#ffffff",
+      "className": ""
+    }
+  },
+  "navbar": {
+    "cta": {
+      "label": "Apply Now",
+      "href": "#apply",
+      "text": "#ffffff",
+      "className": "",
+      "bg": "#8a7859"
+    },
+    "styling": {
+      "linkHoverColor": "#0c0a0d",
+      "linkColor": "#4a423f"
+    },
+    "logo": {
+      "src": "https://res.cloudinary.com/doscyny4j/image/upload/v1794298231/nexpetcare_uploads/kjejivjvnzpduzragyho.avif",
+      "className": "",
+      "alt": "Bev's Mini Doodles Logo"
+    },
+    "links": [
+      {
+        "href": "#home",
+        "label": "Home",
+        "className": "",
+        "icon": "Home"
+      },
+      {
+        "icon": "Heart",
+        "label": "Current Litter",
+        "className": "",
+        "href": "#current-litter"
+      },
+      {
+        "href": "#moms",
+        "label": "Meet the Moms",
+        "className": "",
+        "icon": "Dog"
+      },
+      {
+        "icon": "List",
+        "href": "#process",
+        "label": "Process",
+        "className": ""
+      },
+      {
+        "label": "Apply",
+        "icon": "Edit",
+        "className": "",
+        "href": "#apply"
+      },
+      {
+        "icon": "MessageSquare",
+        "href": "#faq",
+        "className": "",
+        "label": "FAQ"
+      }
+    ],
+    "section": {
+      "bg": "#ffffff",
+      "className": ""
+    }
+  },
+  "about": {
+    "featuresList": {
+      "featureIconColor": "#8a7859",
+      "className": "",
+      "features": [
+        "Ethical, family-based breeding program",
+        "Embark DNA & genetically tested parents",
+        "Hypoallergenic, low-shedding coats"
+      ],
+      "featureColor": "#0c0a0d"
+    },
+    "heading": {
+      "color": "#0c0a0d",
+      "className": "",
+      "text": "All of our dogs are pets first"
+    },
+    "section": {
+      "bg": "#f9f7f5",
+      "className": ""
+    },
+    "description": {
+      "text": "The idea to breed puppies began with a dream. We fell in love with Goldendoodles for their intelligence, cuteness, and hypoallergenic traits. Today, all of our parent dogs live their best lives right alongside us in our home.",
+      "color": "#4a423f",
+      "className": ""
+    },
+    "cta": {
+      "href": "#moms",
+      "bg": "#8a7859",
+      "text": "#ffffff",
+      "className": "",
+      "label": "Meet The Moms"
+    },
+    "image": {
+      "className": "",
+      "src": "https://res.cloudinary.com/doscyny4j/image/upload/feature-image1_zpl2k9.avif"
+    }
+  },
+  "contactSection": {
+    "description": {
+      "className": "",
+      "text": "Tell us about yourself, your home environment, and your puppy preferences to join our waitlist.",
+      "color": "#4a423f"
+    },
+    "button": {
+      "label": "Submit Application",
+      "text": "#ffffff",
+      "className": "",
+      "bg": "#8a7859"
+    },
+    "heading": {
+      "className": "",
+      "text": "Apply to our Waitlist",
+      "color": "#0c0a0d"
     },
     "section": {
       "bg": "#ffffff",

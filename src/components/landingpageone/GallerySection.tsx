@@ -82,14 +82,14 @@ export default function GallerySection({ data }: { data: any }) {
                             {data.items.map((item: any, index: number) => (
                                 <div key={`mob-after-${index}`} className="aspect-square rounded-xl overflow-hidden shadow-sm border border-gray-200 relative">
                                     {item.after && (
-<img 
-    src={optimizeCloudinaryImage(item.after, 600)} 
-    alt={`After ${item.alt || ''}`} 
-    width={600}
-    height={600}
-    loading="lazy"
-    className="absolute inset-0 w-full h-full object-cover" 
-/>                                    )}
+                                        <img
+                                            src={optimizeCloudinaryImage(item.after, 600)}
+                                            alt={`After ${item.alt || ''}`}
+                                            width={600}
+                                            height={600}
+                                            loading="lazy"
+                                            className="absolute inset-0 w-full h-full object-cover"
+                                        />)}
                                 </div>
                             ))}
                         </div>
@@ -122,14 +122,14 @@ export default function GallerySection({ data }: { data: any }) {
                                             style={{ backgroundColor: data.styling?.badgeBg || data.badgeBg }}
                                         >
                                             {item.before && (
-                                               <img 
-    src={optimizeCloudinaryImage(item.before, 600)} 
-    alt={`Before ${item.alt || ''}`} 
-    width={600}
-    height={600}
-    loading="lazy"
-    className="absolute inset-0 w-full h-full object-cover" 
-/>
+                                                <img
+                                                    src={optimizeCloudinaryImage(item.before, 600)}
+                                                    alt={`Before ${item.alt || ''}`}
+                                                    width={600}
+                                                    height={600}
+                                                    loading="lazy"
+                                                    className="absolute inset-0 w-full h-full object-cover"
+                                                />
                                             )}
                                         </div>
                                     </div>
@@ -176,14 +176,14 @@ export default function GallerySection({ data }: { data: any }) {
                                             style={{ backgroundColor: data.styling?.badgeBg || data.badgeBg }}
                                         >
                                             {item.after && (
-                                               <img 
-    src={optimizeCloudinaryImage(item.before, 600)} 
-    alt={`Before ${item.alt || ''}`} 
-    width={600}
-    height={600}
-    loading="lazy"
-    className="absolute inset-0 w-full h-full object-cover" 
-/>
+                                                <img
+                                                    src={optimizeCloudinaryImage(item.after, 600)}
+                                                    alt={`Before ${item.alt || ''}`}
+                                                    width={600}
+                                                    height={600}
+                                                    loading="lazy"
+                                                    className="absolute inset-0 w-full h-full object-cover"
+                                                />
                                             )}
                                         </div>
                                     </div>
