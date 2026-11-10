@@ -52,7 +52,7 @@ export default function Footer({ data }: { data: any }) {
                         </p>
                     </div>
                 )}
-                
+
                 <div className={cn(
                     "grid grid-cols-1 sm:grid-cols-2 gap-10 items-start",
                     hasMap ? "lg:grid-cols-12" : "md:grid-cols-4"
@@ -61,13 +61,13 @@ export default function Footer({ data }: { data: any }) {
                         <div className="flex items-center gap-3">
                             <a href="#" aria-label="footerlogo" className={cn("group hover:opacity-80 transition-opacity", logo.className)}>
                                 {logo.src ? (
-                                    <img 
-                                        src={optimizeCloudinaryImage(logo.src, 400)} 
-                                        alt={logo.alt || "Business Logo"} 
+                                    <img
+                                        src={optimizeCloudinaryImage(logo.src, 400)}
+                                        alt={logo.alt || "Business Logo"}
                                         width={160}
                                         height={56}
                                         loading="lazy"
-                                        className="h-14 w-auto max-w-full object-contain object-left" 
+                                        className="h-14 w-auto max-w-full object-contain object-left"
                                     />
                                 ) : (
                                     <span className="font-bold text-xl" style={{ color: styling.textColor }}>Logo</span>
@@ -127,14 +127,14 @@ export default function Footer({ data }: { data: any }) {
                                 <p className="whitespace-pre-line">{renderWithBold(info.address)}</p>
                                 {info.phone?.label && (
                                     <p>
-                                        <a  aria-label="phone"  href={info.phone.href} className="hover:opacity-75 transition-opacity">
+                                        <a aria-label="phone" href={info.phone.href} className="hover:opacity-75 transition-opacity">
                                             {info.phone.label}
                                         </a>
                                     </p>
                                 )}
                                 {info.email?.label && (
                                     <p>
-                                        <a href={info.email.href} aria-label="emailgoot"  className="hover:opacity-75 transition-opacity">
+                                        <a href={info.email.href} aria-label="emailgoot" className="hover:opacity-75 transition-opacity">
                                             {info.email.label}
                                         </a>
                                     </p>
@@ -184,15 +184,27 @@ export default function Footer({ data }: { data: any }) {
                 )}
 
                 <div className="pt-8 border-t border-black/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <p className="text-sm text-center sm:text-left" style={{ color: styling.mutedColor }}>
-                        {renderWithBold(data.copyright)}
-                    </p>
+                    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-1 sm:gap-4 text-center sm:text-left">
+                        <p className="text-sm" style={{ color: styling.mutedColor }}>
+                            {renderWithBold(data.copyright)}
+                        </p>
+                        <span className="hidden sm:inline" style={{ color: styling.mutedColor }}>|</span>
+                        <a
+                            href="https://nexpetcare.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm transition-opacity hover:opacity-80 font-medium"
+                            style={{ color: styling.mutedColor }}
+                        >
+                            Created by NexPet Care
+                        </a>
+                    </div>
 
                     <div className="flex items-center gap-2.5">
                         {socials.facebook && (
                             <a
                                 href={socials.facebook}
-                                aria-label="Visit our Facebook page" // 🔥 ADD THIS
+                                aria-label="Visit our Facebook page"
                                 className="w-[26px] h-[26px] rounded-full flex items-center justify-center transition-transform hover:scale-105"
                                 style={{ backgroundColor: styling.iconBg, color: styling.iconText }}
                             >
@@ -202,7 +214,7 @@ export default function Footer({ data }: { data: any }) {
                         {socials.instagram && (
                             <a
                                 href={socials.instagram}
-                                aria-label="Visit our Instagram profile" // 🔥 ADD THIS
+                                aria-label="Visit our Instagram profile"
                                 className="w-[26px] h-[26px] rounded-full flex items-center justify-center transition-transform hover:scale-105"
                                 style={{ backgroundColor: styling.iconBg, color: styling.iconText }}
                             >
