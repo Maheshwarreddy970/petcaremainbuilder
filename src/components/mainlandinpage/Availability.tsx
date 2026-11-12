@@ -18,18 +18,18 @@ function CheckIcon() {
                     fillRule="evenodd"
                     clipRule="evenodd"
                     d="M16.2969 32.25C7.59612 32.25 0.546875 25.1962 0.546875 16.5C0.546875 7.80375 7.59612 0.75 16.2969 0.75C24.9931 0.75 32.0469 7.80375 32.0469 16.5C32.0469 25.1962 24.9931 32.25 16.2969 32.25Z"
-                    fill="#0553fc"
+                    fill="#091d42"
                     fillOpacity="0.1"
                 />
                 <path
                     fillRule="evenodd"
                     clipRule="evenodd"
                     d="M16.3007 25.6952C11.2232 25.6952 7.10938 21.5788 7.10938 16.5038C7.10938 11.4289 11.2232 7.3125 16.3007 7.3125C21.3757 7.3125 25.4921 11.4289 25.4921 16.5038C25.4921 21.5788 21.3757 25.6952 16.3007 25.6952Z"
-                    fill="#0553fc"
+                    fill="#091d42"
                 />
                 <path
                     d="M16.3007 25.6952C11.2232 25.6952 7.10938 21.5788 7.10938 16.5038C7.10938 11.4289 11.2232 7.3125 16.3007 7.3125C21.3757 7.3125 25.4921 11.4289 25.4921 16.5038C25.4921 21.5788 21.3757 25.6952 16.3007 25.6952Z"
-                    stroke="#0553fc"
+                    stroke="#091d42"
                     strokeWidth="1.96875"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -59,7 +59,7 @@ function CheckIcon() {
 export default function Availability() {
     return (
         <>
-            <div className="flex flex-col items-center justify-center space-y-3 my-16 md:my-24 tracking-tight text-center mt-40 md:mt-40">
+            <div className="flex flex-col items-center justify-center space-y-3 my-16 md:my-24 tracking-tight text-center mt-16">
                 <div className="w-fit px-3 md:text-base text-sm py-1 rounded-3xl gap-2 border-[1.3px] border-[#D6D6D6] shadow-[0px_1px_2px_0px_#0000001A,0px_4px_4px_0px_#00000017,0px_9px_5px_0px_#0000000D,0px_16px_6px_0px_#00000003,0px_25px_7px_0px_#00000000]">
                     {AVAILABILITY_CONTENT.badge}
                 </div>
@@ -70,7 +70,7 @@ export default function Availability() {
                     {AVAILABILITY_CONTENT.description}
                 </p>
             </div>
-            <div className="w-4/5 mx-auto mt-10 md:mt-24">
+            <div className=" mx-auto mt-10 md:mt-24">
                 <div className="w-full aspect-[2/1] bg-[#FAFAFA] rounded-lg relative font-sans">
                     <WorldMapDemo />
                 </div>

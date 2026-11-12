@@ -34,7 +34,7 @@ export default function Blogs() {
         <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           <article style={{ opacity: 1, transform: "none" }}>
             <div className="overflow-hidden rounded-xl">
-              <a href="/portfolio/1" data-discover="true" aria-label="blagsimage">
+              <a href="/portfolio/1" data-discover="true">
                 <img
                   className="block h-full w-full rounded-xl transition-transform duration-500 ease-in-out hover:scale-105"
                   alt="Digital Transformation Strategy"
@@ -64,7 +64,7 @@ export default function Blogs() {
           </article>
           <article style={{ opacity: 1, transform: "none" }}>
             <div className="overflow-hidden rounded-xl">
-              <a href="/portfolio/2" data-discover="true" aria-label="blogsimage">
+              <a href="/portfolio/2" data-discover="true">
                 <img
                   className="block h-full w-full rounded-xl transition-transform duration-500 ease-in-out hover:scale-105"
                   alt="B2B Platform UX Audit"
@@ -94,7 +94,7 @@ export default function Blogs() {
           </article>
           <article style={{ opacity: 1, transform: "none" }}>
             <div className="overflow-hidden rounded-xl">
-              <a href="/portfolio/3" data-discover="true" aria-label="blogsimage">
+              <a href="/portfolio/3" data-discover="true">
                 <img
                   className="block h-full w-full rounded-xl transition-transform duration-500 ease-in-out hover:scale-105"
                   alt="Brand Identity Refresh"
