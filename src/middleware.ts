@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export const config = {
-  // 🔥 UPDATED MATCHER: We only ignore actual static assets like images, css, and js.
-  // This allows .xml and .json requests to correctly pass through to our catch-all and sitemap APIs!
   matcher: [
     "/((?!api/|_next/|_static/|_vercel|.*\\.(?:png|jpg|jpeg|webp|avif|svg|gif|ico|css|js|woff|woff2|ttf)).*)",
   ],
@@ -12,46 +10,49 @@ export const config = {
 export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
 
+  // ==========================================
+  // 🔥 1. THE BOT SHIELD 
+  // Instantly blocks automated hackers/scanners without wasting Vercel CPU
+  // ==========================================
+  const blockedPaths = [".env", ".php", ".yml", ".yaml", ".sql", ".git", ".bak", "wp-admin", "wp-includes", "phpmyadmin"];
+  if (blockedPaths.some(path => url.pathname.toLowerCase().includes(path))) {
+    return new NextResponse("Not Found", { status: 404 });
+  }
+
   let hostname = req.headers.get("X-Subdomain-Host") || req.headers.get("host") || "";
   hostname = hostname.replace("www.", "");
 
-  // Make sure to include both your domains
   const mainDomains = ["localhost:3000", "nexpetcare.online", "nexpetcare.com"];
   const isVercel = hostname.endsWith(".vercel.app");
 
-  // 1. LOCALHOST ROUTING
+  // 2. LOCALHOST ROUTING
   if (hostname.includes(".localhost:3000") || hostname.includes(".localhost")) {
     const subdomain = hostname.split(".")[0];
-
-    // 🔥 Explicitly route sitemap.xml to our generator API
+    
     if (url.pathname === '/sitemap.xml') return NextResponse.rewrite(new URL(`/${subdomain}/sitemap_api`, req.url));
-
+    
     return NextResponse.rewrite(new URL(`/${subdomain}${url.pathname}`, req.url));
   }
 
-  // 2. SUBDOMAIN ROUTING (e.g., m.nexpetcare.online)
- if (hostname.endsWith(".nexpetcare.online") && !mainDomains.includes(hostname)) {
+  // 3. SUBDOMAIN ROUTING (e.g., m.nexpetcare.online)
+  if (hostname.endsWith(".nexpetcare.online") && !mainDomains.includes(hostname)) {
     const subdomain = hostname.replace(".nexpetcare.online", "");
     
     if (url.pathname === '/sitemap.xml') return NextResponse.rewrite(new URL(`/${subdomain}/sitemap_api`, req.url));
     if (url.pathname === '/robots.txt') return NextResponse.rewrite(new URL(`/${subdomain}/robots.txt`, req.url));
-    if (url.pathname === '/llms.txt') return NextResponse.rewrite(new URL(`/${subdomain}/llms.txt`, req.url));
-    if (url.pathname === '/.well-known/ard.json') return NextResponse.rewrite(new URL(`/${subdomain}/ard_api`, req.url));
     
     return NextResponse.rewrite(new URL(`/${subdomain}${url.pathname}`, req.url));
   }
 
-  // 3. CUSTOM DOMAIN ROUTING (e.g., doggieteethcleaning.ca)
+  // 4. CUSTOM DOMAIN ROUTING (e.g., doggieteethcleaning.ca)
   if (!mainDomains.includes(hostname) && !isVercel) {
     
     if (url.pathname === '/sitemap.xml') return NextResponse.rewrite(new URL(`/${hostname}/sitemap_api`, req.url));
     if (url.pathname === '/robots.txt') return NextResponse.rewrite(new URL(`/${hostname}/robots.txt`, req.url));
-    if (url.pathname === '/llms.txt') return NextResponse.rewrite(new URL(`/${hostname}/llms.txt`, req.url));
-    if (url.pathname === '/.well-known/ard.json') return NextResponse.rewrite(new URL(`/${hostname}/ard_api`, req.url));
     
     return NextResponse.rewrite(new URL(`/${hostname}${url.pathname}`, req.url));
   }
 
-  // 4. MAIN DOMAIN FALLBACK
+  // 5. MAIN DOMAIN FALLBACK
   return NextResponse.next();
 }
