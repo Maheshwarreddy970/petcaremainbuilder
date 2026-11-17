@@ -1,3 +1,4 @@
+
 import Availability from "@/components/mainlandinpage/Availability";
 import { UsVsThemComparison } from "@/components/mainlandinpage/comparator";
 import { CallToAction } from "@/components/mainlandinpage/Cta";
@@ -8,9 +9,6 @@ import Integrate from "@/components/mainlandinpage/Integration";
 import Navbar from "@/components/mainlandinpage/navbar";
 import Pricing from "@/components/mainlandinpage/Pricing";
 
-
-export const revalidate = 31536000; 
-export const dynamic = "force-static"; 
 
 export default function Home() {
   return (
