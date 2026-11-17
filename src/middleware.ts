@@ -11,11 +11,33 @@ export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
 
   // ==========================================
-  // 🔥 1. THE BOT SHIELD 
-  // Instantly blocks automated hackers/scanners without wasting Vercel CPU
+  // 🔥 1. THE AGGRESSIVE BOT SHIELD 
+  // Blocks known vulnerability scanners and malicious paths instantly
   // ==========================================
-  const blockedPaths = [".env", ".php", ".yml", ".yaml", ".sql", ".git", ".bak", "wp-admin", "wp-includes", "phpmyadmin"];
-  if (blockedPaths.some(path => url.pathname.toLowerCase().includes(path))) {
+  const blockedPaths = [
+    // Configuration and Environment Files
+    ".env", ".env.local", ".env.production", ".env.development", ".env.test", 
+    ".yml", ".yaml", ".json", ".xml", ".ini", ".conf", ".cfg",
+    
+    // Server and Application Files
+    ".php", ".sql", ".bak", ".tar", ".gz", ".zip", ".log",
+    
+    // WordPress and Common CMS Paths
+    "wp-admin", "wp-includes", "wp-content", "wp-login", "xmlrpc.php", 
+    "phpmyadmin", "admin", "administrator",
+    
+    // Source Control
+    ".git", ".svn", ".hg",
+    
+    // Specific paths from analytics
+    "credentials.js", "/api/config", "/api/system", "/api/fs"
+  ];
+
+  // Convert the pathname to lowercase for case-insensitive matching
+  const lowercasePathname = url.pathname.toLowerCase();
+
+  if (blockedPaths.some(path => lowercasePathname.includes(path))) {
+    // Return a 404 immediately to save CPU and block the request
     return new NextResponse("Not Found", { status: 404 });
   }
 
