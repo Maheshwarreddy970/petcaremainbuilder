@@ -4,13 +4,14 @@ import { useEffect, useState, useRef } from "react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useEditorStore } from "@/store/useEditorStore";
-import { Loader2, ArrowLeft, ChevronDown, CheckCircle2, Plus, Trash2 } from "lucide-react";
+import { Loader2, ArrowLeft, ChevronDown, CheckCircle2, Plus, Trash2, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import WebsiteOne from "@/components/templates/WebsiteOne";
 import { uploadImageAction } from "@/actions/upload";
 
 // Make sure Input is imported from your components file!
 import { ColorText, ButtonConfig, ImageUploader, Input } from "./components";
+import { publishWebsiteUpdatesAction } from "@/actions/tenant";
 
 const Section = ({ title, children }: { title: string, children: React.ReactNode }) => (
   <details className="group border-b border-gray-100 last:border-0 [&_summary::-webkit-details-marker]:hidden">
@@ -29,6 +30,7 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
 
   const [loading, setLoading] = useState(true);
   const [uploadingImage, setUploadingImage] = useState<string | null>(null);
+  const [isPublishing, setIsPublishing] = useState(false);
 
   // Auto-save states
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
@@ -144,16 +146,35 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
     return <div className="flex h-screen items-center justify-center bg-white"><Loader2 className="animate-spin text-black w-8 h-8" /></div>;
   }
 
+  const handlePublish = async () => {
+    setIsPublishing(true);
+    const res = await publishWebsiteUpdatesAction(name);
+    if (res.success) {
+      alert("✅ Success! Your live website has been updated worldwide.");
+    } else {
+      alert("❌ Failed to publish: " + res.error);
+    }
+    setIsPublishing(false);
+  };
+  
   return (
     <div className="flex w-full h-screen overflow-hidden bg-white text-black font-sans">
 
       {/* LEFT SIDEBAR: Visual Controls Only */}
       <div className="w-[420px] h-full flex flex-col shrink-0 bg-white shadow-2xl z-20">
 
-        <div className="flex flex-col gap-5 px-6 pt-10 pb-5 border-b border-gray-100">
+        <div className="flex flex-col mt-16 gap-5 px-6 pt-10 pb-5 border-b border-gray-100">
           <Link href={`/dashboard/${name}`} className="text-gray-400 hover:text-black flex items-center gap-1.5 text-sm font-medium w-fit transition-colors">
             <ArrowLeft size={16} /> Back to Dashboard
           </Link>
+           <button
+              onClick={handlePublish}
+              disabled={isPublishing}
+              className="flex items-center mt-5 gap-2 px-4 py-2 text-sm font-bold bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-md disabled:opacity-70"
+            >
+              {isPublishing ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
+              {isPublishing ? "Publishing..." : "Publish Updates"}
+            </button>
           <div className="flex items-center justify-between">
             <h2 className="font-bold text-sm text-gray-800">Template 1: Visual Editor</h2>
 
@@ -167,7 +188,7 @@ export default function LandingPageOneVisualEditor({ params }: { params: Promise
         </div>
 
         <div className="flex-1 overflow-y-auto px-6 pb-20 scrollbar-hide space-y-2">
-
+ 
           {/* THEME COLORS */}
           <Section title="Global Theme">
             <ColorText label="Primary Brand Color" colorValue={config.theme?.primaryColor} onColorChange={(v: string) => updateField('theme.primaryColor', v)} />
